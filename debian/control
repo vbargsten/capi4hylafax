@@ -1,7 +1,7 @@
 Source: capi4hylafax
 Section: comm
 Priority: extra
-Maintainer: Lionel Elie Mamane <lmamane@debian.org>
+Maintainer: Joachim Wiedorn <ad_debian@joonet.de>
 Standards-Version: 3.8.3
 Build-Depends: debhelper (>= 7), libcapi20-dev (>= 1:3.7.2005-07-09-2), libtiff4-dev (>= 3.7.3)
 

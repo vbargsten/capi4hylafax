@@ -1,3 +1,14 @@
+capi4hylafax (1:01.03.00.99.svn.300-17) unstable; urgency=low
+
+  * New maintainer (adopted).
+  * Move to source formate 3.0 (quilt).
+  * Generate explicit patches of old source changes.
+  * Fix configure.in to work with newer automake/autoconf.
+  * Optimize some fprintf params (thanks to M. Muehlhoff).
+  * Fix datatype issue: use __WORDSIZE for checking 64 bit arch.
+
+ -- Joachim Wiedorn <ad_debian@joonet.de>  Wed, 13 Jun 2012 22:15:25 +0200
+
 capi4hylafax (1:01.03.00.99.svn.300-16) unstable; urgency=low
 
   * Adapt to hylafax 6.0 Debian package bind-mounting
