@@ -1,0 +1,130 @@
+#!/bin/sh
+#
+#   This is a sample of a receive script for c2faxrecv if runing in
+#   stand alone mode.
+#   For scripts for the hylafax mode take a look at
+#   /var/spool/fax/bin/faxrcvd or www.hylafax.org.
+#
+#   This script converts a TIFF-File to a PDF and sends a mail to different
+#   mail addresses (depending on the MSN) with the PDF file attached.
+#   This sample needs GenerateFileMail.pl to send mails with attachement and
+#   GenerateFileMail.pl needs perl and mimencode from the metamail packet.
+#
+
+#
+#   "stand alone" calling parameters are:
+#   [Result Code] [CAPI Disconnect Reason] [Sender ID or Number]
+#   [Called Number (MSN) or DDI] [Num of Pages] [Filename(s) without path]
+#
+#   For your information: "hylafax" calling parameters are:
+#   [TIFF-File] [ModemDeviceID] [CommID] [Reason Text] [Calling Number] [ReceiveID] [MSN]
+#
+
+#
+# Check command line
+#
+if [ $# -lt 6 ] ; then
+    echo "ERROR - Missing parameters!"
+    echo ""
+    echo "Call: $0 ResultCode CAPIReason SenderID MSN NumPages Filename [Filename2 [...]]"
+fi
+
+#
+# Get current time and set sender mail address
+#
+CurrentDate="`date`"
+SenderAddr="uucp"
+
+#
+# Remember Filename
+# [ Normally there is only one file specified (Exception: The "G3" format)
+#   and this sample handles mostly only one file. ]
+#
+SendFile="$6"
+# If someone needs an absolute path uncomment the following line:
+#SendFile=`pwd`"/$SendFile"
+
+#
+# Transform "Result Code" to text.
+#
+ResultString="Okay"
+case "$1" in
+6)
+    ResultString="Can't build up B-Channel for incoming call."
+    ;;
+7)
+    ResultString="Connection established, but no fax transfer occured."
+    ;;
+12)
+    ResultString="Error during fax receiving. Fax was only be received partially."
+    ;;
+esac
+
+
+#
+# Convert TIFF File to PDF
+#
+#FileMimeType="image/tiff"
+FileMimeType="application/octet-stream"
+if [ -n "`echo "$SendFile" | grep "\.tif$"`" ] ; then
+    OrgSendFile=$SendFile
+    SendFile="`echo "$OrgSendFile" | sed -e 's/\.tif//'`.pdf"
+    FileMimeType="application/pdf"
+    tiff2ps -a "$OrgSendFile" | ps2pdf13 - - > "$SendFile"
+    # ps2pdf-workaround, because ps2pdf can't handle file names with spaces
+fi
+
+
+#
+# Get a mail address from the MSN
+#
+MailAddr=unresolvedfax@test.de
+case "$4" in
+123400)
+    MailAddr=mueller@test.de
+    ;;
+123401)
+    MailAddr=meier@test.de
+    ;;
+esac
+
+
+#
+# Generates mail text
+#
+SubjectText="Fax from \"$3\""
+
+MailText="Received a new fax with
+result:         $ResultString (CAPI: $2)
+from:           $3
+to:             $4
+pages:          $5
+at:             $CurrentDate
+file:           $SendFile"
+
+# if c2faxrecv was started with -f G3 then you can get more than one file
+shift 6
+while [ -n "$1" ] ; do
+    MailText="$MailText
+                $1"
+    shift
+done
+
+
+#
+# Send Mail
+#
+if [ "$MailAddr" = "root" ] ; then
+    #
+    # only a notification for root
+    #
+    echo "$MailText" | mail -s "$SubjectText" "$MailAddr"
+
+else
+    #
+    # attach fax file
+    #
+    perl GenerateFileMail.pl "$SenderAddr" "$MailAddr" "$SubjectText" "$MailText" "Fax Information"   \
+                             "$SendFile" "$FileMimeType" "`basename \"$SendFile\"`" "$SubjectText"   | \
+    /usr/sbin/sendmail "$MailAddr"
+fi

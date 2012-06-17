@@ -1,0 +1,452 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Frameset//EN">
+
+<HTML LANG="en">
+
+  <HEAD>
+
+<!--(Document created with RoboEditor. )============================-->
+
+    <TITLE>CAPI4HylaFAX</TITLE>
+
+<!--(Meta)==========================================================-->
+
+
+<!--(Body)==========================================================-->
+
+
+  </HEAD>
+
+  <BODY>
+
+    <P>Product: CAPI4Linux, module: CAPI4HylaFAX<BR> Operating System: Linux<BR> Version: 01.03.00 <BR> Build: 05.08.12</P>
+
+    <H1>Welcome to CAPI4HylaFAX!</H1>
+
+    <P>This document contains information and instructions on:</P>
+    <UL>
+      <LI>the CAPI 2.0 binding of HylaFAX to AVM ISDN-Controllers</LI>
+      <LI>working with HylaFAX</LI>
+      <LI>converting existing documents</LI>
+    </UL>
+
+    <H2><A NAME="Inhalt"></A>Contents</H2>
+
+    <P><A HREF="#1"> 1 General Information about Fax G3 over the CAPI 2.0 Interface with AVM ISDN-Controllers</P>
+    <BLOCKQUOTE>
+
+      <P><A HREF="#1.1"> 1.1 HylaFAX and Connecting to ISDN Using CAPI 2.0</P>
+
+      <P><A HREF="#1.2">1.2 Important Information for the Installation of the HylaFAX Interface for CAPI 2.0</A></P></BLOCKQUOTE>
+
+    <P><A HREF="#2">2 Installing the HylaFAX Interface for CAPI 2.0 in SUSE</A></P>
+    <BLOCKQUOTE>
+
+      <P><A HREF="#2.1">2.1 Installation Requirements</A></P>
+
+      <P><A HREF="#2.2">2.2 Installation</A></P>
+
+      <P><A HREF="#2.3">2.3 Working in HylaFAX</A></P>
+
+      <P><A HREF="#2.4">2.4 Sending Faxes with HylaFAX</A></P>
+
+      <P><A HREF="#2.5">2.5 Receiving Faxes with HylaFAX</A></P>
+
+      <P><A HREF="#2.6">2.6 Additional Instructions</A></P></BLOCKQUOTE>
+
+    <P><A HREF="#3"> 3 Installing the HylaFAX Interface for CAPI 2.0 in Other Distributions</A></P>
+
+    <P><A HREF="#4">4 Instructions about the File Format and on Converting Existing Files</A></P>
+
+    <P><A HREF="#5">5 Instructions for Operation with Multiple AVM ISDN-Controllers</A></P>
+
+    <P><A HREF="#6">6 Instructions for Fax Polling</A></P>
+
+    <P><A HREF="#7">7 Additional Information Sources</A></P>
+
+    <P><A HREF="#8">8 Support</A></P>
+
+  <H2><A NAME="1"></A>1 General Information about Fax G3 over the CAPI 2.0 Interface with AVM ISDN-Controllers</H2>
+
+     <P>Analog Fax G3 service over the digital ISDN network requires that the data transmitted be transformed from analog to digital or from digital to analog (A/D or D/A transformation), as well as signaling conform to the Fax G3 standard (such as ITU-T.30).</P>
+
+     <P>As part of the CAPI 2.0 standard, this protocol mechanism is subject to compulsory standardization (TB.30 modem for Group 3 fax). The implementation of this protocol by the manufacturer of the ISDN-Controller is optional. If Fax G3 is implemented in CAPI 2.0 drivers, software developed for the CAPI 2.0 interface can access the ISDN-Controller directly and thus quite easily. All AVM ISDN-Controllers for ISDN basic access currently supported by CAPI4Linux offer Fax&nbsp;G3 support over the CAPI 2.0 interface.</P>
+
+     <P>Note that when passive ISDN-Controllers like the AVM FRITZ!Card are used, all calculations for A/D or D/A transformation must be carried by the CPU of your computer system. This can result in a relatively high system load, especially when Fax&nbsp;G3 documents are received. Active controllers such as those from the AVM ISDN-Controller Family B1 all include their own chip, thus reducing the system's load.</P>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H3><A NAME="1.1"></A>1.1 HylaFAX and Connecting to ISDN Using CAPI 2.0</H3>
+
+     <P>The current version of HylaFAX unfortunately does not offer direct CAPI 2.0 binding; only a binding for analog modems. Until now only active ISDN-Controllers like the AVM ISDN-Controller B1 could be connected to HylaFAX by patch.</P>
+
+     <P>This &quot;CAPI4Linux&quot; package allows the use of practically any ISDN-Controller equipped with a fax-capable CAPI 2.0 driver compliant with the LINUX CAPI 2.0 specification. See also the CAPI 2.0 Specification at:<BR> <A HREF="http://www.capi.org">http://www.capi.org</A></P>
+
+     <P>Thus it is possible to fax with the popular passive ISDN-Controllers even in Linux. Thanks to CAPI 2.0, multiple ISDN services can be used at the same time, such as Fax&nbsp;G3 reception and a connection to the Internet via pppd. The ISDN B channels are assigned automatically by the CAPI 2.0 driver.</P>
+
+     <P>Up to four active AVM ISDN-Controllers with CAPI4Linux drivers can be installed on each system. Even mixed configurations are possible (for instance, one AVM ISDN-Controller B1 ISA plus two ISDN-Controllers C2). The CAPI4HylaFAX module then has to be modified for operation with multiple ISDN-Controllers. Please see the additional information in <A HREF="#3">section 3</A>.</P>
+
+     <P>In any system, only <B>one passive ISDN-Controller</B> (e.g. FRITZ!Card PCI) can be installed using a CAPI4Linux driver.</P>
+
+     <P>The latest version of HylaFAX and more information are available at <br><A HREF="http://www.hylafax.org">http://www.hylafax.org</A>.</P>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H3><A NAME="1.2"></A>1.2 Important Information for the Installation of the HylaFAX Interface for CAPI 2.0</H3>
+
+     <P>From the current HylaFAX version on (included on the SUSE 8.1 CDs), HylaFAX always transfers seven parameters to HylaFAX faxrcvd. SUSE Linux versions 8.0 or below or original HylaFAX versions expect fewer parameters. The difference from the original HylaFAX lies in the restricted analog model of the former, which does not include the important interpretation of the ISDN feature MSN or DDI for e-mail forwarding.</P>
+
+     <P>The new CAPI4HylaFAX installation script automatically changes an existing faxrcvd script so that older faxrcvd scripts can continue working with the current CAPI4HylaFAX version.</P>
+
+     <P>In line 33, for example, the script looks like this:</P>
+
+     <P># faxrcvd file devID commID error-msg CIDNumber CIDName destination<BR> #<BR> <B>if [ $# <FONT COLOR="#008040">-lt</FONT> 7 ]; then</B><BR> echo &quot;Usage: $0 file devID commID error-msg CIDNumber CIDName destination&quot;<BR> fi</P>
+
+     <P>The following table specifies the faxrcvd parameters in brief:</P>
+     <TABLE STYLE="border-collapse: separate;" BORDER="4">
+      <TBODY>
+      <TR>
+        <TD WIDTH="132"><B STYLE="font-weight: bold;">Parameter</B></TD>
+        <TD WIDTH="722"><B STYLE="font-weight: bold;">Event Type</B></TD>
+      </TR>
+      <TR>
+        <TD WIDTH="132">file</TD>
+        <TD>indicates the received TIFF or SFF fax file</TD>
+      </TR>
+      <TR>
+        <TD WIDTH="132">devid</TD>
+        <TD WIDTH="722">relates to the virtual modem device needed by CAPI to send a fax (faxCAPI, for example)</TD>
+      </TR>
+      <TR>
+        <TD WIDTH="132">commid</TD>
+        <TD WIDTH="722">continuous identification number for incoming calls (faxes)</TD>
+      </TR>
+      <TR>
+        <TD WIDTH="132">error-msg</TD>
+        <TD WIDTH="722">includes an entry indicating that problems occurred during fax reception</TD>
+      </TR>
+      <TR>
+        <TD WIDTH="132">cidnumber</TD>
+        <TD WIDTH="722">fax number of the sender; if no number is transferred, the caller ID is shown here</TD>
+      </TR>
+      <TR>
+        <TD WIDTH="132">cidname</TD>
+        <TD WIDTH="722">name of the sender's fax device.</TD>
+      </TR>
+      <TR>
+        <TD>destination</TD>
+        <TD>extension number of the recipient (MSN or DDI)*.</TD>
+      </TR></TBODY>
+    </TABLE>
+
+     <P><FONT SIZE="-1"><I>*If you want to use the current CAPI4HylaFAX version in one of the SUSE versions between 7.2 and 8.0, and if you would like to forward faxes from a certain MSN or DDI, you have to adapt the the faxrcvd script manually, since the order of parameters varies depending on the HylaFAX and SUSE versions used.</I></FONT></P>
+
+     <P>Further information about faxrcvd can be found in the corresponding manual page, displayed by entering the command &quot;man faxrcvd&quot; at a console.</P>
+     <TABLE STYLE="border-collapse: separate;" BORDER="4">
+      <TBODY>
+      <TR>
+        <TD WIDTH="127"><B>NOTE</B></TD>
+        <TD WIDTH="1083">If you are using &quot;GlobalCall&quot;, please note the following: &quot;GlobalCall&quot;, especially popular in Austria, does not transmit your main number, thus deactivating the parameter &quot;IncomingMSN&quot; in the &quot;config.faxCAPI&quot; file. Therefore all voice and fax calls coming in at the main number are accepted. If you want to deactivate the automatic call acceptance, you have to set the parameter &quot;AcceptGlobalCalls&quot; to &quot;0&quot;. In all other cases the pre-set value &quot;1&quot; is correct.</TD>
+      </TR></TBODY>
+     </TABLE>
+
+     <P>More information about HylaFAX and how to use of the "faxrcvd" script is available at <br><A HREF="http://www.hylafax.org">www.hylafax.org</A>.</P>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H2><A NAME="2"></A>2 Installing the HylaFAX Interface for CAPI 2.0 in SUSE</H2>
+
+     <P>Please note that the following prerequisites have to be met before starting installation: </P>
+
+  <H4><A NAME="2.1"></A>2.1 Installation Requirements</H4>
+
+     <UL>
+        <LI>SUSE Linux 9.1/9.2/9.3</LI>
+        <LI>An installed HylaFAX packet including the program library TIFFLIB. The latest version can be obtained from: <A HREF="http://www.hylafax.org">http://www.hylafax.org</A>.</LI>
+        <LI>You have to perform a &quot;root&quot; installation, i.e. you have to log in on the system as &quot;super user&quot;.</LI>
+        <LI>Read and write rights (rw) to &quot;dev/capi20&quot; have to be configured for the fax user(s). See the section &quot;<A HREF="#2.3">2.3 Working in HylaFAX</A>&quot;.</LI>
+        <LI>At least one, and no more than four active AVM ISDN-Controller(s), or any passive AVM ISDN-Controller with a correctly installed CAPI 2.0 driver from the CAPI4Linux package must be installed. It is not possible to use the HylaFAX interface &quot;CAPI4HylaFAX&quot; with the ISDN4Linux package (it is not a CAPI 2.0 interface).</LI>
+        <li>To use CAPI4HylaFAX in a 64-bit SUSE Linux&nbsp;9.x, please make sure that the packets &quot;zlib-devel&quot;, &quot;libjpeg&quot; and &quot;libtiff&quot; are installed. The file &quot;/usr/lib64/libcapi20.la&quot; contains an incorrect entry. Change the entry as follows to ensure a correct compilation of CAPI4HylaFAX:<br>
+        #Directory that this library needs to be installed in:<br>
+        libdir='/usr/lib64'</li>
+     </UL>
+     <TABLE STYLE="border-collapse: separate;" BORDER="4">
+      <TBODY>
+      <TR>
+        <TD WIDTH="135"><B>NOTE</B></TD>
+        <TD WIDTH="1075">AVM supplies pre-compiled patches for SUSE which permit an especially simple installation for these distributions. If you use a different distribution, see the corresponding information in the section &quot;<A HREF="#3">Installing the HylaFAX Interface for CAPI 2.0 in Other Distributions</A>&quot;.</TD>
+      </TR></TBODY>
+    </TABLE>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H4><A NAME="2.2"></A>2.2 Installation</H4>
+
+     <TABLE STYLE="border-collapse: separate;" BORDER="4">
+       <TBODY>
+       <TR>
+         <TD WIDTH="135"><B>NOTE</B></TD>
+         <TD WIDTH="1075">Please remove any old version of CAPI4HylaFAX before installing a new version!</TD>
+       </TR></TBODY>
+    </TABLE>
+     <ol>
+       <li>Copy the archive &quot;CAPI4HylaFAX-versionNo.tar.gz&quot; from the CAPI4Linux archive to your computer (for instance, from a diskette by entering the &quot;mcopy&quot; command on a console).</li>
+       <li>Start a console (command prompt).</li>
+
+       <li>Extract the archive with the command:<br> <B STYLE="font-weight: bold;">tar -xzvf capi4hylafax-xx.yy.zz.tar.gz</B><br> A directory called &quot;capi4hylafax-xx.yy.zz&quot; is created.</li>
+
+       <li>Switch to this new directory &quot;capi4hylafax-xx.yy.zz&quot;.</li>
+
+       <li>Run &quot;./install&quot;. <BR>Next the system automatically checks for an installed HylaFAX. If the HylaFAX package is not found, a corresponding message is returned. If the HylaFAX package is not found, you have to enter the &quot;HylaFAX spool directory&quot; manually as a parameter. <br>
+         <TABLE STYLE="border-collapse: separate;" BORDER="4">
+            <TBODY>
+            <TR>
+            <TD WIDTH="133"><B>NOTE</B></TD>
+            <TD WIDTH="1077">If you would like to send or receive a fax without HylaFAX support, simply install stand-alone operation without automatic HylaFAX configuration by entering &quot;./install -s&quot;.<br>With &quot;./install -h&quot; you get an overview of parameters with extended installation options. </TD>
+            </TR></TBODY>
+         </TABLE>
+
+       <br>By means of a graphic menu system, you can now perform the initial configuration of the most important parameters for the fax operation of a previously installed AVM ISDN-Controller. Further parameters for fax polling, for example, can be configured directly in the file &quot;config.faxCAPI&quot;. These parameters are documented in the file itself. For configuration using the menu system, the following parameters are available: <br>
+
+         <TABLE STYLE="border-collapse: separate;" BORDER="4">
+           <TBODY>
+           <TR>
+           <TD WIDTH="132"><B STYLE="font-weight: bold;">Parameter</B></TD>
+           <TD WIDTH="721"><B STYLE="font-weight: bold;">Effect</B></TD>
+           </TR>
+           <TR>
+           <TD WIDTH="132">OutgoingMSN</TD>
+           <TD WIDTH="721">Defines the outgoing MSN to be used at the ISDN basic rate interface. In this way you can indicate a specific MSN from the block of numbers for outgoing connections to perform MSN-specific accounting. For some PBXs with internal S<SUB>0</SUB> bus you must indicate the MSN of the extension used.</TD>
+          </TR>
+          <TR>
+          <TD WIDTH="132">IncomingMSNs</TD>
+          <TD WIDTH="721">Defines the outgoing MSN to be used at the ISDN basic rate interface. If several ISDN devices with the same ISDN service indicator are used at the basic rate interface, each of these devices must be unambiguously addressed via a specific MSN. If this parameter is NOT defined, all incoming calls with the service indicator &quot;Group 2/3 Fax&quot; and &quot;Telephony (analog)&quot; will be accepted. If several MSNs are to be used, they must be separated by commas.</TD>
+          </TR>
+          <TR>
+          <TD WIDTH="132">DDIParams</TD>
+          <TD WIDTH="721">Defines parameters for operation at a PBX ISDN point-to-point line with direct dial-in (DDI). &quot;DDIOffset&quot;: indicates the number of digits which precede the extension number.<BR> Example: 39976-0 =&gt; DDIOffset=39976 (base number)<BR> &quot;DDILength&quot;: indicates the number of digits of the extension number.<BR> Example: 4711 =&gt; DDILength=4<BR> &quot;IncomingDDIs&quot;: List of extension numbers that should be accepted.</TD>
+          </TR>
+          <TR>
+          <TD WIDTH="132">FaxNumber</TD>
+          <TD WIDTH="721">Defines the fax number which appears in the fax header at the recipient.<BR> <B>ATTENTION</B>: HylaFAX cannot process empty spaces. Use the entry "." instead. This entry is automatically converted into a blank.</TD>
+          </TR>
+          <TR>
+          <TD WIDTH="132">FaxIdentifier</TD>
+          <TD WIDTH="721">Defines the local name (station ID) shown in the fax header at the recipient.</TD>
+          </TR>
+          <TR>
+          <TD WIDTH="132">NumberPrefix</TD>
+          <TD WIDTH="721">Defines the digit required to get an outside line when operating at a PBX (generally &quot;0&quot;).</TD>
+          </TR></TBODY>
+        </TABLE>
+
+        <br>
+
+        <TABLE STYLE="border-collapse: separate;" BORDER="4">
+          <TBODY>
+          <TR>
+          <TD WIDTH="130"><B>ATTENTION</B></TD>
+          <TD WIDTH="722">To change the settings of the CAPI4HylaFAX module after installation, or to configure more than one active AVM ISDN-Controller for fax operation with HylaFAX, you MUST perform the respective settings manually in the config.faxCAPI file. This file is used by HylaFAX as well as by the applications &quot;c2faxsend&quot; and &quot;c2faxrecv&quot;: /etc/config.faxCAPI (in SUSE Linux)<BR> /var/spool/HylaFAX/etc/config.faxCAPI (HylaFAX 4.1.x)</TD>
+          </TR></TBODY>
+        </TABLE>
+        <br>
+     </li>
+
+     <li>Then the configuration file &quot;config.faxCAPI&quot; is generated automatically. The applications &quot;c2faxsend&quot; and &quot;c2faxrecv&quot; search for the configuration file &quot;config.faxCAPI&quot; in the directory &quot;/var/spool/fax/etc&quot;. If for some reason the file does not exist (any more), the default settings will be used automatically. In order to move this configuration file to another position in the system, the location must be entered using the command to open the application, &quot;-C FILE&quot;.
+
+     At this junction a quick test in stand-alone operation can be performed, since no other components are required by HylaFAX. Send or receive a fax from the command line using the two applications below:
+
+     <br>
+
+     <TABLE STYLE="border-collapse: separate;" BORDER="4">
+       <TBODY>
+       <TR>
+         <TD WIDTH="126">Sending</TD>
+         <TD WIDTH="1084">c2faxsend -f TIFF -d [TelNo] [TIFF file]<BR> c2faxsend -f SFF -d [TelNo] [SFF file]</TD>
+       </TR>
+       <TR>
+         <TD WIDTH="126">Receiving</TD>
+         <TD WIDTH="1084">c2faxrecv -f TIFF<BR> c2faxrecv -f SFF</TD>
+       </TR></TBODY>
+     </TABLE>
+
+     <br>
+
+     The parameter -h provides a complete survey of the implemented options in both applications.
+
+     <br>
+
+     In stand-alone operation without HylaFAX &quot;c2faxrecv&quot; cannot be running when a fax is to be sent. &quot;c2faxsend&quot; can use only the &quot;TIFF&quot; (class F, FAX G3, 1 dim. Huffmann coding) and &quot;SFF&quot; file formats. In order to send a document, it should be converted with a corresponding program first (e.g. with Ghostscript). AVM supplies the demonstration file &quot;fritz_pic.tif&quot; in a suitable TIFF format. The command for sending the AVM test fax to any Fax G3 remote site, specified with [TelNo], is thus
+
+     <BLOCKQUOTE>
+
+     <B STYLE="font-weight: bold;">c2faxsend -vf TIFF -d [TelNo] fritz_pic.tif</B>
+
+     </BLOCKQUOTE>
+
+     The section &quot;<A HREF="#4">Instructions about the File Format and on Converting Existing Files</A>&quot; presents more information about the TIFF format used.</li>
+
+     </ol>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H4><A NAME="2.3"></A>2.3 Working in HylaFAX</H4>
+
+     <P>To work with HylaFAX, a number of preparatory steps are performed automatically by the installation script during installation (see the section &quot;<A HREF="#2.2">Installation</A>&quot;, step 5).</P>
+
+     <P>If HylaFAX is to be used, note the following:</P>
+       <UL>
+         <LI>The &quot;./install&quot; script executed during installation copies the fax files to &quot;/usr/local/bin&quot;.</LI>
+         <LI>The system searches for HylaFAX automatically. The HylaFAX &quot;config file&quot; and the &quot;/etc/inittab&quot; file are modified as necessary so that faxes can be sent and received over CAPI 2.0.</LI>
+         <LI>Faxes can only be sent and received with HylaFAX when &quot;c2faxrecv&quot; is active. Therefore this program was registered automatically in the &quot;/etc/inittab&quot; file.</LI>
+         <li>Read and write rights (rw) to &quot;/dev/capi20&quot; must be configured for the fax user(s) in &quot;dev/capi20&quot; and &quot;/var/spool/hylafax&quot; or &quot;/var/spool/fax&quot;, which is generally not the case. When &quot;root&quot; runs &quot;c2faxrecv&quot;, &quot;c2faxrecv&quot; changes the user &quot;root&quot; to &quot;fax&quot; which is member of the group &quot;dialout&quot;. To grant &quot;user access&quot; to CAPI&nbsp;2.0, the rights in &quot;/dev/capi20&quot; and &quot;/var/spool/hylafax&quot; or &quot;/var/spool/fax&quot; must be changed to &quot;0666&quot;.</li>
+         <LI>To avoid rebooting, simply activate &quot;c2faxrecv &amp;&quot; after installation. In some cases it is necessary to end the HylaFAX program &quot;faxq&quot; and to restart it in order to implement the changes to the settings in its configuration file.</LI>
+       </UL>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H4><A NAME="2.4"></A>2.4 Sending Faxes with HylaFAX</H4>
+
+     <P>To send, just enter &quot;sendfax -d [TelNo] file&quot;. The file can have almost any format. The programs &quot;file&quot; or &quot;a2ps&quot; must be able to read the format so that the file can be converted correctly first into PS format and then into TIFF format. Graphic frontends are also available to make working with HylaFAX somewhat easier. For more information, see the documentation at:</P>
+
+     <P><A HREF="http://www.hylafax.org/">http://www.hylafax.org</A></P>
+
+     <P>If faxes are to be sent directly from an application, the printer configuration must be adapted in the application. Usually a command for printing can be entered in the application, usually just &quot;lpr&quot;. Replace this with &quot;sendfax -d [TelNo]&quot;. These functions are program-dependent and should be documented in the application Help file.</P>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H4><A NAME="2.5"></A>2.5 Receiving Faxes with HylaFAX</H4>
+
+     <P>Once a fax is received via HylaFAX, &quot;root&quot; receives a mail sent by the script &quot;faxrcvd&quot; reporting that a fax has been received. <BR>When using the fax module &quot;c2faxrecv&quot; in stand-alone operation, you can achieve analog fax reception by using the supplied script &quot;sample_faxrcvd&quot;. <BR>Once a fax has been received, the script specified in the configuration file (&quot;faxrcvd&quot; in HylaFAX) can be run with the following parameters:</P>
+     <TABLE STYLE="border-collapse: separate;" BORDER="4">
+       <TBODY>
+       <TR>
+         <TD WIDTH="195">Stand-alone operation</TD>
+         <TD WIDTH="1015">[Result Code] [CAPI Disconnect Reason] [Sender ID] [Called Number or DDI] [No of Pages] [File(s)]</TD>
+       </TR>
+       <TR>
+         <TD WIDTH="195">HylaFAX mode</TD>
+         <TD WIDTH="1015">[faxrcvd file] [devID] [commID] [error-msg] [CIDNumber] [CIDName] [destination]</TD>
+       </TR></TBODY>
+     </TABLE>
+
+     <P>More details about fax reception with HylaFAX are provided in the HylaFAX documentation.</P>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H4><A NAME="2.6"></A>2.6 Additional Instructions</H4>
+
+      <UL>
+        <LI>The &quot;config file&quot; must be located in the &quot;etc&quot; directory of HylaFAX.</LI>
+        <LI>Even if faxes are only to be sent, &quot;c2faxrecv&quot; must be active!</LI>
+        <LI>For fax reception, simply run &quot;c2faxrecv &amp;&quot;, for instance in a start scrpt, if it has not already been run in &quot;etc/inittab&quot;.</LI>
+        <LI>&quot;Device&quot; Name: Because the applications are CAPI 2.0 applications based directly on CAPI, this entry is not actually necessary. However, the name of the device can be entered in the commando line, or is entered automatically by HylaFAX. This name is used only for signaling to HylaFAX and to determine the name of the configuration file: &quot;config.[Device Name]&quot;. Thus it is also possible to manage multiple &quot;c2faxrecv&quot; demons along with their configuration files. Another option is the "-C" switch.</LI>
+        <LI>If problems occur after installation during fax transmission, HylaFAX probably did not yet process the modifications in the configuration file correctly. In this case, entering &quot;faxsetup&quot; or &quot;faxmodem faxCAPI&quot; manually with &quot;root&quot; or superuser rights can be used to implement the changes in HylaFAX.</LI>
+        <LI>For comprehensive logging, delete in canfig.faxCAPI the &quot;#&quot; preceding the &quot;LogTraceLevel:4&quot; entry. The log file is saved by default to &quot;/tmp/capifax.log&quot;.</LI>
+      </UL>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H2><A NAME="3"></A>3 Installing the HylaFAX Interface for CAPI 2.0 in Other Distributions</H2>
+
+     <P>Even if you use any distributions or kernel versions other then SUSE, it is usually no problem to use CAPI4HylaFAX. Only if the installation routine of CAPI4HylaFAX reports missing (program) libraries is it necessary to compile the sources supplied in the directory &quot;/src&quot;. To simplify this process, AVM supplies complete &quot;makefiles&quot;. For more details about compiling sources, see the file &quot;README.src&quot;.</P>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H2><A NAME="4"></A>Instructions about the File Format and on Converting Existing Files</H2>
+
+     <P>TIFF (Tagged Image File Format) files must correspond to the specification &quot;Class F for facsimile (TIFF Class F)&quot;, based on the TIFF&nbsp;6.0 specification. In addition, the file must contain one-dimensional Huffmann coding. This format was specified in &quot;Group&nbsp;3&quot; by the CCITT (International Telegraph and Telephone Consultative Committee). For more information about TIFF format, see the &quot;Developer&quot; division of Adobe Systems Incorporated at: <A HREF="http://www.adobe.com">http://www.adobe.com</A></P>
+
+  <H4>Converting Existing Files with Ghostscript</H4>
+
+     <P>To convert a postscript file into a TIFF file conform to the fax application, the following command can be used to activate Ghostscript:</P>
+     <BLOCKQUOTE>
+
+     <P><B STYLE="font-weight: bold;">gs -dBATCH -dNOPAUSE -sDEVICE=tiffg3 -sOutputFile=[Name of tiff file] [Name of postscript file]</B></P></BLOCKQUOTE>
+
+     More information about the SSF format is documented in the CAPI&nbsp;2.0 specification at <a href="http://www.capi.org">http://www.capi.org</a>.
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H2><A NAME="5"></A>5 Instructions for Operation with Multiple AVM ISDN-Controllers</H2>
+
+     <P>Up to four active AVM ISDN-Controllers can be addressed via the CAPI 2.0 interface. It is also possible to install controllers for different bus systems such as PCI, ISA and PCMCIA. For details about the controller installation, please refer to the documentation of the driver module Linux CAPI 2.0.</P>
+
+     <P>The module CAPI4HylaFAX simultaneously supports the operation of multiple active AVM ISDN-Controllers sending and receiving in HylaFAX. After installing the module CAPI4HylaFAX, some modifications are necessary in the configuration file &quot;/etc/config.faxCAPI&quot;. This is necessary because the graphic installation routine described above is designed for one controller only. Other parameters for the operation of several AVM ISDN-Controllers in the configuration file &quot;config.faxCAPI&quot; are documented in the file itself. After modifying the configuration file the module &quot;c2faxrecv&quot; must be stopped and restarted in order to activate the modification.</P>
+
+     <P>A pre-configured sample script is enclosed for the operation with the AVM ISDN-Controller&nbsp;C4 or the AVM ISDN-Controller&nbsp;C2. The script is called &quot;sample_AVMC4_config.faxCAPI&quot;. This script simplifies the configuration of multiple-channel controllers for CAPI4HylaFAX: just modify the script according to your individual technical surroundings (MSNs etc.).</P>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H2><A NAME="6"></A>6 Instructions for Fax Polling</H2>
+
+     <P>Fax polling is now supported with this version of HylaFAX. Operation in client mode is possible, i.e., CAPI4HylaFAX can be used to poll fax documents. It is not yet possible to provide callers with fax documents to poll (Server Mode).</P>
+
+     <P>Execute the following file to start fax polling in stand-alone mode:</P>
+     <BLOCKQUOTE>
+
+     <P><B STYLE="font-weight: bold;">c2faxsend -vf TIFF -d [TELNo] -P [e-mail address]</B></P></BLOCKQUOTE>
+
+     <P>Execute the following file to start fax polling in HylaFAX mode:</P>
+     <BLOCKQUOTE>
+
+     <P><B STYLE="font-weight: bold;">sendfax -d [TELNo] -p</B></P></BLOCKQUOTE>
+
+     <P>In either case, a script is started after the fax is received and the e-mail address and the corresponding fax document is provided. The script is defined in the configuration file &quot;config.faxCAPI&quot; under the following parameter:</P>
+     <BLOCKQUOTE>
+
+     <P><B STYLE="font-weight: bold;">PollRcvdCmd</B></P></BLOCKQUOTE>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H2><A NAME="7"></A>7 Additional Information Sources</H2>
+
+  <H4>Information about the Applications Interface CAPI 2.0</H4>
+
+     <P>The applications interface CAPI 2.0 can be downloaded free of charge from the following Internet site:</P>
+
+     <P><A HREF="http://www.capi.org">http://www.capi.org</A></P>
+
+     <P>Additional questions about the CAPI 2.0 Specification should be asked in the Usenet at the following URL:</P>
+
+     <P><A HREF="news:comp.dcom.isdn.capi">news:comp.dcom.isdn.capi</A></P>
+
+  <H4>Newsgroup</H4>
+
+     <P>Discussions of ISDN and Linux issues can be found at:</P>
+
+     <P><A HREF="news:de.comp.os.unix.linux.isdn">news:de.comp.os.unix.linux.isdn</A></P>
+
+  <H4>Faxing with capicvd</H4>
+
+     <P>Information about an already existing CAPI 2.0-based program for receiving faxes (G3) and voice calls is provided at the URL:</P>
+
+     <P><A HREF="http://capircvd.berlios.de/index_eng.php3">http://capircvd.berlios.de/index_eng.php3</A></P>
+
+     <P>For more information on using AVM products with Linux, see the AVM web site at:</P>
+
+     <P><A HREF="http://www.avm.de/en">www.avm.de/en</A></P>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+  <H2><A NAME="8"></A>8 Support</H2>
+
+     <P>Because there are so many different kernels and distributions, e-mail support is limited to the operating systems and kernel versions described in the section &quot;<A HREF=#2.1>Installation Requirements</A>&quot;. This support is limited to the actual installation up to the successful completion of the test connection or the test fax over CAPI drivers and the CAPI4HylaFAX module in combination with AVM DSL/ISDN-Controllers using the provided installation programs. For questions about network configuration, integrated functions of the operating system Linux and applications from other manufacturers, please contact the relevant manufacturer or the support service of the distribution used. Please address your questions concerning configuration and operation of HylaFAX to: <br><A HREF="http://www.hylafax.org/">www.hylafax.org</A></P>
+
+     <P>The AVM web site offers detailed information and updates free of charge. Visit the site at: <br><A HREF="http://www.avm.de/en">www.avm.de/en</A></P>
+       <UL TYPE="disc">
+         <LI>  The &quot;Products&quot; category provides detailed information about all AVM products as well as announcements of new products and product versions.</LI>
+       </UL>
+
+     <P>All programs and drivers available on AVM's Internet site can also be downloaded from the AVM Data Call Center (ADC).<BR> Please try all of the information sources described above before contacting AVM support.</P>
+
+     <P>If these instructions and the various information sources have not helped to resolve your problem, contact AVM Support for additional technical assistance. You may send your support requests to AVM by e-mail. Support inquiries can be sent to AVM using the e-mail form provided at the Internet address: <br><A HREF="http://www.avm.de/en">www.avm.de/en</A></P>
+
+     <P>Fill out the form and mail it to AVM Support by clicking the &quot;Send&quot; button.</P>
+
+     <P><A HREF="#Inhalt">Back to top</A></P>
+
+     <P>EOF</P>
+
+    <P><FONT SIZE="-1">SAS; SR; 08/2005</FONT></P>
+  </BODY>
+</HTML>

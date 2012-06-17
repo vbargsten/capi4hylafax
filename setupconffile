@@ -1,0 +1,276 @@
+#!/bin/sh
+#
+#   default values
+#
+BT="Configuration of the CAPI 4 Hylafax config file"
+OutMSN=""
+InMSNs=""
+UseDDI=0
+DDILen=0
+DDIOffset=""
+InDDIs=""
+FaxNumber="+49.00.00000"
+Identifier="AVM CAPI4HylaFAX"
+NumberPrefix=""
+DDISamples="             DDI Params\n"
+DDISamples="$DDISamples\nSample for DDI Offset   : 11223344"
+DDISamples="$DDISamples\nSample for DDI Length   : 3"
+DDISamples="$DDISamples\nSample for Incoming DDIs: 10, 100-300"
+
+ConfigFileName="/etc/config.faxCAPI"
+if [ ! -e $ConfigFileName ] ; then
+    echo "setupconffile: Can't find CAPI4HylaFax config file ($ConfigFileName) !"
+    return 1
+fi
+
+#
+#   functions
+#
+
+function test_for_number {
+    numlen=`expr "$1" : "[0-9]\+"`
+    strlen=`expr length "$1"`
+    if [ 0$numlen -ne 0$strlen ]; then
+        return 1
+    fi
+    return 0
+}
+
+function WriteToConfigFile {
+sed "
+/^ *FAXNumber *:/c\\
+    FAXNumber:                  $FaxNumber
+/^ *LocalIdentifier *:/c\\
+    LocalIdentifier:            \"$Identifier\"
+/^ *OutgoingMSN *:/c\\
+    OutgoingMSN:                $OutMSN
+/^ *NumberPrefix *:/c\\
+    NumberPrefix:               $NumberPrefix
+/^ *UseDDI *:/c\\
+        UseDDI:                 $UseDDI
+/^ *DDIOffset *:/c\\
+        DDIOffset:              $DDIOffset
+/^ *DDILength *:/c\\
+        DDILength:              $DDILen
+/^ *IncomingDDIs *:/c\\
+        IncomingDDIs:           $InDDIs
+/^ *IncomingMSNs *:/c\\
+        IncomingMSNs:           $InMSNs" "$ConfigFileName" > "$ConfigFileName.c2fax"
+    mv -f "$ConfigFileName.c2fax" "$ConfigFileName"
+}
+
+function rem_res {
+    rm -f res
+}
+
+
+function main_config_dialog {
+#
+#   test for dialog
+#
+if [ -z "`which dialog`" ] ; then
+    echo "Can't find dialog. Please install dialog or setup the config file with an editor."
+    rem_res
+    return 1
+fi
+
+
+#
+#   ask for config file if necessary
+#
+if [ -z $1 ] ; then
+    dialog --backtitle "$BT" --clear \
+           --inputbox "Specify the location of the config file" 9 70 "$ConfigFileName" 2> res
+    if [ $? -eq 0 ] ; then
+        ConfigFileName="`cat res`"
+    else
+        rem_res
+        return 1
+    fi
+else
+    ConfigFileName="$1"
+fi
+
+
+#
+#   test for file
+#
+if [ ! -e "$ConfigFileName" ] ; then
+    echo "Can't find config file $ConfigFileName"
+    rem_res
+    return 1
+fi
+
+#
+#   show info dialog
+#
+dialog --backtitle "$BT" --clear  --yesno \
+"This program can only configure the parameters for controller 1.
+If you will use more than controller 1 feel free to adjust the
+config file \"config.faxCAPI\" with an editor to your own demands.\n\n
+Configure parameters for controller 1 now?" 10 72
+
+if [ $? -ne 0 ] ; then
+    rem_res
+    return 1
+fi
+
+
+#
+#   dialog loop
+#
+terminate=0
+while [ $terminate -eq 0 ] ; do
+    dialogInMSN="-- empty ----"
+    dialogDDI="-- no ddi ---"
+    dialogOutMSN=$OutMSN
+    dialogFaxNum=$FaxNumber
+    dialogId=$Identifier
+    dialogNumPre=$NumberPrefix
+
+    if [ -n "$InMSNs" ] ; then
+        dialogInMSN="-- is set ---"
+    fi
+    if [ $UseDDI -ne 0 ] ; then
+        dialogDDI="-- use ddi --"
+        dialogInMSN="-- disabled -"
+    fi
+    if [ -z "$dialogOutMSN" ] ; then
+        dialogOutMSN="[unspecified]"
+    fi
+    if [ -z "$dialogFaxNum" ] ; then
+        dialogFaxNum="[unspecified]"
+    fi
+    if [ -z "$dialogId" ] ; then
+        dialogId="[unspecified]"
+    fi
+    if [ -z "$dialogNumPre" ] ; then
+        dialogNumPre="[   empty   ]"
+    fi
+
+    dialog --backtitle "$BT" --clear            \
+           --menu "Main menu" 15 50 7           \
+           "Outgoing MSN  "   "$dialogOutMSN"   \
+           "Incoming MSNs "   "$dialogInMSN"    \
+           "DDI Params    "   "$dialogDDI"      \
+           "Fax Number    "   "$dialogFaxNum"   \
+           "Fax Identifier"   "$dialogId"       \
+           "Number Prefix "   "$dialogNumPre"   \
+           "Save & Exit   "   "" 2> res
+    if [ $? -eq 0 ] ; then
+        case "`cat res`" in
+        "Outgoing MSN  ")
+            dialog --backtitle "$BT" --clear \
+                   --inputbox "Outgoing MSN" 9 50 "$OutMSN" 2> res
+            if [ $? -eq 0 ] ; then
+                OutMSN="`cat res`"
+            fi
+            ;;
+        "Incoming MSNs ")
+            dialog --backtitle "$BT" --clear \
+                   --inputbox "List of Incomming MSNs (comma seperated)" 9 70 "$InMSNs" 2> res
+            if [ $? -eq 0 ] ; then
+                InMSNs="`cat res`"
+            fi
+            ;;
+        "DDI Params    ")
+            tmpDDIOffset=$DDIOffset
+            tmpDDILen=$DDILen
+            tmpInDDIs=$InDDIs
+            while [ $terminate -eq 0 ] ; do
+                dialogInDDIs="-- empty ----"
+                if [ -n "$tmpInDDIs" ] ; then
+                    dialogInDDIs="-- is set ---"
+                fi
+                dialog --backtitle "$BT" --clear        \
+                       --menu "$DDISamples" 15 43 4     \
+                       "DDI Offset"     "$tmpDDIOffset" \
+                       "DDI Length"     "$tmpDDILen"    \
+                       "Incoming DDIs"  "$dialogInDDIs" \
+                       "Accept"       "" 2> res
+
+                if [ $? -eq 0 ] ; then
+                    case "`cat res`" in
+                    "DDI Offset")
+                        dialog --backtitle "$BT" --clear \
+                               --inputbox "DDI Offset" 9 30 "$tmpDDIOffset" 2> res
+                        if [ $? -eq 0 ] ; then
+                            isval="`cat res`"
+                            test_for_number "$isval"
+                            if [ $? -eq 0 ] ; then
+                                tmpDDIOffset="$isval"
+                            fi
+                        fi
+                        ;;
+                    "DDI Length")
+                        dialog --backtitle "$BT" --clear \
+                               --inputbox "DDI Length" 9 30 "$tmpDDILen" 2> res
+                        if [ $? -eq 0 ] ; then
+                            isval="`cat res`"
+                            if [ -n "$isval" ] ; then
+                                test_for_number "$isval"
+                                if [ $? -eq 0 -a 0$isval -lt 100 ] ; then
+                                    tmpDDILen=$isval
+                                fi
+                            fi
+                        fi
+                        ;;
+                    "Incoming DDIs")
+                        dialog --backtitle "$BT" --clear \
+                               --inputbox "Incoming DDIs" 9 70 "$tmpInDDIs" 2> res
+                        if [ $? -eq 0 ] ; then
+                            tmpInDDIs="`cat res`"
+                        fi
+                        ;;
+                    "Accept")
+                        DDIOffset=$tmpDDIOffset
+                        DDILen=$tmpDDILen
+                        InDDIs=$tmpInDDIs
+                        if [ -n "$DDIOffset" ] && [ -n "$InDDIs" -o 0$DDILen -gt 0 ] ; then
+                            UseDDI=1
+                        else
+                            UseDDI=0
+                        fi
+                        terminate=1
+                        ;;
+                    esac
+                else
+                    terminate=1
+                fi
+            done
+            terminate=0
+            ;;
+        "Fax Number    ")
+            dialog --backtitle "$BT" --clear \
+                   --inputbox "Fax Number (use dots instead of spaces)" 9 50 "$FaxNumber" 2> res
+            if [ $? -eq 0 ] ; then
+                FaxNumber="`cat res`"
+            fi
+            ;;
+        "Fax Identifier")
+            dialog --backtitle "$BT" --clear \
+                   --inputbox "Fax Identifier" 9 50 "$Identifier" 2> res
+            if [ $? -eq 0 ] ; then
+                Identifier="`cat res`"
+            fi
+            ;;
+        "Number Prefix ")
+            dialog --backtitle "$BT" --clear \
+                   --inputbox "Number Prefix" 9 50 "$NumberPrefix" 2> res
+            if [ $? -eq 0 ] ; then
+                NumberPrefix="`cat res`"
+            fi
+            ;;
+        "Save & Exit   ")
+            WriteToConfigFile
+            terminate=1
+            ;;
+        esac
+    else
+        terminate=1
+    fi
+done
+
+rem_res
+return 0
+}
