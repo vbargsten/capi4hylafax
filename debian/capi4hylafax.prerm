@@ -1,0 +1,23 @@
+#! /bin/sh -e
+
+if [ "$1" = 'failed-upgrade' ] && dpkg --compare-versions "$2" lt '1:01.03.00.99.svn.300-14'; then
+
+  if [ -x "/etc/init.d/capi4hylafax" ]; then
+	if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+		set +e
+		invoke-rc.d capi4hylafax stop; rc=$?; [ "${rc}" -eq 0 ] || [ "${rc}" -eq 1 ] || exit $?
+		set -e
+	else
+		set +e
+		/etc/init.d/capi4hylafax stop; rc=$?; [ "${rc}" -eq 0 ] || [ "${rc}" -eq 1 ] || exit $?
+		set -e
+	fi
+  fi
+
+else
+
+#DEBHELPER#
+
+fi
+
+exit 0

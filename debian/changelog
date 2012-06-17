@@ -1,0 +1,538 @@
+capi4hylafax (1:01.03.00.99.svn.300-16) unstable; urgency=low
+
+  * Adapt to hylafax 6.0 Debian package bind-mounting
+    /var/spool/hylafax/etc (closes: #554631)
+  * Implement parallel=n DEB_BUILD_OPTIONS
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Wed, 02 Dec 2009 17:55:37 +0100
+
+capi4hylafax (1:01.03.00.99.svn.300-15) unstable; urgency=low
+
+  * Work around bug #554631 on upgrades
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Thu, 05 Nov 2009 22:41:20 +0100
+
+capi4hylafax (1:01.03.00.99.svn.300-14) unstable; urgency=low
+
+  * init script: report success on start when already running
+    and on stop when not running (closes: #554631)
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Thu, 05 Nov 2009 22:16:33 +0100
+
+capi4hylafax (1:01.03.00.99.svn.300-13) unstable; urgency=low
+
+  * Bump up Standards-Version to 3.8.3
+  * Move debhelper compat level to 7
+  * Remove erroneous /etc/default/default file (Closes: #510610).
+  * Update config.{guess,sub}
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Fri, 16 Oct 2009 12:05:36 +0200
+
+capi4hylafax (1:01.03.00.99.svn.300-12) unstable; urgency=low
+
+  * Properly quote CXXFLAGS, allowing spaces in it (Closes: #476041).
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Mon, 14 Apr 2008 13:48:52 +0200
+
+capi4hylafax (1:01.03.00.99.svn.300-11) unstable; urgency=low
+
+  * Suggest dialog. (closes: #470728)
+  * Make the init.d script strictly /bin/sh-policy compliant.
+    (closes: #471418)
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Wed, 19 Mar 2008 10:42:18 +0100
+
+capi4hylafax (1:01.03.00.99.svn.300-10) unstable; urgency=low
+
+  * Apparently LSB init headers don't have the concept of default
+    values. So really fill them in. Thanks to Petter Reinholdtsen for the
+    prod. (closes: #466272)
+  * And lintian thinks the headers are case-sensitive; it may be right, so
+    put them in the canonical case.
+  * Don't ignore errors on clean.
+  * Flesh out copyright file a bit.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Sun, 17 Feb 2008 22:28:07 +0100
+
+capi4hylafax (1:01.03.00.99.svn.300-9) unstable; urgency=low
+
+  * Apply Armin Schindler's patch for Eicon Diva server compatibility (closes: #367363)
+  * Bump up Standards-Version to 3.7.3
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Mon, 17 Dec 2007 08:42:46 +0100
+
+capi4hylafax (1:01.03.00.99.svn.300-7) unstable; urgency=low
+
+  * capi4hylafaxconfig needs bash, so declare it so (closes: #417344)
+  * convert example config to UTF-8 (closes: #420126)
+  * count a communication with remote device as a phone call placed
+    (closes: #420907)
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Fri, 20 Jul 2007 14:27:33 +0200
+
+capi4hylafax (1:01.03.00.99.svn.300-6) unstable; urgency=low
+
+  * Overhaul init.d script:
+    - Add LSB INIT INFO section
+    - abort on error
+    - add "status" command
+    - say "cannot create directory" only after having tried
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Sat, 07 Jul 2007 09:42:48 +0200
+
+capi4hylafax (1:01.03.00.99.svn.300-5) unstable; urgency=low
+
+  * README.Debian: explain that capi4hylafax needs hylafax to be in
+    faxmodem mode, not faxgetty.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Sat, 10 Feb 2007 13:03:55 +0100
+
+capi4hylafax (1:01.03.00.99.svn.300-4) unstable; urgency=low
+
+  * Fix subtle brokeness in config file parsing on 64 bit architectures,
+    which led to restriction to a MSN not working anymore.
+    Report and fix courtesy of Stefan Briesenick of Gentoo.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Thu,  5 Oct 2006 14:39:49 +0200
+
+capi4hylafax (1:01.03.00.99.svn.300-3) unstable; urgency=high
+
+  * Sigh. 1:01.03.00.99.svn.300-2 was still subtly broken: An invalid TSI
+    string crashes the c2faxrecv daemon. Hopefully fixed now.
+  * Also fix CVE-2006-3126 in mgetty mode.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Sat, 26 Aug 2006 12:42:12 +0200
+
+capi4hylafax (1:01.03.00.99.svn.300-2) unstable; urgency=low
+
+  * Fix bug #382474 in a way that doesn't break the whole program's
+    functionality.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Thu, 24 Aug 2006 18:34:29 +0200
+
+capi4hylafax (1:01.03.00.99.svn.300-1) unstable; urgency=low
+
+  * New upstream release:
+    - Fix for #358567 taken upstream
+    - Fix for long (> 200 chars) lines in config files
+    - Higher debbugging level
+  * Bumped up Standards-Version
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Wed, 23 Aug 2006 23:15:32 +0200
+
+capi4hylafax (1:01.03.00.99.svn.297-4) UNRELEASED; urgency=high
+
+  * Don't let null characters from cidnumber prematurely terminate C
+    string preparing command line for faxrcvd in c2faxrecv
+    (closes: #382474). This is CVE-2006-3126.
+    Also remove shell metacharacters while I'm at it. This probably fixes
+    a security vulnerability (arbitrary remote command execution under
+    uucp identity): the said command line contains untrusted
+    sender-controlled data, the sender's identification (the TSI
+    string). (The ITU T.30 specification restricts this string to a prefix
+    '+' and digits only, but rumour has it an attacker can transmit
+    arbitrary ASCII data, including null characters.)
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Wed, 23 Aug 2006 22:59:49 +0200
+
+capi4hylafax (1:01.03.00.99.svn.297-3) unstable; urgency=low
+
+  * Remove hylafax-spool copy of config file on purge (closes: #364880)
+  * Remove double diversion from preinst; one time is enough.
+  * On failed upgrade from before 1:01.02.03-13, remove diversion.
+  * Remove "stop daemon" on upgrade from preinst; debhelper puts it
+    automatically in the prerm, which gets called before on upgrade.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Fri, 28 Apr 2006 23:50:30 +0200
+
+capi4hylafax (1:01.03.00.99.svn.297-2) unstable; urgency=low
+
+  * Don't (potentially) segfault on reading an empty line in configuration
+    file (closes: #358567)
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Mon, 24 Apr 2006 21:48:16 +0200
+
+capi4hylafax (1:01.03.00.99.svn.297-1) unstable; urgency=low
+
+  * Repackage previous Debian version as new upstream release (SVN checkout of revision 297)
+  * Implement "noopt" option of DEB_BUILD_OPTIONS
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Wed, 22 Mar 2006 18:37:33 +0100
+
+capi4hylafax (1:01.03.00.99.svn.296-2) unstable; urgency=low
+
+  * Put CommID in queue file for HylaFax jobs
+    (This is upstream commit revision 297 in SVN)
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Wed, 21 Dec 2005 20:38:31 +0100
+
+capi4hylafax (1:01.03.00.99.svn.296-1) unstable; urgency=low
+
+  * New upstream release (SVN checkout of revision 296)
+    - Now PutDataComplete doesn't call SendData if Info says NotConnected (closes: #330901)
+    - Many Debian changes taken up upstream
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Tue, 11 Oct 2005 11:14:05 +0200
+
+capi4hylafax (1:01.03.00-3) unstable; urgency=low
+
+  * Alternative fix works. Upload to unstable.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Tue, 13 Sep 2005 18:40:58 +0200
+
+capi4hylafax (1:01.03.00-2) experimental; urgency=low
+
+  * Pull alternative fix for #301198 from upstream svn.
+    (and remove the conflicting Debian fix)
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Tue, 30 Aug 2005 20:28:33 +0200
+
+capi4hylafax (1:01.03.00-1) unstable; urgency=low
+
+  * New upstream release
+    (Actually "only" packaging same version from upstream tarball
+     rather than from VCS snapshot that happened to match upstream
+     release.)
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Mon, 29 Aug 2005 15:39:00 +0200
+
+capi4hylafax (1:01.02.99-2) unstable; urgency=low
+
+  * Clean up Debian patches a bit.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Mon, 29 Aug 2005 14:26:00 +0200
+
+capi4hylafax (1:01.02.99-1) unstable; urgency=low
+
+  * New upstream pre-release (VCS snapshot)
+  * Sane autotools handling: use AM_MAINTAINER_MODE and don't build-depend
+    on them.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Sun, 28 Aug 2005 18:33:19 +0200
+
+capi4hylafax (1:01.02.03-13) unstable; urgency=low
+
+  * New maintainer (closes: #318949)
+  * Treat s390x and sparc64 as 64bit archs, too.
+  * Put canonical config file in /etc/hylafax and copy it from there
+    to /var/spool/hylafax/etc; this matches hylafax's behaviour.
+    (closes: #303917, #318935, 318907)
+  * Install existing manpages (closes: #318941)
+  * create an /usr/sbin/faxsend to permit using an ISDN _and_ an
+    analog modem to send faxes (closes: #295880)
+  * g++ 4.0 transition: Build-depend on a libtiff4-dev that has transitioned.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>  Fri, 22 Jul 2005 15:29:17 +0200
+
+capi4hylafax (1:01.02.03-12) unstable; urgency=low
+
+  * Orphan the package.
+  * Build depend on libcapi20-dev (>= 1:3.7).
+  * Depend on capiutils, recommend isdnactivecards.
+
+ -- Matthias Klose <doko@debian.org>  Mon, 18 Jul 2005 21:09:27 +0200
+
+capi4hylafax (1:01.02.03-11) unstable; urgency=medium
+
+  * Patch fixing c4h for Eicon cards (Sergio Chersovani):
+    - Fixed eicon diva sendfax issue (resending problem).
+    - Added Sending Complete struct to AdditionalInfo Struct.
+    - Fixed hylafax filenames length.
+    Closes: #301198.
+
+ -- Matthias Klose <doko@debian.org>  Sun, 22 May 2005 18:03:09 +0200
+
+capi4hylafax (1:01.02.03-10) unstable; urgency=medium
+
+  * src/faxrecv/recvdev.cpp: Change the capability string from P3ffdffff:ff
+    to  P3c7dffff:ff (suggested by Bodo Meissner). Closes: #295875.
+  * Fix error in build logic, building i386 as a 64bit target (Bodo Meissner).
+    Closes: #291559, #301994.
+
+ -- Matthias Klose <doko@debian.org>  Sun,  3 Apr 2005 00:25:17 +0200
+
+capi4hylafax (1:01.02.03-9) unstable; urgency=low
+
+  * Fix returning SEND INCOMPLETE although the fax was sucessfully sent.
+    Closes: #293808.
+
+ -- Matthias Klose <doko@debian.org>  Fri,  4 Mar 2005 22:52:29 +0100
+
+capi4hylafax (1:01.02.03-8) unstable; urgency=low
+
+  * Fix build failure on amd64 with gcc-4.0 (closes: #285585).
+
+ -- Matthias Klose <doko@debian.org>  Sun, 16 Jan 2005 12:09:02 +0100
+
+capi4hylafax (1:01.02.03-7) unstable; urgency=high
+
+  * Recompile against new libcapi20-2 (closes: #280239).
+  * Move config.faxCAPI back to /etc/hylafax (closes: #277292).
+
+ -- Matthias Klose <doko@debian.org>  Wed, 10 Nov 2004 18:49:24 +0100
+
+capi4hylafax (1:01.02.03-6) unstable; urgency=medium
+
+  * In the default config file, set UseISDNFaxService to 0 to allow
+    connecting to analog fax devices as well.
+  * Move capi4hylafax default config file to /var/spool/hylafax/etc/.
+  * Set FaxReceiveGroup to dialout.
+  * c2faxrecv starts at system startup (closes: #134706).
+  * Add manual pages (closes: #109896).
+
+ -- Matthias Klose <doko@debian.org>  Sat, 16 Oct 2004 08:22:46 +0200
+
+capi4hylafax (1:01.02.03-5) unstable; urgency=high
+
+  * Add conflict with hylafax-server (<< 1:4.2.0-7).
+
+ -- Matthias Klose <doko@debian.org>  Tue, 21 Sep 2004 17:02:16 +0200
+
+capi4hylafax (1:01.02.03-4) unstable; urgency=low
+
+  * Adjust FIFO and logfile paths to new hylafax file layout.
+    Closes: #272491.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 21 Sep 2004 07:08:40 +0200
+
+capi4hylafax (1:01.02.03-3) unstable; urgency=high
+
+  * Build depend on libcapi20-dev.
+
+ -- Matthias Klose <doko@debian.org>  Sat,  4 Sep 2004 09:49:59 +0200
+
+capi4hylafax (1:01.02.03-2) unstable; urgency=high
+
+  * Don't regenerate maintainer files when buildng. 
+
+ -- Matthias Klose <doko@debian.org>  Tue, 24 Aug 2004 20:32:51 +0200
+
+capi4hylafax (1:01.02.03-1) unstable; urgency=low
+
+  * Apply fix for sending faxes with kernel 2.6 (closes: #267698).
+
+ -- Matthias Klose <doko@debian.org>  Tue, 24 Aug 2004 07:29:43 +0200
+
+capi4hylafax (1:01.02.02-2) unstable; urgency=high
+
+  * New maintainer.
+  * Change build dependency to libcapi20-3.
+  * Change the rc.d parameters to 25 (addresses: #134706).
+
+ -- Matthias Klose <doko@debian.org>  Mon,  9 Aug 2004 07:10:24 +0200
+
+capi4hylafax (1:01.02.02-1.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Rebuild against libtiff4 (closes: #262792).
+
+ -- Steve Langasek <vorlon@debian.org>  Mon,  2 Aug 2004 23:33:59 -0700
+
+capi4hylafax (1:01.02.02-1.1) unstable; urgency=low
+
+  * NMU.
+  * Change automake build dependency to: automake1.7 | automaken.
+  * Fix pollrcvd location in config.faxCAPI (closes: #211393).
+  * Add dependency on isdnactivecards (closes: #188588).
+  * Patch for sample_faxrcvd is applied (closes: #183402).
+  * Add /etc/default/capi4hylafax, read by the init script (closes: #173856).
+
+ -- Matthias Klose <doko@debian.org>  Sun, 28 Sep 2003 11:32:27 +0200
+
+capi4hylafax (1:01.02.02-1.0) unstable; urgency=low
+
+  * Setup supplementary groups when switching uid (closes: #211392).
+
+ -- Lionel Elie Mamane <lionel@mamane.lu>  Wed, 17 Sep 2003 15:39:07 +0200
+
+capi4hylafax (1:01.02.02-1) unstable; urgency=low
+
+  * New upstream release (Closes: #183402)
+  * Add build-depends automake, autoconf (Closes: #175999)
+  * Correct path for log/xfaxferlog (Closes: #179895)
+  * Correct URL in copyright (Closes: #173857)
+
+ -- Frank Jordan <fjordan@debian.org>  Wed, 12 Mar 2003 19:35:37 +0100
+
+capi4hylafax (1:01.02.00-2) unstable; urgency=low
+
+  * CVS sync (Closes: #142648, #147701, #154932, #155743, #166699)
+  * Recompiled with libcapi20-2 (Closes: #169331)
+
+ -- Frank Jordan <fjordan@debian.org>  Sun, 17 Nov 2002 20:34:16 +0100
+
+capi4hylafax (1:01.02.00-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Frank Jordan <fjordan@debian.org>  Wed,  3 Jul 2002 19:45:00 +0200
+
+capi4hylafax (01.02.00Beta02-3) unstable; urgency=low
+
+  * Fixed build problem on ia64 (Closes: #142648)
+  * Changed path to /var/spool/hylafax according to hylafax >= 4.1.1-1
+
+ -- Frank Jordan <fjordan@debian.org>  Tue, 16 Apr 2002 17:37:59 +0200
+
+capi4hylafax (01.02.00Beta02-2) unstable; urgency=low
+
+  * Sync up with CVS
+  * sample_faxrcvd: ps2pdf can't handle filenames with spaces
+
+ -- Frank Jordan <fjordan@debian.org>  Thu, 11 Apr 2002 16:29:27 +0200
+
+capi4hylafax (01.02.00Beta02-1) unstable; urgency=low
+
+  * Full source upload is better than patching in
+    an old source tree.
+
+ -- Frank Jordan <fjordan@debian.org>  Mon,  8 Apr 2002 21:31:50 +0200
+
+capi4hylafax (01.01.02-12) unstable; urgency=low
+
+  * Fix build problem on ppc (Closes: #134933)
+
+ -- Frank Jordan <fjordan@debian.org>  Mon,  8 Apr 2002 17:28:40 +0200
+
+capi4hylafax (01.01.02-11) unstable; urgency=low
+
+  * Sync up with CVS (01.02.00Beta02)
+  * Add configuration examples
+
+ -- Frank Jordan <fjordan@debian.org>  Sun,  7 Apr 2002 17:39:01 +0200
+
+capi4hylafax (01.01.02-10) unstable; urgency=low
+
+  * Add build-depends for libtiff3g-dev. Closes: #133931
+
+ -- Frank Jordan <fjordan@debian.org>  Thu, 14 Feb 2002 19:59:19 +0100
+
+capi4hylafax (01.01.02-9) unstable; urgency=low
+
+  * Fix outstanding bugs provided by Ben Collins
+  * Fix depends/build-deps to be more sane. Closes: #127804
+  * Fix spelling error in description. Closes: #124482
+
+ -- Frank Jordan <fjordan@debian.org>  Sun, 12 Feb 2002 08:49:16 +0100
+
+capi4hylafax (01.01.02-8) unstable; urgency=low
+
+  * Really fixed __WORDSIZE alpha build problem with workaround
+    provided by Paul Slootman (Closes: #112760)
+
+ -- Frank Jordan <fjordan@debian.org>  Wed, 19 Sep 2001 13:55:39 +0200
+
+capi4hylafax (01.01.02-7) unstable; urgency=low
+
+  * Fixed c2faxrecv.pid file creation and removal in init.d script
+  * Included verbose output in init.d script
+
+ -- Frank Jordan <fjordan@debian.org>  Fri, 24 Aug 2001 12:55:02 +0200
+
+capi4hylafax (01.01.02-6) unstable; urgency=low
+
+  * Fixed wrong path of c2faxrecv in restart | force-reload) of init.d script
+  * Fixed docu in README.Debian to add the correct command in
+    /etc/hylafax/config (FaxSendCmd must be SendFaxCmd)
+
+ -- Frank Jordan <fjordan@debian.org>  Wed, 22 Aug 2001 14:30:17 +0200
+
+capi4hylafax (01.01.02-5) unstable; urgency=low
+
+  * Fixed build problem on alpha by including limits.h
+    to declare __WORDSIZE (Closes: #81489)
+  * Rearanged runlevel start- and stop sequence (Closes: #108982)
+
+ -- Frank Jordan <fjordan@debian.org>  Tue, 21 Aug 2001 14:09:48 +0200
+
+capi4hylafax (01.01.02-4) unstable; urgency=low
+
+  * Fixed typos in init.d script
+
+ -- Frank Jordan <fjordan@debian.org>  Mon, 13 Aug 2001 20:52:58 +0200
+
+capi4hylafax (01.01.02-3) unstable; urgency=low
+
+  * Daemonized capi4hylafax
+    (it will not longer be started via inittab
+     since it has now its own init.d script)
+  * Switched back FaxReceiveUser to uucp since hylafax-server
+    runs also as uucp
+  * Updated standards 3.5.6
+  * Bugfixes from Norbert Warmuth <n.warmuth@tiscon.com>:
+  * c2faxsend: Detect errors after the data connection has been
+    established.
+  * c2faxsend: Count the number of actually transmitted pages
+    instead of the number of pages which have been prepared for
+    transmission (it's not accurate but better than it's used to be).
+    Note: This part of the patch isn't optimal and it might be possible
+    and much easier just to use the parameter NCPI in DoDisconnecting().
+    I hadn't yet time to verify this.
+  * src/capi/CapiMsg.cpp (CCAPI20_MsgBase::GetMessageComplete,
+    message CAPI_DATA_B3):  Don't cast the message parameters to
+    (cp_datab3conf *) - size doesn't fit.
+  * src/convert/sff2huf.cpp : Increase HUFF_SFF_ADD_TO_PUT_IN.
+    Expansion of empty lines sometimes corrupted the Hufman buffer.
+  * src/faxrecv/faxrecv.cpp (CFaxReceive::GetData): Check for full
+    queue after calling SffFilter.PutChar(). If you have problems
+    receiving empty or almost empty pages at 196 lpi this change and
+    the change in sff2huf.cpp is supposed to fix it.
+  * If tiff files are written: Record for every page the amount of
+    seconds needed to send the page instead of the amount of seconds
+    since the transmission started. faxinfo(1m) from HylaFAX expects
+    it this way.
+  * (CFaxReceive::IsDisconnected): Flush the log file to disk before
+    invoking FaxRcvdCmd.
+  * (CFaxReceive::IsConnected): Notify HylaFAX about status "BUSY".
+  * Improvements/New features (also from Norbert Warmuth):
+  * Add HylaFAX accounting to c2faxsend and c2faxrcvd. To enable
+    accounting you will need compiled HylaFAX sources (configure
+    option  --with-hylafax-srcdir). See xferfaxstats(1m) for
+    information about accounting. (not enabled!)
+  * c2faxrecv: Fill in "signalrate" und "dataformat" in the Job
+    file.
+  * config.faxCAPI: New option "PolledRetrievalEnabled". Determines
+    which polling capabilities c2facrev announces to the HylaFAX
+    queuer process (from looking at the sources I'm not sure whether
+    CAPI4HylaFAX supports polling of remote documents at all):
+    0: device is not capable of polling for remote documents
+    1: device is capable of polling for remote documents
+
+ -- Frank Jordan <fjordan@debian.org>  Wed,  13 Aug 2001 13:08:59 +0200
+
+capi4hylafax (01.01.02-2) unstable; urgency=low
+
+  * Fix hylafax overwrite problem (Closes: #87470)
+  * Add Recommends: hylafax-server
+
+ -- Frank Jordan <fjordan@debian.org>  Tue, 27 Feb 2001 12:06:12 +0100
+
+capi4hylafax (01.01.02-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Frank Jordan <fjordan@debian.org>  Fri, 16 Feb 2001 08:59:08 +0100
+
+capi4hylafax (01.01.01-3) unstable; urgency=low
+
+  * First upload to unstable, since the isdnutils are there also.
+
+ -- Frank Jordan <fjordan@debian.org>  Tue,  5 Dec 2000 20:17:26 +0100
+
+capi4hylafax (01.01.01-2) experimental; urgency=low
+
+  * Fixed Build-Depends and Depends to
+    isdnactivecards(<=1:3.1pre1b-3)|libcapi20
+
+ -- Frank Jordan <fjordan@debian.org>  Mon,  4 Dec 2000 19:03:23 +0100
+
+capi4hylafax (01.01.01-1) experimental; urgency=low
+
+  * Initial Release.
+  * As long as the isdnutils packages are located in experimental,
+    this should also go in experimental, because it depends on
+    isdnactivecards (which includes libcapi20).
+
+ -- Frank Jordan <fjordan@debian.org>  Wed, 02 Dec 2000 14:21:21 +0100
+
+

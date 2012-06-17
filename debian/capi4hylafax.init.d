@@ -1,0 +1,148 @@
+#! /bin/sh
+#
+# Start or stop c2faxrecv daemon
+#
+
+test -x /usr/bin/c2faxrecv || exit 0
+
+set -e
+
+# This function clones the /etc directory into the chroot() directory
+# Usually hylafax does that for us, but if it isn't running,
+# we have to do it ourselves, even if we don't run c2faxrecv (for c2faxsend)
+copy_slash_etc()
+{
+  local cfgfile
+  cfgfile="config.faxCAPI"
+  local src
+  src="/etc/hylafax/${cfgfile}"
+  local dstdir
+  dstdir="/var/spool/hylafax/etc"
+  local dst
+  dst="${dstdir}/${cfgfile}"
+
+  if ! [ -d "${dstdir}" ]; then
+      mkdir -p "${dstdir}" || true
+  fi
+
+  if [ -d "${dstdir}" ]; then
+      if ! [ "${src}" -ef "${dst}" ]; then
+	  cp -a "${src}" "${dstdir}"
+      fi
+  else
+      echo "Can't create directory ${dstdir}" 1>&2
+      exit 1
+  fi
+}
+
+copy_slash_etc
+
+run_capi4hylafax=0
+if [ -f /etc/default/capi4hylafax ]; then
+    . /etc/default/capi4hylafax
+fi
+
+if [ "${run_capi4hylafax}" = 0 ]; then
+    cat <<EOF
+
+Please edit the file /etc/hylafax/config.faxCAPI according to your needs.
+The current /etc/hylafax/config.faxCAPI is just the sample file that is
+provided with the upstream package, so it will not be useful at all for
+you. (Please read /usr/share/doc/capi4hylafax/README.Debian)
+
+After you are done you will have to edit /etc/default/capi4hylafax as
+well. There you will have to set the variable run_capi4hylafax to 1,
+and then type "/etc/init.d/capi4hylafax start" to start the c2faxrecv
+daemon.
+
+EOF
+	exit 0
+fi
+
+# Function used to determine if the program is alive
+status_code () {
+    ret=4
+    if [ -e "${C2FAXRECVPID}" ]; then
+	if [ -f "${C2FAXRECVPID}" ] && [ -r "${C2FAXRECVPID}" ] ; then
+	    ret=1
+	    pid=`cat "${C2FAXRECVPID}"`
+	    if [ -e /proc/$pid ] ; then
+		procname=`/bin/ps h -p $pid -C c2faxrecv`
+		[ -n "$procname" ] && ret=0
+	    fi
+	fi
+    else
+	ret=3
+    fi
+    return $ret
+}
+
+C2FAXRECVPID=/var/run/c2faxrecv.pid
+
+case "$1" in
+    start)
+	echo -n "Starting capi4hylafax: c2faxrecv"
+	start-stop-daemon --start --quiet --oknodo --background \
+	    --make-pidfile --pidfile $C2FAXRECVPID \
+	    --exec /usr/bin/c2faxrecv
+	echo "."
+	;;
+    stop)
+	echo -n "Stopping capi4hylafax: c2faxrecv"
+	start-stop-daemon --stop --quiet --oknodo --pidfile $C2FAXRECVPID
+	rm -f $C2FAXRECVPID
+	echo "."
+	;;
+    restart | force-reload)
+	echo -n "Restarting capi4hylafax: c2faxrecv"
+	start-stop-daemon --stop --quiet --oknodo --pidfile $C2FAXRECVPID
+	sleep 2
+	start-stop-daemon --start --quiet --oknodo --background \
+	    --make-pidfile --pidfile $C2FAXRECVPID \
+	    --exec /usr/bin/c2faxrecv
+	echo "."
+	;;
+    status)
+	echo -n "Status of capi4hylafax c2faxrecv daemon: "
+	set +e
+	status_code
+	sc="${?}"
+	set -e
+	case "${sc}" in
+	    0)
+		echo "alive."
+		;;
+	    1|3)
+		echo "dead."
+		;;
+	    4)
+		echo "unknown."
+		;;
+	esac
+	exit "${sc}"
+	;;
+    *)
+	echo "Usage: /etc/init.d/capi4hylafax {start|stop|restart|force-reload|status}"
+	exit 1
+esac
+exit 0
+
+# LSB information
+# Hylafax (that is hylafax, faxq, hfaxd) in "Should" and not
+# "Required" because capi4hylafax can also be used in stand-alone
+# mode; local admins should feel totally free to change this if they
+# run capi4hylafax in combination with HylaFax.
+# A similar remark applies to capiutils capiinit isdnutils
+# isdnactivecards: If your ISDN modem actually needs those, move them
+# to Required.
+### BEGIN INIT INFO
+# Provides:          capi4hylafax c2faxrecv
+# Required-Start:    $local_fs $remote_fs $syslog $time
+# Required-Stop:     $local_fs $remote_fs $syslog $time
+# Should-Start:      hylafax faxq hfaxd capiutils capiinit isdnutils isdnactivecards
+# Should-Stop:       hylafax faxq hfaxd capiutils capiinit isdnutils isdnactivecards
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Manage capi4hylafax daemon for fax reception
+# Description:       Manage capi4hylafax daemon for fax reception
+### END INIT INFO

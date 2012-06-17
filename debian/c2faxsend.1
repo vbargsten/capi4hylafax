@@ -1,0 +1,41 @@
+.TH C2FAXSEND "1" "" "c2faxsend" "User Commands"
+.SH NAME
+c2faxsend \- send fax using hylafax to ISDN using CAPI
+.SH SYNOPSIS
+.B c2faxsend
+[\fI-f format\fR] [\fI-C file\fR] [\fI-c param\fR] [\fI-m dev\fR]
+          [\fI-d number\fR] [\fI-P mailadr\fR] [\fI-v\fR] [\fI-V\fR] [\fIfile\fR...]
+.SH DESCRIPTION
+c2faxsend allows sending of faxes using hylafax to ISDN using the ISDN CAPI 2.0
+library.
+.SH OPTIONS
+.TP
+\fB\-f\fR <format>
+Specify the output format. Allowed types are HYLAFAX (default), TIFF, SFF, G3.
+.TP
+\fB\-C\fR <file>
+Name and path of the config file.
+.TP
+\fB\-c\fR <param>
+One Entry from the config-file of type: {value}:{data}.
+.TP
+\fB\-m\fR <dev>
+Virtual device name only needed for Hylafax. Default: faxCAPI.
+.TP
+\fB\-P\fR <mailaddr>
+Fax Polling. At the end pollrcvd with \fImailadr\fR is called.
+.TP
+\fB\-v\fR
+Start in verbose mode
+.TP
+\fB\-V\fR
+Show version information.
+.TP
+\fB\-h\fR
+Show a help text.
+.TP
+file(s)
+One or more files depending on the format(-f) switch: HYLAFAX (one qfile),
+SFF (one sff file), TIFF (one or more tiff file(s)).
+.SH SEE ALSO
+c2recv(1), capi4hylafaxconfig(8), hylafax(5). /usr/share/doc/capi4hylafax/README.html.

@@ -1,0 +1,21 @@
+Source: capi4hylafax
+Section: comm
+Priority: extra
+Maintainer: Lionel Elie Mamane <lmamane@debian.org>
+Standards-Version: 3.8.3
+Build-Depends: debhelper (>= 7), libcapi20-dev (>= 1:3.7.2005-07-09-2), libtiff4-dev (>= 3.7.3)
+
+Package: capi4hylafax
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, capiutils
+Recommends: hylafax-server (>= 1:4.2.0-7), isdnactivecards
+Suggests: dialog
+Conflicts: hylafax-server (<< 1:4.2.0-7)
+Description: Faxing over CAPI 2.0 device
+ If you have working capi20 interface, use this package to send and
+ receive fax over capi. It can be used as a "fax-modem" for a
+ hylafax-server or as stand alone version. Be sure you have a recent
+ kernel with capi4linux compiled in.
+ .
+ Please read /usr/share/doc/capi4hylafax/README.Debian to make things
+ working.

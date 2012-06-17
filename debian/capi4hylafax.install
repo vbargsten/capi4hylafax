@@ -1,0 +1,2 @@
+config.faxCAPI etc/hylafax
+debian/faxsend usr/sbin
