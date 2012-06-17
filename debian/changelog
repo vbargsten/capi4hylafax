@@ -6,6 +6,12 @@ capi4hylafax (1:01.03.00.99.svn.300-17) unstable; urgency=low
   * Fix configure.in to work with newer automake/autoconf.
   * Optimize some fprintf params (thanks to M. Muehlhoff).
   * Fix datatype issue: use __WORDSIZE for checking 64 bit arch.
+  * debian/control:
+    - Bump to Standards-Version 3.9.3.
+    - Move to build dependency debhelper (>= 8).
+    - Move to build dependency libtiff-dev.
+    - Remove old versions in dependencies.
+    - Remove old conflicts field.
 
  -- Joachim Wiedorn <ad_debian@joonet.de>  Wed, 13 Jun 2012 22:15:25 +0200
 
