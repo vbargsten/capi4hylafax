@@ -1,22 +1,16 @@
 #!/usr/bin/make -f
-# Sample debian/rules that uses debhelper.
+# debian/rules that uses debhelper.
 # This file is public domain software, originally written by Joey Hess.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
- CXXFLAGS += -O0
-else
- CXXFLAGS += -O3
-endif
-#The "nostrip" option of DEB_BUILD_OPTIONS is automatically implemented by dh_strip
+dpkg_buildflags = DEB_BUILD_MAINT_OPTIONS="hardening=+all" dpkg-buildflags
 
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
   NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
   MAKEFLAGS += -j$(NUMJOBS)
 endif
-
 
 export DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 export DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
@@ -30,10 +24,15 @@ endif
 pwd := $(shell pwd)
 pkg := $(shell dh_listpackages)
 
-build: build-stamp
+
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
 build-stamp:
 	dh_testdir
-	CXXFLAGS="$(CXXFLAGS)" ./configure $(confflags) --prefix=/usr --with-hylafax-spooldir=/var/spool/hylafax
+	./configure $(confflags) --prefix=/usr \
+	  --with-hylafax-spooldir=/var/spool/hylafax \
+	  $(shell $(dpkg_buildflags) --export=configure)
 	$(MAKE)
 	touch build-stamp
 

@@ -12,6 +12,8 @@ capi4hylafax (1:01.03.00.99.svn.300-17) unstable; urgency=low
     - Move to build dependency libtiff-dev.
     - Remove old versions in dependencies.
     - Remove old conflicts field.
+    - Add recommended targets build-arch and build-indep.
+    - Enable hardenend build flags. Closes: #653539
 
  -- Joachim Wiedorn <ad_debian@joonet.de>  Wed, 13 Jun 2012 22:15:25 +0200
 
