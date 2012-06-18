@@ -66,12 +66,8 @@ binary-arch: build install
 	dh_testroot
 	dh_installdirs
 #	dh_installdebconf
-	dh_installdocs README.html Readme_src LIESMICH.html AUTHORS
-	dh_installexamples \
-		sample_faxrcvd \
-		GenerateFileMail.pl \
-		sample_AVMC4_config.faxCAPI \
-		config.faxCAPI
+	dh_installdocs
+	dh_installexamples
 	dh_installlogrotate
 	dh_installinit --update-rcd-params="defaults 25 25"
 #	dh_installcron
