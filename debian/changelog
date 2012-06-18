@@ -1,4 +1,4 @@
-capi4hylafax (1:01.03.00.99.svn.300-17) unstable; urgency=low
+capi4hylafax (1:01.03.00.99.svn.300-17) unstable; urgency=medium
 
   * New maintainer (adopted).
   * Move to source formate 3.0 (quilt).
@@ -21,8 +21,9 @@ capi4hylafax (1:01.03.00.99.svn.300-17) unstable; urgency=low
   * Rename to filename capi4hylafax.init, move LSB INIT INFO to header
      and optimize dependencies in the header.
   * Fix small typo in manpage c2faxsend.1.
+  * Update all automake/autoconf files (autoreconf).
 
- -- Joachim Wiedorn <ad_debian@joonet.de>  Wed, 13 Jun 2012 22:15:25 +0200
+ -- Joachim Wiedorn <ad_debian@joonet.de>  Sun, 17 Jun 2012 16:36:13 +0200
 
 capi4hylafax (1:01.03.00.99.svn.300-16) unstable; urgency=low
 

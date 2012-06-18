@@ -5,3 +5,4 @@
 05_fix-fprintf-params.patch
 06_fix-platform-64-check.patch
 07_standard-log-directory.patch
+08_update-autoconf-files.patch
