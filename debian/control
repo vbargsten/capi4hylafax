@@ -5,6 +5,8 @@ Maintainer: Joachim Wiedorn <ad_debian@joonet.de>
 Standards-Version: 3.9.3
 Build-Depends: debhelper (>= 8),
  libcapi20-dev, libtiff-dev
+Vcs-Git: git://anonscm.debian.org/collab-maint/capi4hylafax.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/capi4hylafax.git
 
 Package: capi4hylafax
 Architecture: any
