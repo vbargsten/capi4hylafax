@@ -14,6 +14,8 @@ capi4hylafax (1:01.03.00.99.svn.300-17) unstable; urgency=low
     - Remove old conflicts field.
     - Add recommended targets build-arch and build-indep.
     - Enable hardenend build flags. Closes: #653539
+  * Update postrm, preinst, prerm scripts. Remove old version checks.
+  * Add udev rules file for creating /dev/faxCAPI symlink.
 
  -- Joachim Wiedorn <ad_debian@joonet.de>  Wed, 13 Jun 2012 22:15:25 +0200
 

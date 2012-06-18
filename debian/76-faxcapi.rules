@@ -1,0 +1,2 @@
+### symlink for package capi4hylafax
+KERNEL=="capi", NAME="capi20", SYMLINK+="faxCAPI"

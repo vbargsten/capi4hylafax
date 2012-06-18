@@ -1,4 +1,9 @@
-#! /bin/sh -e
+#!/bin/sh
+# preinst script for capi4hylafax
+#
+# see: dh_installdeb(1)
+
+set -e
 
 # summary of how this script can be called:
 #        * <new-preinst> `install'
@@ -9,38 +14,13 @@
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-divert () {
-    dpkg-divert --package capi4hylafax --add --rename \
-	--divert /usr/sbin/faxsend.hylafax /usr/sbin/faxsend
-}
-
 case "$1" in
-    install|upgrade)
-        if [ "$1" = "upgrade" ]; then
-
-	    # revert change done in -6
-	    if dpkg --compare-versions "$2" eq 1:01.02.03-6; then
-		fetc=/etc/hylafax/config.faxCAPI
-		fvar=/var/spool/hylafax/etc/config.faxCAPI
-		if [ -h $fetc ]; then
-		    rm -f $fetc
-		fi
-		if [ -f $fvar ] && [ ! -f $fetc ]; then
-		    echo "Moving capi4hylafax config file"
-		    echo "    $fvar --> $fetc"
-		    mv -f $fvar $fetc
-		fi
-	    fi
-	    # install
-	    if dpkg --compare-versions "$2" lt 1:01.02.03-13; then
-		divert
-	    fi
-	else # [ "$1" = "install" ]
-	    divert
-        fi
+    install)
+        dpkg-divert --package capi4hylafax --add --rename \
+	      --divert /usr/sbin/faxsend.hylafax /usr/sbin/faxsend
     ;;
 
-    abort-upgrade)
+    upgrade|abort-upgrade)
     ;;
 
     *)
