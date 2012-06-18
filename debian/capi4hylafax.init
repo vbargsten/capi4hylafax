@@ -1,7 +1,30 @@
 #! /bin/sh
 #
-# Start or stop c2faxrecv daemon
+# Start or stop c2faxrecv daemon.
+# It is driven by configuration file /etc/default/capi4hylafax.
 #
+# LSB information
+# Hylafax (that is hylafax, faxq, hfaxd) in "Should" and not
+# "Required" because capi4hylafax can also be used in stand-alone
+# mode; local admins should feel totally free to change this if they
+# run capi4hylafax in combination with HylaFax.
+# A similar remark applies to capiutils capiinit isdnutils
+# isdnactivecards: If your ISDN modem actually needs those, move them
+# to Required.
+#
+### BEGIN INIT INFO
+# Provides:          capi4hylafax c2faxrecv
+# Required-Start:    $local_fs $remote_fs $syslog capiutils
+# Required-Stop:     $local_fs $remote_fs $syslog capiutils
+# Should-Start:      isdnactivecards
+# Should-Stop:       isdnactivecards
+# X-Start-Before:    hylafax
+# X-Stop-After:      hylafax
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start or stop c2faxrecv daemon
+# Description:       Manage capi4hylafax daemon for fax reception
+### END INIT INFO
 
 test -x /usr/bin/c2faxrecv || exit 0
 
@@ -125,24 +148,5 @@ case "$1" in
 	echo "Usage: /etc/init.d/capi4hylafax {start|stop|restart|force-reload|status}"
 	exit 1
 esac
-exit 0
 
-# LSB information
-# Hylafax (that is hylafax, faxq, hfaxd) in "Should" and not
-# "Required" because capi4hylafax can also be used in stand-alone
-# mode; local admins should feel totally free to change this if they
-# run capi4hylafax in combination with HylaFax.
-# A similar remark applies to capiutils capiinit isdnutils
-# isdnactivecards: If your ISDN modem actually needs those, move them
-# to Required.
-### BEGIN INIT INFO
-# Provides:          capi4hylafax c2faxrecv
-# Required-Start:    $local_fs $remote_fs $syslog $time
-# Required-Stop:     $local_fs $remote_fs $syslog $time
-# Should-Start:      hylafax faxq hfaxd capiutils capiinit isdnutils isdnactivecards
-# Should-Stop:       hylafax faxq hfaxd capiutils capiinit isdnutils isdnactivecards
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: Manage capi4hylafax daemon for fax reception
-# Description:       Manage capi4hylafax daemon for fax reception
-### END INIT INFO
+exit 0

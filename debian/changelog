@@ -18,6 +18,8 @@ capi4hylafax (1:01.03.00.99.svn.300-17) unstable; urgency=low
   * Add udev rules file for creating /dev/faxCAPI symlink.
   * Move default logfile to /var/log/hylafax directory.
   * Add logrotate configuration for logfile. Closes: #647164
+  * Rename to filename capi4hylafax.init, move LSB INIT INFO to header
+     and optimize dependencies in the header.
   * Fix small typo in manpage c2faxsend.1.
 
  -- Joachim Wiedorn <ad_debian@joonet.de>  Wed, 13 Jun 2012 22:15:25 +0200
