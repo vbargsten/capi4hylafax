@@ -1,3 +1,4 @@
 debian/c2faxrecv.1
 debian/c2faxsend.1
 debian/capi4hylafaxconfig.1
+debian/faxsend.1

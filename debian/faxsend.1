@@ -1,0 +1,12 @@
+.TH FAXSEND "1" "" "faxsend" "User Commands"
+.SH NAME
+faxsend \- send fax using hylafax about modem or CAPI
+.SH SYNOPSIS
+.B faxsend
+.SH DESCRIPTION
+faxsend works as switch between the both ways: modem oder CAPI. If /dev/faxCAPI
+does exist it uses CAPI, otherwise it uses modem for sending a fax.
+.SH SEE ALSO
+/usr/share/doc/capi4hylafax/README.html.
+.TP
+c2recv(1), capi4hylafaxconfig(8), hylafax(5)

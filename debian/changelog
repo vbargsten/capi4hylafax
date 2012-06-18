@@ -25,6 +25,7 @@ capi4hylafax (1:01.03.00.99.svn.300-17) unstable; urgency=medium
   * Fix spelling errors in sources.
   * Add doc-base registration file with hints about documentation.
   * Rewrite copyright file (DEP-5 standard).
+  * Add small manpage for faxsend script.
 
  -- Joachim Wiedorn <ad_debian@joonet.de>  Sun, 17 Jun 2012 16:36:13 +0200
 
