@@ -1,3 +1,9 @@
+capi4hylafax (1:01.03.00.99.svn.300-18) unstable; urgency=low
+
+  * Only suggest package isdnactivecards. Closes: #682135, #691863.
+
+ -- Joachim Wiedorn <ad_debian@joonet.de>  Sat, 03 Nov 2012 22:03:33 +0100
+
 capi4hylafax (1:01.03.00.99.svn.300-17) unstable; urgency=medium
 
   * New maintainer (adopted).

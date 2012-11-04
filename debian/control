@@ -11,8 +11,8 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/capi4hylafax.git
 Package: capi4hylafax
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, capiutils
-Recommends: hylafax-server, isdnactivecards
-Suggests: dialog
+Recommends: hylafax-server
+Suggests: dialog, isdnactivecards
 Description: Faxing over CAPI 2.0 device
  If you have working capi20 interface, use this package to send and
  receive fax over capi. It can be used as a "fax-modem" for a
