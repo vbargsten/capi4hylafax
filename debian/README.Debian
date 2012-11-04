@@ -35,3 +35,20 @@ As root do the following:
    and edit it.
 
  -- Lionel Elie Mamane <lmamane@debian.org>, Wed, 19 Mar 2008 10:36:26 +0100
+
+
+Additional package isdnactivecards:
+
+   With version -18 the package 'isdnactivecards' were defined only as
+   suggested package because of Debian Policy 2.2.1. This package is in
+   section contrib because it needs/uses non-free firmwares.
+
+   You should install 'isdnactivecards' only if want to use one of the
+   following (older) active ISDN cards:
+                       - Eicon
+                       - Eicon Diva
+                       - IBM Active 2000
+                       - ICN
+                       - PCBIT-D
+
+ -- Joachim Wiedorn <ad_debian@joonet.de>  Sat, 03 Nov 2012 22:03:33 +0100
