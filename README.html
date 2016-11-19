@@ -341,7 +341,7 @@
         <LI>For fax reception, simply run &quot;c2faxrecv &amp;&quot;, for instance in a start scrpt, if it has not already been run in &quot;etc/inittab&quot;.</LI>
         <LI>&quot;Device&quot; Name: Because the applications are CAPI 2.0 applications based directly on CAPI, this entry is not actually necessary. However, the name of the device can be entered in the commando line, or is entered automatically by HylaFAX. This name is used only for signaling to HylaFAX and to determine the name of the configuration file: &quot;config.[Device Name]&quot;. Thus it is also possible to manage multiple &quot;c2faxrecv&quot; demons along with their configuration files. Another option is the "-C" switch.</LI>
         <LI>If problems occur after installation during fax transmission, HylaFAX probably did not yet process the modifications in the configuration file correctly. In this case, entering &quot;faxsetup&quot; or &quot;faxmodem faxCAPI&quot; manually with &quot;root&quot; or superuser rights can be used to implement the changes in HylaFAX.</LI>
-        <LI>For comprehensive logging, delete in canfig.faxCAPI the &quot;#&quot; preceding the &quot;LogTraceLevel:4&quot; entry. The log file is saved by default to &quot;/tmp/capifax.log&quot;.</LI>
+        <LI>For comprehensive logging, delete in canfig.faxCAPI the &quot;#&quot; preceding the &quot;LogTraceLevel:4&quot; entry. The log file is saved by default to &quot;/var/log/capifax.log&quot;.</LI>
       </UL>
 
      <P><A HREF="#Inhalt">Back to top</A></P>

@@ -428,7 +428,7 @@ void CFaxSend::IsConnected (cp_ncpi_all *pNCPI) {
     } else {
         #ifdef GENERATE_DEBUGSFFDATAFILE
             dassert (DebugSffDataFile == 0);
-            DebugSffDataFile = fopen ("/tmp/c2faxsend_dbgdatafile.sff", "w");
+            DebugSffDataFile = fopen ("/var/log/c2faxsend_dbgdatafile.sff", "w");
         #endif
         SendData();
     }

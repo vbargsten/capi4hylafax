@@ -213,7 +213,7 @@ void CFaxReceive::IsConnected (cp_ncpi_all *pNCPI) {
         #ifdef GENERATE_DEBUGSFFDATAFILE
             dwarning (DebugSffDataFile == 0);
             if (!DebugSffDataFile) {
-                DebugSffDataFile = fopen ("/tmp/c2faxrecv_dbgdatafile.sff", "w");
+                DebugSffDataFile = fopen ("/var/log/c2faxrecv_dbgdatafile.sff", "w");
             }
         #endif
         NotifyFIFO ('I');  // Comm id

@@ -95,9 +95,9 @@ FaxReceiveGroup:        dialout
 #
 # Information about the order of events in faxing are saved in the "LogFile".
 #
-# default   "/tmp/capifax.log"
+# default   "/var/log/capifax.log"
 #
-LogFile:                /tmp/capifax.log
+LogFile:                /var/log/capifax.log
 
 
 # Der Befehl "LogTraceLevel" gibt die Menge der Daten an, die in ein LogFile

@@ -39,7 +39,7 @@
 #define DEFAULT_FILE_MODE           0600
 #define DEFAULT_RECVPROG_NAME       "CapiFaxRecv"
 #define DEFAULT_SENDPROG_NAME       "CapiFaxSend"
-#define DEFAULT_C4H_LOGFILENAME     "/tmp/capifax.log"
+#define DEFAULT_C4H_LOGFILENAME     "/var/log/capifax.log"
 
 #define FILE_EXTENSION_TIFF         ".tif"
 #define FILE_EXTENSION_SFF          ".sff"

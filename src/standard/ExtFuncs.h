@@ -26,7 +26,7 @@
 
     #define USE_DEBUG_INFO_CLASS        2
     #define DEBUG_INDENT_WIDTH          0
-    //#define DEBUG_FILE_NAME             "/tmp/c2faxfcalls.log"
+    //#define DEBUG_FILE_NAME             "/var/log/c2faxfcalls.log"
 
 #else
 
