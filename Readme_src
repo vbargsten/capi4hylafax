@@ -1,0 +1,33 @@
+
+To get the latest sources from the official subversion server please enter:
+
+    svn co svn://capi4hylafax.in-berlin.de/capi4hylafax/trunk/capi4hylafax
+
+More information about subversion and the usage of the svn program can 
+be found under subversion.tigris.org.
+
+
+To compile and install the sources, enter the following commands:
+
+    ./configure
+    make
+    ./install
+
+If the Hylafax spool directory is located in another place than
+/var/spool/hylafax, you must specify the path as follows in order to compile
+and install the sources:
+
+    ./configure --with-hylafax-spooldir=DIR
+    make
+    ./install -h DIR
+
+More information about installation and configuration is located
+in the files README.html (English) or LIESMICH.html (German).
+
+
+For a debian distribution in src/defaults.h[.in] some of the defines must
+change to:
+    #define WRITE_FIFO_FILE             "dev/FIFO"
+    #define READ_FIFO_PREFIX            "dev/FIFO."
+    #define DEFAULT_FAX_USER            "root"
+

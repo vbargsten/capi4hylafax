@@ -1,0 +1,84 @@
+/*---------------------------------------------------------------------------*\
+ * Copyright (C) 2000 AVM GmbH. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, and WITHOUT
+ * ANY LIABILITY FOR ANY DAMAGES arising out of or in connection
+ * with the use or performance of this software. See the
+ * GNU General Public License for further details.
+\*---------------------------------------------------------------------------*/
+
+#ifndef _DEFAULTS_H_
+#define _DEFAULTS_H_
+
+/*===========================================================================*\
+\*===========================================================================*/
+
+#define WRITE_FIFO_FILE             "FIFO"
+#define READ_FIFO_PREFIX            "FIFO."
+#define HYLAFAX_CONFIG_PREFIX       "etc/config."
+#define HYLAFAX_RECV_DIR            "recvq/"
+#define HYLAFAX_POLL_DIR            "pollq/"
+#define HYLAFAX_LOG_DIR             "log/"
+#define HYLAFAX_STATUS_DIR          "status/"
+#define HYLAFAX_RECV_CMD            "bin/faxrcvd"
+#define HYLAFAX_POLL_CMD            "bin/pollrcvd"
+#define HYLAFAX_SEQF_FILE           "seqf"
+#define HYLAFAX_XFERLOG             "etc/xferfaxlog"
+
+#define DEFAULT_FAX_USER            "uucp"
+#define DEFAULT_DEVICE_NAME         "faxCAPI"
+#define DEFAULT_SPOOL_DIRECTORY     "@hylafaxspooldir@"
+#define DEFAULT_CONFIG_FILE         "/etc/config.faxCAPI"
+#define DEFAULT_FILE_MODE           0600
+#define DEFAULT_RECVPROG_NAME       "CapiFaxRecv"
+#define DEFAULT_SENDPROG_NAME       "CapiFaxSend"
+#define DEFAULT_C4H_LOGFILENAME     "/tmp/capifax.log"
+
+#define FILE_EXTENSION_TIFF         ".tif"
+#define FILE_EXTENSION_SFF          ".sff"
+#define FILE_EXTENSION_G3           ".g3"
+
+#define NAME_OF_SOFTWARE            "AVM CAPI 2.0 Fax Receiver, v.00.01.00"
+#define NAME_OF_MODEL               DEFAULT_RECVPROG_NAME
+
+#define MAX_STRING_SIZE             400
+#define MAX_TRY_COUNT               1000
+#define MAX_SEQ_NUMBER              9999999
+
+#define WAIT_TIME_IN_SEC            30
+
+/*---------------------------------------------------------------------------*\
+\*---------------------------------------------------------------------------*/
+
+enum FaxFormatType {
+    FaxFormat_Hylafax,
+    FaxFormat_TIFF,
+    FaxFormat_G3,
+    FaxFormat_SFF
+};
+
+#define FORMAT_STRING_HYLAFAX       "HYLAFAX"
+#define FORMAT_STRING_SFF           "SFF"
+#define FORMAT_STRING_TIFF          "TIFF"
+#define FORMAT_STRING_G3            "G3"
+
+/*---------------------------------------------------------------------------*\
+\*---------------------------------------------------------------------------*/
+
+#define LOG_TRACE_NONE              0
+#define LOG_TRACE_ERRORS            1
+#define LOG_TRACE_WARNINGS          2
+#define LOG_TRACE_INFOS             3
+#define LOG_TRACE_ALL               4
+
+/*===========================================================================*\
+\*===========================================================================*/
+
+#endif

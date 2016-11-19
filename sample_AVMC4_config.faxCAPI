@@ -1,0 +1,199 @@
+#
+#   sample of a config file for a AVM C4 or C2 ISDN controller
+#
+SpoolDir:               /var/spool/fax
+FaxRcvdCmd:             /var/spool/fax/bin/faxrcvd
+FaxReceiveUser:         uucp
+LogFile:
+LogTraceLevel:          0
+LogFileMode:            0600
+
+{
+    # Controller 1, B-Channel 1
+    HylafaxDeviceName:          faxCAPI11
+    RecvFileMode:               0600
+    FAXNumber:                  +49.00.00000
+    LocalIdentifier:            "AVM CAPI4HylaFAX"
+    MaxConcurrentRecvs:         1
+    OutgoingController:         1
+    OutgoingMSN:
+    SuppressMSN:                0
+    NumberPrefix:
+    UseISDNFaxService:          0
+    RingingDuration:            0
+    {
+        Controller:             1
+        AcceptSpeech:           0
+        UseDDI:                 0
+        DDIOffset:              "39976"
+        DDILength:              3
+        IncomingMSNs:
+        AcceptGlobalCall:       1
+    }
+}
+{
+    # Controller 1, B-Channel 2
+    HylafaxDeviceName:          faxCAPI12
+    RecvFileMode:               0600
+    FAXNumber:                  +49.00.00000
+    LocalIdentifier:            "AVM CAPI4HylaFAX"
+    MaxConcurrentRecvs:         1
+    OutgoingController:         1
+    OutgoingMSN:
+    SuppressMSN:                0
+    NumberPrefix:
+    UseISDNFaxService:          0
+    RingingDuration:            0
+    {
+        Controller:             1
+        AcceptSpeech:           0
+        UseDDI:                 0
+        DDIOffset:              "39976"
+        DDILength:              3
+        IncomingMSNs:
+        AcceptGlobalCall:       1
+    }
+}
+{
+    # Controller 2, B-Channel 1
+    HylafaxDeviceName:          faxCAPI21
+    RecvFileMode:               0600
+    FAXNumber:                  +49.00.00000
+    LocalIdentifier:            "AVM CAPI4HylaFAX"
+    MaxConcurrentRecvs:         1
+    OutgoingController:         2
+    OutgoingMSN:
+    SuppressMSN:                0
+    NumberPrefix:
+    UseISDNFaxService:          0
+    RingingDuration:            0
+    {
+        Controller:             2
+        AcceptSpeech:           0
+        UseDDI:                 0
+        DDIOffset:              "39976"
+        DDILength:              3
+        IncomingMSNs:
+        AcceptGlobalCall:       1
+    }
+}
+{
+    # Controller 2, B-Channel 2
+    HylafaxDeviceName:          faxCAPI22
+    RecvFileMode:               0600
+    FAXNumber:                  +49.00.00000
+    LocalIdentifier:            "AVM CAPI4HylaFAX"
+    MaxConcurrentRecvs:         1
+    OutgoingController:         2
+    OutgoingMSN:
+    SuppressMSN:                0
+    NumberPrefix:
+    UseISDNFaxService:          0
+    RingingDuration:            0
+    {
+        Controller:             2
+        AcceptSpeech:           0
+        UseDDI:                 0
+        DDIOffset:              "39976"
+        DDILength:              3
+        IncomingMSNs:
+        AcceptGlobalCall:       1
+    }
+}
+
+#
+# C2 User should delete the following part
+#
+
+{
+    # Controller 3, B-Channel 1
+    HylafaxDeviceName:          faxCAPI31
+    RecvFileMode:               0600
+    FAXNumber:                  +49.00.00000
+    LocalIdentifier:            "AVM CAPI4HylaFAX"
+    MaxConcurrentRecvs:         1
+    OutgoingController:         3
+    OutgoingMSN:
+    SuppressMSN:                0
+    NumberPrefix:
+    UseISDNFaxService:          0
+    RingingDuration:            0
+    {
+        Controller:             3
+        AcceptSpeech:           0
+        UseDDI:                 0
+        DDIOffset:              "39976"
+        DDILength:              3
+        IncomingMSNs:
+        AcceptGlobalCall:       1
+    }
+}
+{
+    # Controller 3, B-Channel 2
+    HylafaxDeviceName:          faxCAPI32
+    RecvFileMode:               0600
+    FAXNumber:                  +49.00.00000
+    LocalIdentifier:            "AVM CAPI4HylaFAX"
+    MaxConcurrentRecvs:         1
+    OutgoingController:         3
+    OutgoingMSN:
+    SuppressMSN:                0
+    NumberPrefix:
+    UseISDNFaxService:          0
+    RingingDuration:            0
+    {
+        Controller:             3
+        AcceptSpeech:           0
+        UseDDI:                 0
+        DDIOffset:              "39976"
+        DDILength:              3
+        IncomingMSNs:
+        AcceptGlobalCall:       1
+    }
+}
+{
+    # Controller 4, B-Channel 1
+    HylafaxDeviceName:          faxCAPI41
+    RecvFileMode:               0600
+    FAXNumber:                  +49.00.00000
+    LocalIdentifier:            "AVM CAPI4HylaFAX"
+    MaxConcurrentRecvs:         1
+    OutgoingController:         4
+    OutgoingMSN:
+    SuppressMSN:                0
+    NumberPrefix:
+    UseISDNFaxService:          0
+    RingingDuration:            0
+    {
+        Controller:             4
+        AcceptSpeech:           0
+        UseDDI:                 0
+        DDIOffset:              "39976"
+        DDILength:              3
+        IncomingMSNs:
+        AcceptGlobalCall:       1
+    }
+}
+{
+    # Controller 4, B-Channel 2
+    HylafaxDeviceName:          faxCAPI42
+    RecvFileMode:               0600
+    FAXNumber:                  +49.00.00000
+    LocalIdentifier:            "AVM CAPI4HylaFAX"
+    MaxConcurrentRecvs:         1
+    OutgoingController:         4
+    OutgoingMSN:
+    SuppressMSN:                0
+    NumberPrefix:
+    UseISDNFaxService:          0
+    RingingDuration:            0
+    {
+        Controller:             4
+        AcceptSpeech:           0
+        UseDDI:                 0
+        DDIOffset:              "39976"
+        DDILength:              3
+        IncomingMSNs:
+        AcceptGlobalCall:       1
+    }
+}

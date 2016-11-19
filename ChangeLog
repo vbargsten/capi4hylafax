@@ -1,0 +1,104 @@
+2005-08-18  Michael Rolf
+	* C4H now use a fixed named config file: /etc/config.faxCAPI
+	* This fixes a sending problem with the Hylafax workaround for multiple devices
+2005-08-11  Michael Rolf
+	* c2faxsend now supports multiple comma seperated q-files
+	* sff2huf filter now use the pageheaderlen from the sff and not a static value anymore
+	* switched from cvs to subversion / fix tiff which had text-attribute after the switch
+2005-08-04  Michael Rolf
+	* Now detect 64Bit and set needed defines for it
+	* Send correct feature list to Hylafax (Fix problem with Hylafax 4.2.1)
+	* c2faxrecv terminates more cleanly (incl. down info to Hylafax)
+	* New switch -L to activate logging a little easier
+	* Better checking (Correct TIFF and count of illegal lines in sff)
+	* c2faxrecv can now be terminated with faxquit
+	* fax option JBIG is now active
+	* tries counter in qfile now incremented by 1 
+	* some more little fixes
+2005-04-01  Michael Rolf
+	* Fix for handling an empty DDIOffset 
+2004-05-20  Michael Rolf
+	* 2.6er Fix: sem_wait is restarted after a timer signal
+2003-08-13  Michael Rolf
+	* MSNList is fixed for IncomingDDIs/MSNs.
+	* Partially Output of used configuration
+2003-07-14  Michael Rolf
+	* Simple support for Hylafax's tagline added
+2003-07-10  Michael Rolf
+	* Some fixes in and for the config file parser
+2003-07-09  Michael Rolf
+	* Fix: MaxConcurrentRecvs=0 works now
+	* Fix: High CPU usage with C2/C4 and DDI
+2003-07-08  Michael Rolf
+	* Fix check for illegal digits in telnumber. *, # and R are allowed again.
+	* qfile status changed during fax transfer (thanks to T.Jarosch)
+	* New config.faxCAPI options: FaxReceiveGroup (thanks to T.Jarosch), NumberPlusReplacer
+	* Update of the CAPI State Machine
+2003-03-10  Michael Rolf
+	* install doesn't change the faxrcvd file attributes anymore
+	* xferfaxlog fixes
+	* TelNumber in Hylafax mode can include word separator now
+2003-01-08  Michael Rolf
+	* Workaround for the AVM C4 that it does not cut off the end of faxes anymore.
+2002-12-10  Michael Rolf
+	* The ConnectResp-ConnectedPartyNumber is filled with the CalledPartyNumber digits. Important for some TelCos.
+2002-12-02  Michael Rolf
+	* c2faxsend filters the telephone number to remove invalid characters
+2002-11-28  Michael Rolf
+	* File Descriptor was not resetet after use so some threads could write in the same file
+	* c2faxsend forgot to call DisconnectB3Req in SFF Mode
+	* Changes to support 64Bit architectures (thanks to K.Keil)
+	* Some more va_list fixes (thanks to K.Keil)
+2002-11-01  Michael Rolf
+	* Changed to HTML Readmes
+2002-10-17  Michael Rolf
+	* "Global Call" incoming calls can now be accepted or rejected (thanks to K.Keil)
+2002-10-09  Michael Rolf
+	* va_list * and va_list in va_list are removed, because they work only on i386's
+	* all outputs in the DebugClasses are changed because of the va_list problem
+	* little updates of some classes in the standard directory
+2002-10-01  Michael Rolf
+	* faxrcvd is always called with 7 Parameters
+	  (6 Parameter from Hylafax >= 4.1.2 and the MSN/destination)
+	* install patches faxrcvd that it ignores to many parameters
+2002-08-28  Michael Rolf
+	* c2faxsend: DisconnectB3Req is called directly after the last DataB3Req
+	* c2faxrecv detects if a device is not configured for receiving faxes
+2002-08-23  Michael Rolf
+	* xferfaxlog support now included in C4H
+	* the hylafax sources are no longer needed to compile C4H
+2002-08-21  Michael Rolf
+	* Fix: Timer-Notification leads to segmentation fault
+	* ReceiveID is cleared if CallingPartyNumber is empty
+	* Every new entry in the logfile is fflushed
+2002-07-19  Michael Rolf
+	* changed filenames from absolute to relative ones, so hylafax
+	  returns the correct place in the fax receive mail
+2002-05-22  Michael Rolf
+	* scripts update for automake 1.5
+	* setting NDEBUG define moved from Makefile.am to configure.in
+2002-04-09  Michael Rolf
+	* recvmain: changing of gid fixed
+	* changed va_arg calls to support gcc 3.0
+	* sample_faxrcvd: ps2pdf can't handle filenames with spaces
+2002-03-25  Michael Rolf
+	* c2faxsend: fixed calculation of xferfaxlog's duration and conntime
+	* c2faxrecv: xferfaxlog's duration and conntime can be differ now
+2002-03-12  Michael Rolf
+	* detection improved: fax file missing, not all pages transmitted
+	* state machine fixes in c2faxrecv
+2002-03-06  Michael Rolf
+	* both numbers in a DDI ranges must have the same amount of digits
+	* some fixes for CAPI not active or removed
+2002-02-21  Michael Rolf
+	* new config-switch IncomingDDIs (like IncomingMSNs for DDI).
+	* IncomingDDIs support ranges (e.g. 100-300)
+	* moved Linux specific files to linuxdep
+2002-01-09  Michael Rolf
+	* removed unused readme's
+	* ChangeLog added to cvs
+	* binaries for install now under ./bin/
+2001-12-20  Michael Rolf
+	* ChangeLog generated
+	* update of capi state machine
+	* fax polling client
