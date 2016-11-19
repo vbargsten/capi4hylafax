@@ -348,7 +348,7 @@ tBool CTransferChannel::PutData (tUByte *Data, tUShort DataLength, void *hDataID
         //PutDataComplete (hDataID, i_QueueFull);
         RETURN ('x', vFalse);
     }
-    dassert (CapiHandle <= MAXVAL_tUShort);
+    // dassert (CapiHandle <= MAXVAL_tUShort); // check is pointless since range limited by datatype
     cm_datab3 DataParams (Data, DataLength, CapiHandle, 0);
     DataB3Req (&DataParams);
     RETURN ('x', vTrue);
