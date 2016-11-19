@@ -35,6 +35,37 @@
 #define iErr_Pack_NotAllowed        CalculateInfoValue (infoType_Packet, infoKind_Error, 1)
 #define iErr_Pack_LenToSmall        CalculateInfoValue (infoType_Packet, infoKind_Error, 2)
 
+/*---------------------------------------------------------------------------*\
+\*---------------------------------------------------------------------------*/
+
+union tHUnion {
+    void   *p;
+    tChar  *c;
+    tHandle h;
+    tUByte  b;
+    tUInt32 u;
+    tSInt32 s;
+    tUInt16 u16;
+    tSInt16 s16;
+#ifdef C_PLATFORM_64
+    tUInt64 u64;
+    tSInt64 s64;
+
+    tHUnion (tUInt64 v) { u64 = v; }
+    tHUnion (tSInt64 v) { s64 = v; }
+#endif
+    tHUnion (void)      { p   = (void *)0; }
+    tHUnion (void   *v) { p   = v; }
+    tHUnion (tChar  *v) { c   = v; }
+    tHUnion (tHandle v) { h   = v; }
+    tHUnion (tUByte  v) { b   = v; }
+    tHUnion (tUInt32 v) { u   = v; }
+    tHUnion (tSInt32 v) { s   = v; }
+    tHUnion (tUInt16 v) { u16 = v; }
+    tHUnion (tSInt16 v) { s16 = v; }
+};
+
+
 /*===========================================================================*\
 \*===========================================================================*/
 
@@ -42,7 +73,7 @@ class CBasicDataPacketQueue {
 public:
     virtual ~CBasicDataPacketQueue (void) {}
     virtual class CDataPacket *RecvPacket (void) = 0;
-    virtual void ReturnPacket (class CDataPacket *pPacket) = 0;
+    virtual void ReturnPacket (class CDataPacket *pPacket, tSInfo info) = 0;
 };
 
 
@@ -56,59 +87,61 @@ public:
 
     // Pointer
     tUByte *GetPointer (void);
-    tUByte *GetPointer (tUInt offset);
+    tUByte *GetPointer (tSize offset);
     tUByte *GetPosPointer (void);
     tUByte *GetLenPointer (void);
 
     // Length
-    tUInt GetLen (void);
-    tUInt GetFreeLen (void);
-    tUInt GetMaxLen (void);
-    void  SetLen (tUInt len);
+    tSize GetLen (void);
+    tSize GetFreeLen (void);
+    tSize GetMaxLen (void);
+    void  SetLen (tSize len);
     void  SetLenToMax (void);
-    void  AddLen (tUInt len);
-    void  SubLen (tUInt len);
+    void  AddLen (tOffset len);
+    void  SubLen (tOffset len);
+    void  IncLen (void);
+    void  DecLen (void);
     tBool LenIsMax (void);
     tBool IsEmpty (void);
 
     // Position
-    tUInt GetPos (void);
-    tUInt DiffPosToLen (void);
-    tUInt DiffPosToMaxLen (void);
-    tBool SetPos (tUInt pos);
+    tSize GetPos (void);
+    tSize DiffPosToLen (void);
+    tSize DiffPosToMaxLen (void);
+    tBool SetPos (tSize pos);
     void  SetPosToLen (void);
-    tBool AddPos (tUInt pos);
+    tBool AddPos (tSize pos);
     tBool PosIsLen (void);
     tBool PosIsMax (void);
 
     // Handle
-    void *GetHandle (tUInt number = 0); // number < DATA_PACKET_HANDLE_COUNT
-    void SetHandle (void *handle, tUInt number = 0); // number < DATA_PACKET_HANDLE_COUNT
+    tHUnion GetHandle (tUInt number = 0); // number < DATA_PACKET_HANDLE_COUNT
+    void SetHandle (tHUnion handle, tUInt number = 0); // number < DATA_PACKET_HANDLE_COUNT
 
     // Queue
     CDataPacket *GetNextPacket (void);
     void SetNextPacket (CDataPacket *pPacket);
-    void ReturnPacket (void);
+    void ReturnPacket (tSInfo info = i_Okay);
     void SetPacketQueue (CBasicDataPacketQueue *pQueue);
 
     // Copy
     tSInfo Copy (CDataPacket *pPacket); // return: i_Okay, iWrn_Pack_DestFull, iWrn_Pack_BothFull
 
     // Resize
-    virtual tSInfo Resize (tUInt NewMaxLen);
+    virtual tSInfo Resize (tSize NewMaxLen);
 
 protected:
     void SetPointer (tUByte *DataPointer);
-    void SetMaxLen (tUInt MaxLen);
+    void SetMaxLen (tSize MaxLen);
 
 private:
     CBasicDataPacketQueue *m_pQueue;
     CDataPacket           *m_pNext;
     tUByte                *m_Pointer;
-    tUInt                  m_MaxLen;
-    tUInt                  m_Len;
-    tUInt                  m_Pos;
-    void                  *m_Handle[DATA_PACKET_HANDLE_COUNT];
+    tSize                  m_MaxLen;
+    tSize                  m_Len;
+    tSize                  m_Pos;
+    tHUnion                m_Handle[DATA_PACKET_HANDLE_COUNT];
 };
 
 
@@ -118,22 +151,22 @@ private:
 class CDataPacketStore : public CDataPacket {
 public:
     CDataPacketStore (void) {}
-    CDataPacketStore (tUInt MaxLen);
+    CDataPacketStore (tSize MaxLen);
     ~CDataPacketStore (void);
 
-    tSInfo Resize (tUInt NewMaxLen);
+    tSInfo Resize (tSize NewMaxLen);
 };
 
 class CDataPacketReference : public CDataPacket {
 public:
     CDataPacketReference (void) {}
-    CDataPacketReference (tUByte *pPointer, tUInt MaxLen, tUInt Len = 0, void *FirstHandle = 0);
+    CDataPacketReference (tUByte *pPointer, tSize MaxLen, tSize Len = 0, tHUnion FirstHandle = 0);
 
-    void InitToMax (tUByte *pPointer, tUInt Len);
-    void InitToMax (tUByte *pPointer, tUInt Len, void *FirstHandle);
-    void InitAll (tUByte *pPointer, tUInt MaxLen, tUInt Len = 0);
-    void InitAll (tUByte *pPointer, tUInt MaxLen, void *FirstHandle);
-    void InitAll (tUByte *pPointer, tUInt MaxLen, tUInt Len, void *FirstHandle);
+    void InitToMax (tUByte *pPointer, tSize Len);
+    void InitToMax (tUByte *pPointer, tSize Len, tHUnion FirstHandle);
+    void InitAll (tUByte *pPointer, tSize MaxLen, tSize Len = 0);
+    void InitAll (tUByte *pPointer, tSize MaxLen, tHUnion FirstHandle);
+    void InitAll (tUByte *pPointer, tSize MaxLen, tSize Len, tHUnion FirstHandle);
 };
 
 
@@ -149,14 +182,14 @@ inline CDataPacket::CDataPacket (void)
     m_Len     (0),
     m_Pos     (0) {
 
-    s_memzero (m_Handle, DATA_PACKET_HANDLE_COUNT * sizeof (void *));
+    s_memzero (m_Handle, DATA_PACKET_HANDLE_COUNT * sizeof (tHUnion));
 }
 
 inline tUByte *CDataPacket::GetPointer (void) {
     return m_Pointer;
 }
 
-inline tUByte *CDataPacket::GetPointer (tUInt offset) {
+inline tUByte *CDataPacket::GetPointer (tSize offset) {
     return m_Pointer + offset;
 }
 
@@ -171,19 +204,19 @@ inline tUByte *CDataPacket::GetLenPointer (void) {
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-inline tUInt CDataPacket::GetLen (void) {
+inline tSize CDataPacket::GetLen (void) {
     return m_Len;
 }
 
-inline tUInt CDataPacket::GetFreeLen (void) {
+inline tSize CDataPacket::GetFreeLen (void) {
     return m_MaxLen - m_Len;
 }
 
-inline tUInt CDataPacket::GetMaxLen (void) {
+inline tSize CDataPacket::GetMaxLen (void) {
     return m_MaxLen;
 }
 
-inline void CDataPacket::SetLen (tUInt len) {
+inline void CDataPacket::SetLen (tSize len) {
     // assert (len <= MaxLen);
     m_Len = len;
     if (m_Pos > len) {
@@ -195,17 +228,27 @@ inline void CDataPacket::SetLenToMax (void) {
     m_Len = m_MaxLen;
 }
 
-inline void CDataPacket::AddLen (tUInt len) {
+inline void CDataPacket::AddLen (tOffset len) {
     // assert (len + m_Len <= MaxLen);
     m_Len += len;
 }
 
-inline void CDataPacket::SubLen (tUInt len) {
+inline void CDataPacket::SubLen (tOffset len) {
     // assert (m_Len >= len);
     m_Len -= len;
     if (m_Pos > m_Len) {
         SetPosToLen();
     }
+}
+
+inline void CDataPacket::IncLen (void) {
+    // assert (m_Len + 1<= MaxLen);
+    m_Len++;
+}
+
+inline void CDataPacket::DecLen (void) {
+    // assert (m_Len > 0);
+    m_Len--;
 }
 
 inline tBool CDataPacket::LenIsMax (void) {
@@ -219,19 +262,19 @@ inline tBool CDataPacket::IsEmpty (void) {
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-inline tUInt CDataPacket::GetPos (void) {
+inline tSize CDataPacket::GetPos (void) {
     return m_Pos;
 }
 
-inline tUInt CDataPacket::DiffPosToLen (void) {
+inline tSize CDataPacket::DiffPosToLen (void) {
     return m_Len - m_Pos;
 }
 
-inline tUInt CDataPacket::DiffPosToMaxLen (void) {
+inline tSize CDataPacket::DiffPosToMaxLen (void) {
     return m_MaxLen - m_Pos;
 }
 
-inline tBool CDataPacket::SetPos (tUInt pos) {
+inline tBool CDataPacket::SetPos (tSize pos) {
     if (pos < m_Len) {
         m_Pos = pos;
         return vTrue;
@@ -244,7 +287,7 @@ inline void CDataPacket::SetPosToLen (void) {
     m_Pos = m_Len;
 }
 
-inline tBool CDataPacket::AddPos (tUInt pos) {
+inline tBool CDataPacket::AddPos (tSize pos) {
     m_Pos += pos;
     if (m_Pos <= m_Len) {
         return vTrue;
@@ -264,11 +307,11 @@ inline tBool CDataPacket::PosIsMax (void) {
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-inline void *CDataPacket::GetHandle (tUInt number) {
+inline tHUnion CDataPacket::GetHandle (tUInt number) {
     return m_Handle[number];
 }
 
-inline void CDataPacket::SetHandle (void *handle, tUInt number) {
+inline void CDataPacket::SetHandle (tHUnion handle, tUInt number) {
     m_Handle[number] = handle;
 }
 
@@ -280,9 +323,9 @@ inline void CDataPacket::SetNextPacket (CDataPacket *pPacket) {
     m_pNext = pPacket;
 }
 
-inline void CDataPacket::ReturnPacket (void) {
+inline void CDataPacket::ReturnPacket (tSInfo info) {
     // assert (m_pQueue != 0);
-    m_pQueue->ReturnPacket (this);
+    m_pQueue->ReturnPacket (this, info);
 }
 
 inline void CDataPacket::SetPacketQueue (CBasicDataPacketQueue *pQueue) {
@@ -291,8 +334,8 @@ inline void CDataPacket::SetPacketQueue (CBasicDataPacketQueue *pQueue) {
 
 inline tSInfo CDataPacket::Copy (CDataPacket *pPacket) {
     // assert (pPacket != 0);
-    tUInt l1 = GetFreeLen();
-    tUInt l2 = pPacket->DiffPosToLen();
+    tSize l1 = GetFreeLen();
+    tSize l2 = pPacket->DiffPosToLen();
     tSInfo fret;
     switch (a_compare (l1, l2)) {
     default:
@@ -315,7 +358,7 @@ inline tSInfo CDataPacket::Copy (CDataPacket *pPacket) {
     return fret;
 }
 
-inline tSInfo CDataPacket::Resize (tUInt) {
+inline tSInfo CDataPacket::Resize (tSize) {
     return iErr_Pack_NotAllowed;
 }
 
@@ -323,7 +366,7 @@ inline void CDataPacket::SetPointer (tUByte *DataPointer) {
     m_Pointer = DataPointer;
 }
 
-inline void CDataPacket::SetMaxLen (tUInt MaxLen) {
+inline void CDataPacket::SetMaxLen (tSize MaxLen) {
     m_MaxLen = MaxLen;
     if (m_Len > MaxLen) {
         SetLen (MaxLen);
@@ -335,7 +378,7 @@ inline void CDataPacket::SetMaxLen (tUInt MaxLen) {
     Other CDataPacket Classes
 \*===========================================================================*/
 
-inline CDataPacketStore::CDataPacketStore (tUInt MaxLen) {
+inline CDataPacketStore::CDataPacketStore (tSize MaxLen) {
     // dassert (MaxLen > 0);
     tUByte *Buffer = new tUByte [MaxLen];
     if (Buffer) {
@@ -350,7 +393,7 @@ inline CDataPacketStore::~CDataPacketStore (void) {
     delete [] Buffer;
 }
 
-inline tSInfo CDataPacketStore::Resize (tUInt NewMaxLen) {
+inline tSInfo CDataPacketStore::Resize (tSize NewMaxLen) {
     if (NewMaxLen < GetLen()) {
         return iErr_Pack_LenToSmall;
     }
@@ -370,28 +413,28 @@ inline tSInfo CDataPacketStore::Resize (tUInt NewMaxLen) {
     return i_Okay;
 }
 
-inline CDataPacketReference::CDataPacketReference (tUByte *pPointer, tUInt MaxLen, tUInt Len, void *FirstHandle) {
+inline CDataPacketReference::CDataPacketReference (tUByte *pPointer, tSize MaxLen, tSize Len, tHUnion FirstHandle) {
     // dassert (DATA_PACKET_HANDLE_COUNT >= 1);
     InitAll (pPointer, MaxLen, Len, FirstHandle);
 }
 
-inline void CDataPacketReference::InitToMax (tUByte *pPointer, tUInt Len) {
+inline void CDataPacketReference::InitToMax (tUByte *pPointer, tSize Len) {
     InitAll (pPointer, Len, Len);
 }
 
-inline void CDataPacketReference::InitToMax (tUByte *pPointer, tUInt Len, void *FirstHandle) {
+inline void CDataPacketReference::InitToMax (tUByte *pPointer, tSize Len, tHUnion FirstHandle) {
     // dassert (DATA_PACKET_HANDLE_COUNT >= 1);
     InitAll (pPointer, Len, Len, FirstHandle);
 }
 
-inline void CDataPacketReference::InitAll (tUByte *pPointer, tUInt MaxLen, tUInt Len) {
+inline void CDataPacketReference::InitAll (tUByte *pPointer, tSize MaxLen, tSize Len) {
     SetPointer (pPointer);
     SetMaxLen (MaxLen);
     SetPos (0);
     SetLen (Len);
 }
 
-inline void CDataPacketReference::InitAll (tUByte *pPointer, tUInt MaxLen, void *FirstHandle) {
+inline void CDataPacketReference::InitAll (tUByte *pPointer, tSize MaxLen, tHUnion FirstHandle) {
     // dassert (DATA_PACKET_HANDLE_COUNT >= 1);
     SetPointer (pPointer);
     SetMaxLen (MaxLen);
@@ -400,7 +443,7 @@ inline void CDataPacketReference::InitAll (tUByte *pPointer, tUInt MaxLen, void 
     SetHandle (FirstHandle);
 }
 
-inline void CDataPacketReference::InitAll (tUByte *pPointer, tUInt MaxLen, tUInt Len, void *FirstHandle) {
+inline void CDataPacketReference::InitAll (tUByte *pPointer, tSize MaxLen, tSize Len, tHUnion FirstHandle) {
     // dassert (DATA_PACKET_HANDLE_COUNT >= 1);
     SetPointer (pPointer);
     SetMaxLen (MaxLen);

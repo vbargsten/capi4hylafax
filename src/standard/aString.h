@@ -23,6 +23,10 @@
 #include "aStdLib.h"
 #include <string.h>
 
+#ifndef ASTRING_DONT_USE_WCHAR
+#include <wchar.h>
+#endif
+
 #ifdef __linux__
 
 #define _strnicmp       strncasecmp
@@ -203,9 +207,11 @@ inline tSize s_strlen (const tChar *string) {
     return strlen ((const char *)string);
 }
 
+#ifndef ASTRING_DONT_USE_WCHAR
 inline tSize s_strlen (const tWiChar *string) {
     return wcslen (string);
 }
+#endif
 
 inline tSize s_strlen (const char *string) {
     return strlen (string);
@@ -255,9 +261,11 @@ inline void s_strcpy (tWiChar *dest, const tChar *src) {
     *dest = '\0';
 }
 
+#ifndef ASTRING_DONT_USE_WCHAR
 inline void s_strcpy (tWiChar *dest, const tWiChar *src) {
     wcscpy (dest, src);
 }
+#endif
 
 inline void s_strcpy (tWiChar *dest, const char *src) {
     s_strcpy (dest, (tChar *)src);
@@ -410,9 +418,11 @@ inline tChar *s_findfirstchar (tChar chSearch, tChar *string) {
     return (tChar *)strchr ((char *)string, chSearch);
 }
 
+#ifndef ASTRING_DONT_USE_WCHAR
 inline tWiChar *s_findfirstchar (tWiChar chSearch, tWiChar *string) {
     return wcschr (string, chSearch);
 }
+#endif
 
 inline tChar *s_findfirstchar (tChar chSearch, tChar *string, tSize len) {
     for (; len > 0; len--, string++) {
@@ -440,19 +450,9 @@ inline tCompare s_strcmp (const tChar *str1, const tChar *str2) {
     return (tCompare)a_getsign (strcmp ((const char *)str1, (const char *)str2));
 }
 
-inline tCompare s_strcmp (const tWiChar *str1, const tWiChar *str2) {
-    // assert (tCompare == tSign)!
-    return (tCompare)a_getsign (wcscmp (str1, str2));
-}
-
 inline tCompare s_strncmp (const tChar *str1, const tChar *str2, tSize len) {
     // assert (tCompare == tSign)!
     return (tCompare)a_getsign (strncmp ((const char *)str1, (const char *)str2, len));
-}
-
-inline tCompare s_strncmp (const tWiChar *str1, const tWiChar *str2, tSize len) {
-    // assert (tCompare == tSign)!
-    return (tCompare)a_getsign (wcsncmp (str1, str2, len));
 }
 
 inline tCompare s_strnicmp (const tChar *str1, const tChar *str2, tSize len) {
@@ -460,10 +460,22 @@ inline tCompare s_strnicmp (const tChar *str1, const tChar *str2, tSize len) {
     return (tCompare)a_getsign (_strnicmp ((const char *)str1, (const char *)str2, len));
 }
 
+#ifndef ASTRING_DONT_USE_WCHAR
+inline tCompare s_strcmp (const tWiChar *str1, const tWiChar *str2) {
+    // assert (tCompare == tSign)!
+    return (tCompare)a_getsign (wcscmp (str1, str2));
+}
+
+inline tCompare s_strncmp (const tWiChar *str1, const tWiChar *str2, tSize len) {
+    // assert (tCompare == tSign)!
+    return (tCompare)a_getsign (wcsncmp (str1, str2, len));
+}
+
 inline tCompare s_strnicmp (const tWiChar *str1, const tWiChar *str2, tSize len) {
     // assert (tCompare == tSign)!
     return (tCompare)a_getsign (_wcsnicmp (str1, str2, len));
 }
+#endif
 
 inline tCompare s_memcmp (const tUByte *mem1, const tUByte *mem2, tSize len) {
     // assert (tCompare == tSign)!

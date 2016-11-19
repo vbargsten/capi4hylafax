@@ -138,7 +138,7 @@ static void WriteQFile (tChar *QFileName, tUInt commID, tUInt HylafaxExitState, 
         } else if (strcasecmp ("npages", text) == 0) {
             dprint ("found npages ");
             sprintf (ne + 1, "%u\n", fs->GetPageCount());
-        } else if ((dialortry == 1) && ((strcasecmp ("ndials", text) == 0) || (strcasecmp ("totdials", text) == 0))) {
+        } else if (((dialortry == 1) || (dialortry == 2)) && ((strcasecmp ("ndials", text) == 0) || (strcasecmp ("totdials", text) == 0))) {
             dprint ("found _dials ");
             triescount = atol (ne + 1) + 1;
             if (triescount <= 0) {
@@ -175,7 +175,7 @@ static void WriteQFile (tChar *QFileName, tUInt commID, tUInt HylafaxExitState, 
     ftruncate (fileno (qf), 0);
     while (textQ.Get (&ne) == vTrue) {
         dassert (ne != 0);
-        fprintf (qf, ne);
+        fprintf (qf, "%s", ne);
         delete [] ne;
     }
     fclose (qf);
@@ -381,7 +381,7 @@ static void usage (char *prgName) {
     printf ("\t-v       Start in verbose mode\n");
     printf ("\t-V       Show version information\n");
     printf ("\tfile(s): Depending on the format(-f) switch.\n");
-    printf ("\t         HYLAFAX: one         qfile\n");
+    printf ("\t         HYLAFAX: one or more qfile(s)\n");
     printf ("\t         SFF:     one         sff file\n");
     printf ("\t         TIFF:    one or more tiff file(s)\n");
 }

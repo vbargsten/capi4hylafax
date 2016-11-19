@@ -41,7 +41,7 @@
     internal functions for "vsnprintf" !
 \*===========================================================================*/
 
-tUInt ltoanX (tSInt64 value, char *string, tSize maxlen, tSByte radix, tUInt width, tUInt flags) {
+tUInt ltoanX (tSInt64 value, char *string, tUInt maxlen, tSByte radix, tUInt width, tUInt flags) {
     static tUChar DigitForStrings[16] =  {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
         'a', 'b', 'c', 'd', 'e', 'f'
@@ -49,8 +49,8 @@ tUInt ltoanX (tSInt64 value, char *string, tSize maxlen, tSByte radix, tUInt wid
     tUInt64 uvalue;
     tUChar  prechar[3];
     tUChar  buffer[sizeof (tSInt64) * 8];
-    tSize   precharlen = 0;
-    tSize   bufpos     = sizeof (buffer) - 1;
+    tUInt   precharlen = 0;
+    tUInt   bufpos     = sizeof (buffer) - 1;
 
     // ASSERT (string != 0);
     // ASSERT ((radix <= 16) && (radix >= -16) && (radix != 0) && (radix != 1) && (radix != -1));
@@ -225,7 +225,7 @@ tSInt a_vsnprintf_tab (char *buffer, tUInt maxcount, const char *format, va_list
                 PrtFlags |= PRINTFLAGS_READY;
                 break;
             case 't':
-                tabsize = PrtWidth;
+                tabsize = (tUByte)PrtWidth;
                 tabchar = (char)va_arg (argptr, int);
 
                 PrtWidth = 0;

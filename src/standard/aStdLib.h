@@ -30,11 +30,14 @@ tUInt a_min (tUInt a, tUInt b);
 /*===========================================================================*\
 \*===========================================================================*/
 
-tSign a_getsign (tSInt value);
+tSign a_getsign (tSInt32 value);
+tSign a_getsign (tSInt64 value);
 
-tCompare a_compare (tUInt value1, tUInt value2);
+tCompare a_compare (tUInt32 value1, tUInt32 value2);
+tCompare a_compare (tUInt64 value1, tUInt64 value2);
 
-tUByte a_count1bits (tUInt value);
+tUByte a_count1bits (tUInt32 value);
+tUByte a_count1bits (tUInt64 value);
 
 /*===========================================================================*\
 \*===========================================================================*/
@@ -60,6 +63,11 @@ tUInt a_pointer2string (void *pointer, char *string);
 tUInt a_pointer2string (void *pointer, tChar *string);
 tUInt a_pointer2string (void *pointer, tWiChar *string);
 
+/*===========================================================================*\
+\*===========================================================================*/
+
+tBool a_hex2bin (class CConstString *pHexString, class CDataPacket *pBinPacket); // vFalse => pBinPacket to small and Resize failed
+
 
 /*===========================================================================*\
     inline functions
@@ -73,11 +81,19 @@ inline tUInt a_min (tUInt a, tUInt b) {
     return (a < b) ? a : b;
 }
 
-inline tSign a_getsign (tSInt value) {
+inline tSign a_getsign (tSInt32 value) {
     return (!value) ? vZero : (value > 0) ? vPlus : vMinus;
 }
 
-inline tCompare a_compare (tUInt value1, tUInt value2) {
+inline tSign a_getsign (tSInt64 value) {
+    return (!value) ? vZero : (value > 0) ? vPlus : vMinus;
+}
+
+inline tCompare a_compare (tUInt32 value1, tUInt32 value2) {
+    return (value1 == value2) ? vEqual : (value1 > value2) ? vHigher : vLower;
+}
+
+inline tCompare a_compare (tUInt64 value1, tUInt64 value2) {
     return (value1 == value2) ? vEqual : (value1 > value2) ? vHigher : vLower;
 }
 

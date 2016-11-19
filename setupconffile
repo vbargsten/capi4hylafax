@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #   default values
 #
@@ -20,7 +20,7 @@ DDISamples="$DDISamples\nSample for DDI Offset   : 11223344"
 DDISamples="$DDISamples\nSample for DDI Length   : 3"
 DDISamples="$DDISamples\nSample for Incoming DDIs: 10, 100-300"
 
-ConfigFileName="/etc/config.faxCAPI"
+ConfigFileName="/etc/hylafax/config.faxCAPI"
 if [ ! -e $ConfigFileName ] ; then
     echo "setupconffile: Can't find CAPI4HylaFax config file ($ConfigFileName) !"
     return 1
@@ -333,3 +333,4 @@ done
 rem_res
 return 0
 }
+main_config_dialog

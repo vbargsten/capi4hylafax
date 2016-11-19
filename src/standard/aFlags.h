@@ -24,48 +24,92 @@
 /*===========================================================================*\
 \*===========================================================================*/
 
-inline tUInt FlagToBits (tUByte Flag) {
-    return (1 << Flag);
+inline tUInt32 FlagToBits32 (tUByte Flag) {
+    return (((tUInt32)1) << Flag);
 }
 
+inline tUInt64 FlagToBits64 (tUByte Flag) {
+    #ifdef USE_64TO32BIT_DIVISION
+        if (Flag >= 32) {
+            tUInt64 value = 0;
+            *(((tUInt32 *)&value) + 1) = FlagToBits32 (Flag - 32);
+            return value;
+        } else {
+            return FlagToBits32 (Flag);
+        }
+    #else
+        return (((tUInt64)1) << Flag);
+    #endif
+}
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-inline void SetBitsAll (tUInt *pValue, tUInt Bits) {
+inline void SetBitsAll (tUInt32 *pValue, tUInt32 Bits) {
     *pValue |= Bits;
 }
 
-inline void SetOneFlag (tUInt *pValue, tUByte Flag) {
-    SetBitsAll (pValue, FlagToBits (Flag));
+inline void SetBitsAll (tUInt64 *pValue, tUInt64 Bits) {
+    *pValue |= Bits;
 }
 
-inline void ClearBitsAll (tUInt *pValue, tUInt Bits) {
+inline void SetOneFlag (tUInt32 *pValue, tUByte Flag) {
+    SetBitsAll (pValue, FlagToBits32 (Flag));
+}
+
+inline void SetOneFlag (tUInt64 *pValue, tUByte Flag) {
+    SetBitsAll (pValue, FlagToBits64 (Flag));
+}
+
+inline void ClearBitsAll (tUInt32 *pValue, tUInt32 Bits) {
     *pValue &= ~Bits;
 }
 
-inline void ClearOneFlag (tUInt *pValue, tUByte Flag) {
-    ClearBitsAll (pValue, FlagToBits (Flag));
+inline void ClearBitsAll (tUInt64 *pValue, tUInt64 Bits) {
+    *pValue &= ~Bits;
 }
 
+inline void ClearOneFlag (tUInt32 *pValue, tUByte Flag) {
+    ClearBitsAll (pValue, FlagToBits32 (Flag));
+}
+
+inline void ClearOneFlag (tUInt64 *pValue, tUByte Flag) {
+    ClearBitsAll (pValue, FlagToBits64 (Flag));
+}
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-inline tUInt SetBitsAll (tUInt Value, tUInt Bits) {
+inline tUInt32 SetBitsAll (tUInt32 Value, tUInt32 Bits) {
     return (Value | Bits);
 }
 
-inline tUInt SetOneFlag (tUInt Value, tUByte Flag) {
-    return SetBitsAll (Value, FlagToBits (Flag));
+inline tUInt64 SetBitsAll (tUInt64 Value, tUInt64 Bits) {
+    return (Value | Bits);
 }
 
-inline tUInt ClearBitsAll (tUInt Value, tUInt Bits) {
+inline tUInt32 SetOneFlag (tUInt32 Value, tUByte Flag) {
+    return SetBitsAll (Value, FlagToBits32 (Flag));
+}
+
+inline tUInt64 SetOneFlag (tUInt64 Value, tUByte Flag) {
+    return SetBitsAll (Value, FlagToBits64 (Flag));
+}
+
+inline tUInt32 ClearBitsAll (tUInt32 Value, tUInt32 Bits) {
     return (Value & ~Bits);
 }
 
-inline tUInt ClearOneFlag (tUInt Value, tUByte Flag) {
-    return ClearBitsAll (Value, FlagToBits (Flag));
+inline tUInt64 ClearBitsAll (tUInt64 Value, tUInt64 Bits) {
+    return (Value & ~Bits);
+}
+
+inline tUInt32 ClearOneFlag (tUInt32 Value, tUByte Flag) {
+    return ClearBitsAll (Value, FlagToBits32 (Flag));
+}
+
+inline tUInt64 ClearOneFlag (tUInt64 Value, tUByte Flag) {
+    return ClearBitsAll (Value, FlagToBits64 (Flag));
 }
 
 

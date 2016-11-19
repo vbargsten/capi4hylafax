@@ -19,12 +19,14 @@
 #ifndef _PROTCLAS_H_
 #define _PROTCLAS_H_
 
+#define USE_TEMPLATE_FUNCTIONALITY
+
 #include "Protect.h"
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-#define UNIQUE_INIT_VALUE       0
+#define UNIQUE_INIT_VALUE           (tUInt)0
 
 typedef tBool (*tProtectUniqueFunc) (void *);
 
@@ -45,6 +47,29 @@ private:
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
+#ifdef USE_TEMPLATE_FUNCTIONALITY
+
+template <class T> inline tBool basicTestAndSet (T *pVar, T testVal, T setVal) {
+    if (*pVar != testVal) {
+        return vFalse;
+    }
+    *pVar = setVal;
+    return vTrue;
+}
+
+template <class T> inline T basicInc (T *pVar) {
+    tUInt fret = *pVar;
+    (*pVar)++;
+    return fret;
+}
+
+template <class T> inline T basicDec (T *pVar) {
+    tUInt fret = *pVar;
+    (*pVar)--;
+    return fret;
+}
+
+#else
 
 inline tBool basicTestAndSet (tUInt *pVar, tUInt testVal, tUInt setVal) {
     if (*pVar != testVal) {
@@ -66,12 +91,18 @@ inline tUInt basicDec (tUInt *pVar) {
     return fret;
 }
 
+#endif
+/*---------------------------------------------------------------------------*\
+\*---------------------------------------------------------------------------*/
+
 inline tBool basicUniqueStart (tUInt *pCounter) {
-    return ((*pCounter)++) == UNIQUE_INIT_VALUE;
+    (*pCounter)++;
+    return (*pCounter) == UNIQUE_INIT_VALUE + 1;
 }
 
 inline tBool basicUniqueStop (tUInt *pCounter) {
-    return ((*pCounter)--) == UNIQUE_INIT_VALUE + 1;
+    (*pCounter)--;
+    return (*pCounter) == UNIQUE_INIT_VALUE;
 }
 
 inline void basicUniqueClear (tUInt *pCounter) {
@@ -117,6 +148,66 @@ public:
     void EndWrite (void);
 
     // Set, Add, Sub, Inc & Dec return always the old/previous value of pVar!!
+#ifdef USE_TEMPLATE_FUNCTIONALITY
+    template <class T> T Get (T *pVar) {
+        BeginRead();
+        T fret = *pVar;
+        EndRead();
+        return fret;
+    }
+
+    template <class T> T Set (T *pVar, T value) {
+        BeginWrite();
+        T fret = *pVar;
+        *pVar  = value;
+        EndWrite();
+        return fret;
+    }
+
+    template <class T> tBool TestAndSet (T *pVar, T testVal, T setVal) {
+        tBool fret = vFalse;
+        BeginWrite();
+        if (*pVar == testVal) {
+            *pVar = setVal;
+            fret  = vTrue;
+        }
+        EndWrite();
+        return fret;
+    }
+
+    template <class T> T Add (T *pVar, T value) {
+        BeginWrite();
+        T fret = *pVar;
+        *pVar += value;
+        EndWrite();
+        return fret;
+    }
+
+    template <class T> T Sub (T *pVar, T value) {
+        BeginWrite();
+        T fret = *pVar;
+        *pVar -= value;
+        EndWrite();
+        return fret;
+    }
+
+    template <class T> T Inc (T *pVar) {
+        BeginWrite();
+        T fret = *pVar;
+        (*pVar)++;
+        EndWrite();
+        return fret;
+    }
+
+    template <class T> T Dec (T *pVar) {
+        BeginWrite();
+        T fret = *pVar;
+        (*pVar)--;
+        EndWrite();
+        return fret;
+    }
+
+#else
     tUInt Get (tUInt *pVar);
     tBool Get (tBool *pVar);
     tUInt Set (tUInt *pVar, tUInt value);
@@ -128,6 +219,7 @@ public:
 
     tUInt Inc (tUInt *pVar);
     tUInt Dec (tUInt *pVar);
+#endif
 
     tBool UniqueStart (tUInt *pCounter);
     tBool UniqueStop (tUInt *pCounter);
@@ -180,6 +272,7 @@ inline void CProtectClass::EndWrite (void) {
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
+#ifndef USE_TEMPLATE_FUNCTIONALITY
 
 inline tUInt CProtectClass::Get (tUInt *pVar) {
     BeginRead();
@@ -253,6 +346,10 @@ inline tUInt CProtectClass::Dec (tUInt *pVar) {
     EndWrite();
     return fret;
 }
+
+#endif // !USE_TEMPLATE_FUNCTIONALITY
+/*---------------------------------------------------------------------------*\
+\*---------------------------------------------------------------------------*/
 
 inline tBool CProtectClass::UniqueStart (tUInt *pCounter) {
     return Inc (pCounter) == UNIQUE_INIT_VALUE;

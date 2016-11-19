@@ -49,38 +49,42 @@ tSInfo CConfigFileParser::ParseFile (FILE *FileHandle) {
     char           szPartLine[CONFIGPARSER_MaxLength + 1];
     CDynamicString curLine;
     tUInt          curLineNr = 0;
-    tSInfo         fret;
 
     if (!GetMainSection()) {
         return iErr_OutOfMemory;
     }
     // TODO?: set file position to begin of file?
     // fseek (FileHandle, 0, SEEK_SET);
-    while (!feof (FileHandle)) {
+    while (feof (FileHandle) == 0) {
         if (fgets (szPartLine, CONFIGPARSER_MaxLength, FileHandle)) {
             if (curLine.Append ((tUChar *)szPartLine) == vFalse) {
                 return iErr_OutOfMemory;
             }
             if (curLine.GetLen()) {
-                switch (curLine.GetLastChar()) {
-                case '\r':
-                case '\n':
+                if ((curLine.GetLastChar() == '\r') || (curLine.GetLastChar() == '\n')) {
+                    // Remove "\r\n" at the end
                     do {
                         curLine.CutLen (1);
-                    } while (  (curLine.GetLastChar() == '\r')
-                            || (curLine.GetLastChar() == '\n'));
-                    dprint ("ParseLine=(%s)\n", curLine.GetPointer());
-                    fret = ParseLine (&curLine);
-                    switch (fret) {
-                    case i_Okay:
-                    case i_Pending:
-                        break;
-                    case iErr_OutOfMemory:
-                        return fret;
-                    default:
-                        LineCodingError (++curLineNr, &curLine);
-                        break;
+                    } while (   (curLine.GetLen() > 0)
+                            &&  (  (curLine.GetLastChar() == '\r')
+                                || (curLine.GetLastChar() == '\n')));
+                    if (curLine.GetLen() == 0) {
+                        // Line includes only line end chars
+                        continue;
                     }
+                } else if (feof (FileHandle) == 0) {
+                    // Line longer than CONFIGPARSER_MaxLength. Get more data before parsing
+                    continue;
+                }
+                dprint ("ParseLine=(%s)\n", curLine.GetPointer());
+                switch (ParseLine (&curLine)) {
+                case i_Okay:
+                case i_Pending:
+                    break;
+                case iErr_OutOfMemory:
+                    return iErr_OutOfMemory;
+                default:
+                    LineCodingError (++curLineNr, &curLine);
                     break;
                 }
             }

@@ -1,0 +1,54 @@
+capi4hylafax for Debian
+----------------------
+
+As root do the following:
+
+1) Invoke "capi4hylafaxconfig" to change the configuration file
+   "/etc/hylafax/config.faxCAPI" (this needs the `dialog' package
+   installed) or change it with your preferred editor. The options
+   are defined in that file.
+
+2) Edit /etc/default/capi4hylafax:
+   Set run_capi4hylafax to 1 to start capi4hylafax at boot time.
+
+3) Type "/etc/init.d/capi4hylafax start" to start capi4hylafax.
+
+4.1) If you use the hylafax server:
+
+   Configure hylafax to use faxmodem instead of faxgetty, by setting
+   USE_FAXGETTY to "no" in /etc/default/hylafax. You may have to adapt
+   your configuration if you plan to continue using non-CAPI fax
+   modems.
+
+   Invoke "faxmodem faxCAPI" to tell hylafax about the new device.
+   Restart hylafax (/etc/init.d/hylafax restart)
+   Everything should work now.
+
+   If you use a device name that is does not match the pattern
+   'faxCAPI*', then you should also add in /etc/hylafax/config:
+     SendFaxCmd: /usr/bin/c2faxsend
+   Note that you won't be able to use non-CAPI modems to send faxes then.
+
+4.2) If you are NOT using hylafax (stand alone version):
+
+   put "example/sample_faxrcvd" as "faxrcvd" in /var/spool/hylafax/bin
+   and edit it.
+
+ -- Lionel Elie Mamane <lmamane@debian.org>, Wed, 19 Mar 2008 10:36:26 +0100
+
+
+Additional package isdnactivecards:
+
+   With version -18 the package 'isdnactivecards' were defined only as
+   suggested package because of Debian Policy 2.2.1. This package is in
+   section contrib because it needs/uses non-free firmwares.
+
+   You should install 'isdnactivecards' only if want to use one of the
+   following (older) active ISDN cards:
+                       - Eicon
+                       - Eicon Diva
+                       - IBM Active 2000
+                       - ICN
+                       - PCBIT-D
+
+ -- Joachim Wiedorn <ad_debian@joonet.de>  Sat, 03 Nov 2012 22:03:33 +0100

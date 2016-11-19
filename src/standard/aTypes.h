@@ -19,18 +19,25 @@
 #ifndef _ATYPES_H_
 #define _ATYPES_H_
 
+#include <limits.h>         // should give __WORDSIZE
+
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-#if !defined C_PLATFORM_64 && defined SIZEOF_VOID_P && (SIZEOF_VOID_P == 8)
+#if defined __WORDSIZE && (__WORDSIZE == 64)
 #define C_PLATFORM_64
+#else
+#if defined SIZEOF_VOID_P && (SIZEOF_VOID_P == 8)
+#define C_PLATFORM_64
+#endif
 #endif
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-#include <limits.h>         // should give __WORDSIZE
-#include <wchar.h>
+#ifndef ASTRING_DONT_USE_WCHAR
+    #include <wchar.h>
+#endif
 
 #if defined HAVE_STDINT_H && HAVE_STDINT_H > 0
     #include <stdint.h>
@@ -45,7 +52,7 @@ typedef unsigned short int uint16_t;
 typedef unsigned int       uint32_t;
 
 #ifdef __linux__
-    #if __WORDSIZE == 64
+    #ifdef C_PLATFORM_64
         typedef long int int64_t;
         typedef unsigned long int uint64_t;
     #else
@@ -100,7 +107,11 @@ typedef uint8_t     tUChar;
 typedef int8_t      tSChar;
 typedef tUChar      tChar;
 
+#ifndef ASTRING_DONT_USE_WCHAR
 typedef wchar_t     tWiChar;
+#else
+typedef uint16_t    tWiChar;
+#endif
 typedef tWiChar     tUWiChar;
 
 typedef uint8_t     tUByte;

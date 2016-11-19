@@ -65,16 +65,17 @@ inline void CDataPacketBlocks::Init (CDataPacket *pPacket) {
     m_RealPointer = pPacket->GetPointer();
     m_RealMaxLen  = pPacket->GetMaxLen();
     m_RealLen     = pPacket->GetLen();
-    for (tUInt i = DATA_PACKET_HANDLE_COUNT; i > 0; i --) {
+    for (tUInt i = DATA_PACKET_HANDLE_COUNT; i > 0;) {
+        i--;
         SetHandle (pPacket->GetHandle (i), i);
     }
     FirstBlock();
 }
 
 inline void CDataPacketBlocks::Init (tUByte *pPointer, tUInt Len, void *FirstHandle) {
-    m_RealPointer = pPacket->GetPointer();
-    m_RealMaxLen  = pPacket->GetMaxLen();
-    m_RealLen     = pPacket->GetLen();
+    m_RealPointer = pPointer;
+    m_RealMaxLen  = Len;
+    m_RealLen     = Len;
     SetHandle (FirstHandle);
     FirstBlock();
 }
@@ -83,8 +84,8 @@ inline void CDataPacketBlocks::FirstBlock (void) {
     SetPointer (m_RealPointer);
     m_Offset = 0;
     if (m_RealLen > m_Delta) {
-        SetLen (m_Delta);
         SetMaxLen (m_Delta);
+        SetLen (m_Delta);
     } else {
         SetMaxLen (m_RealMaxLen);
         SetLen (m_RealLen);
@@ -100,8 +101,8 @@ inline tBool CDataPacketBlocks::NextBlock (void) {
     }
     SetPointer (m_RealPointer + m_Offset);
     if (m_RealLen <= m_Offset + m_Delta) {
-        SetLen (m_RealLen - m_Offset);
         SetMaxLen (m_RealMaxLen - m_Offset);
+        SetLen (m_RealLen - m_Offset);
     }
     SetPos (0);
     return vTrue;

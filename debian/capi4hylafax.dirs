@@ -1,0 +1,7 @@
+var/spool/hylafax/etc
+var/spool/hylafax/bin
+var/log/hylafax
+etc/hylafax
+etc/default
+usr/bin
+usr/sbin

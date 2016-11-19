@@ -1,0 +1,31 @@
+.TH C2FAXRECV "1" "" "c2faxrecv" "User Commands"
+.SH NAME
+c2faxrecv \- receive fax using hylafax to ISDN using CAPI
+.SH SYNOPSIS
+.B c2faxrecv
+[\fI-f format\fR] [\fI-C file\fR] [\fI-q dir\fR] [\fI-v\fR] [\fI-V\fR] [\fIdevice\fR...]
+.SH DESCRIPTION
+c2faxsend allows reveiving of faxes using hylafax to ISDN using the ISDN CAPI 2.0
+library.
+.SH OPTIONS
+.TP
+\fB\-f\fR <format>
+Specify the output format. Allowed types are HYLAFAX (default), TIFF, SFF, G3.
+.TP
+\fB\-C\fR <file>
+Name and path of the config file.
+.TP
+\fB\-q\fR <dir>
+Directory where received faxes are to be stored.
+Default: /var/spool/hylafax
+.TP
+\fB\-v\fR
+Start in verbose mode
+.TP
+\fB\-V\fR
+Show version information.
+.TP
+\fB\-h\fR
+Show a help text.
+.SH SEE ALSO
+c2send(1), capi4hylafaxconfig(8), hylafax(5). /usr/share/doc/capi4hylafax/README.html.

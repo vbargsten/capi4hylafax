@@ -46,7 +46,7 @@ public:
     /*-----------------------------------------------------------------------*\
         Anmeldung
     \*-----------------------------------------------------------------------*/
-    void Register (tUInt MaxDataSize = CAPI_MAX_DATA_SIZE);
+    void Register (tUInt MaxDataSize = CAPI_MAX_DATA_SIZE, tUInt MaxInFrames = CAPI_MAX_OUTSTANDING_FRAMES);
     void Release (void);
     virtual void Register_Complete (c_info ErrorCode) = 0;
     virtual void Release_Complete (void) = 0;
@@ -55,7 +55,7 @@ public:
         CAPI - Requests
     \*-----------------------------------------------------------------------*/
     void  AlertReq           (CCStruct *pAdditionalInfo);
-    tBool ConnectReq         (c_dword  Controller, cm_connectreq *Params);
+    tBool ConnectReq         (c_dword Controller, cm_connectreq *Params);
     void  DataB3Req          (cm_datab3 *Params);
     void  DisconnectReq      (tBool FastDisconnect = vFalse);    // Fast == Disconnect directly the D-Channel
     void  ListenReq          (c_dword Controller, cm_listenreq *Params);

@@ -136,10 +136,10 @@ void CFaxReceiveMain::vWriteLog (tSInt priority, const char *text, va_list param
     }
 
     if (hLogFile) {
-        fprintf (hLogFile, timebuf);
+        fprintf (hLogFile, "%s", timebuf);
         fprintf (hLogFile, "%s - ", RecvProgName.GetPointer());
         if (statusText) {
-            fprintf (hLogFile, statusText);
+            fprintf (hLogFile, "%s", statusText);
         }
         va_copy(lparams, params);
         vfprintf (hLogFile, text, lparams);
@@ -152,7 +152,7 @@ void CFaxReceiveMain::vWriteLog (tSInt priority, const char *text, va_list param
         char errortext[MAX_STRING_SIZE];
         vsnprintf (errortext, MAX_STRING_SIZE, text, params);
         openlog (DEFAULT_RECVPROG_NAME, LOG_PERROR, 0);
-        syslog (priority, errortext);
+        syslog (priority, "%s", errortext);
         closelog();
     }
 }
@@ -490,13 +490,13 @@ void CFaxReceiveMain::setupPermissions (void) {
         }
         switch (errflags) {
         case 0:
-            WriteLog (LOG_INFO, "Changed to effective user \"%s\" and group \"%s\" succesfully.\n", FaxUser.GetPointer(), FaxGroup.GetPointer());
+            WriteLog (LOG_INFO, "Changed to effective user \"%s\" and group \"%s\" successfully.\n", FaxUser.GetPointer(), FaxGroup.GetPointer());
             break;
         case 1:
-            WriteLog (LOG_INFO, "Changed to effective user \"%s\" succesfully.\n", FaxUser.GetPointer());
+            WriteLog (LOG_INFO, "Changed to effective user \"%s\" successfully.\n", FaxUser.GetPointer());
             break;
         case 2:
-            WriteLog (LOG_INFO, "Changed to effective group \"%s\" succesfully.\n", FaxGroup.GetPointer());
+            WriteLog (LOG_INFO, "Changed to effective group \"%s\" successfully.\n", FaxGroup.GetPointer());
             break;
         default:
             break;

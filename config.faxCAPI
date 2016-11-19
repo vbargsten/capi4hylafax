@@ -2,14 +2,14 @@
 # EDIT THIS CONFIGURATION TO REFLECT YOUR SETUP
 #
 
-# Grundsätzliches:
-# - Es gibt für jeden Wert einen Standardzustand (default), sodass jede Zeile
+# GrundsÃ¤tzliches:
+# - Es gibt fÃ¼r jeden Wert einen Standardzustand (default), sodass jede Zeile
 #   der Datei oder auch das komplette Configfile ausgelassen werden kann.
-# - Es gibt ausschließlich ein Configfile, in dem alle nötigen Angaben für
-#   "c2faxsend/-receive" eingetragen werden können.
-# - Werden für HylaFAX mehrere virtuelle Geräte (devices) angelegt, muss es
-#   für jedes Device ein Configfile im Format config.[DeviceName] geben.
-#   Dessen Existenz wird von HylaFAX überprüft. Ohne dieses File kann die
+# - Es gibt ausschlieÃŸlich ein Configfile, in dem alle nÃ¶tigen Angaben fÃ¼r
+#   "c2faxsend/-receive" eingetragen werden kÃ¶nnen.
+# - Werden fÃ¼r HylaFAX mehrere virtuelle GerÃ¤te (devices) angelegt, muss es
+#   fÃ¼r jedes Device ein Configfile im Format config.[DeviceName] geben.
+#   Dessen Existenz wird von HylaFAX Ã¼berprÃ¼ft. Ohne dieses File kann die
 #   Arbeit mit dem Device nicht aufgenommen werden. Die Existenz einer
 #   solchen Datei kann am einfachsten durch einen Link auf dieses ConfigFile
 #   oder ein minimales "dummy"-ConfigFile nachgewiesen werden.
@@ -39,12 +39,12 @@
 #
 # default   /var/spool/fax
 #
-SpoolDir:               /var/spool/fax
+SpoolDir:               /var/spool/hylafax
 
 
-# "FaxRcvdCmd" gibt das Skript an, das ausgeführt wird, sobald ein Fax
+# "FaxRcvdCmd" gibt das Skript an, das ausgefÃ¼hrt wird, sobald ein Fax
 # empfangen wurde. Im Stand-Alone-Betrieb werden andere Parameter
-# übergeben als für HylaFAX (mehr dazu im sample_faxrcvd).
+# Ã¼bergeben als fÃ¼r HylaFAX (mehr dazu im sample_faxrcvd).
 #
 # "FaxRcvdCmd" indicates the script performed whenever a fax is
 # received. Parameters other than the ones for HylaFAX are returned in
@@ -52,12 +52,12 @@ SpoolDir:               /var/spool/fax
 #
 # default   /var/spool/hylafax/bin/faxrcvd
 #
-FaxRcvdCmd:             /var/spool/fax/bin/faxrcvd
+FaxRcvdCmd:             /var/spool/hylafax/bin/faxrcvd
 
 
-# "PollRcvdCmd" gibt das Skript an, das ausgeführt wird, sobald ein
+# "PollRcvdCmd" gibt das Skript an, das ausgefÃ¼hrt wird, sobald ein
 # Fax per Faxabruf empfangen wurde. Im Stand-Alone-Betrieb werden
-# andereParameter übergeben als für HylaFAX (mehr dazu im
+# andereParameter Ã¼bergeben als fÃ¼r HylaFAX (mehr dazu im
 # sample_faxrcvd).
 #
 # "PollRcvdCmd" indicates the script performed whenever a fax was
@@ -67,14 +67,14 @@ FaxRcvdCmd:             /var/spool/fax/bin/faxrcvd
 #
 # default   /var/spool/hylafax/bin/pollrcvd
 #
-PollRcvdCmd:             /var/spool/fax/bin/pollrcvd
+PollRcvdCmd:             /var/spool/hylafax/bin/pollrcvd
 
 
 # "FaxReceiveUser" und "FaxReceiveGroup" geben den User und die Gruppenkennung
-# an, unter der c2faxrecv ausgeführt wird. Die Änderung des Users und der Gruppe
+# an, unter der c2faxrecv ausgefÃ¼hrt wird. Die Ã„nderung des Users und der Gruppe
 # kann nur vom "root" bzw. Superuser erfolgen. Wenn c2faxrecv von einem anderen
-# User gestartet wird, werden dieser Einträge ignoriert. Wenn jedoch die Rechte
-# von /dev/capi20 nicht geändert werden sollen oder Ihre Linux-Distribution einen
+# User gestartet wird, werden dieser EintrÃ¤ge ignoriert. Wenn jedoch die Rechte
+# von /dev/capi20 nicht geÃ¤ndert werden sollen oder Ihre Linux-Distribution einen
 # anderen User oder eine andere Gruppe voraussetzt, sollten Sie an dieser Stelle
 # etwas anderes als den Hylafax-Standardwert "uucp" eintragen.
 
@@ -87,17 +87,17 @@ PollRcvdCmd:             /var/spool/fax/bin/pollrcvd
 #
 # default   ""
 #
-FaxReceiveUser:         fax
+FaxReceiveUser:         uucp
 FaxReceiveGroup:        dialout
 
 
-# Im "LogFile" werden Informationen über den Faxablauf abgespeichert.
+# Im "LogFile" werden Informationen Ã¼ber den Faxablauf abgespeichert.
 #
 # Information about the order of events in faxing are saved in the "LogFile".
 #
 # default   "/var/log/capifax.log"
 #
-LogFile:                /var/log/capifax.log
+LogFile:                /var/log/hylafax/capifax.log
 
 
 # Der Befehl "LogTraceLevel" gibt die Menge der Daten an, die in ein LogFile
@@ -112,7 +112,7 @@ LogFile:                /var/log/capifax.log
 
 
 # "LogFileMode" sind die Angaben (mode), aufgrund derer sowohl das gerade
-# erwähnte LogFile als auch die LogFiles für HylaFAX angelegt werden.
+# erwÃ¤hnte LogFile als auch die LogFiles fÃ¼r HylaFAX angelegt werden.
 #
 # "LogFileMode" is the mode, on the basis of which both the LogFile just
 # mentioned and the LogFiles for HylaFAX are generated.
@@ -125,13 +125,13 @@ LogFileMode:            0600
 # Die geschweiften Klammern geben Anfang und Ende einer Section an.
 # Jede Section darf eine oder mehrere SubSections enthalten.
 # SubSubSections sind nicht erlaubt.
-# Dabei enthält die Section Angaben zu einem virtuellen Device;
-# die Subsection die Angaben für die Rufannahme jedes Controllers.
-# Es können beliebig viele Sections und, darin enthalten, jeweils beliebig
+# Dabei enthÃ¤lt die Section Angaben zu einem virtuellen Device;
+# die Subsection die Angaben fÃ¼r die Rufannahme jedes Controllers.
+# Es kÃ¶nnen beliebig viele Sections und, darin enthalten, jeweils beliebig
 # viele Subsections erzeugt werden.
 # Jede Section muss aber einen anderen HylafaxDeviceName erhalten;
-# zusätzlich muss in jeder Subsection innerhalb einer Section ein anderer
-# Controller aufgeführt werden. Beim Stand-Alone-Betrieb ist eine Section mit
+# zusÃ¤tzlich muss in jeder Subsection innerhalb einer Section ein anderer
+# Controller aufgefÃ¼hrt werden. Beim Stand-Alone-Betrieb ist eine Section mit
 # entsprechend vielen Subsections ausreichend, da in diesem Betriebsmodus die
 # virtuellen DeviceNamen keine Rolle spielen.
 #
@@ -150,7 +150,7 @@ LogFileMode:            0600
 {
 
     # "HylafaxDeviceName" ist der Name, unter dem sich C4H bei HylaFAX als
-    # "virtuelles Modem" anmeldet. Sollen für HylaFAX mehrere dieser "Modems"
+    # "virtuelles Modem" anmeldet. Sollen fÃ¼r HylaFAX mehrere dieser "Modems"
     # erzeugt werden, legen Sie einfach eine neue Section mit einem anderen
     # HylafaxDeviceName an.
     #
@@ -187,8 +187,8 @@ LogFileMode:            0600
 
 
     # "LocalIdentifier" ist der von CAPI aus konfigurierbare Teil der
-    # Kopfzeile. Ein leerer Eintrag führt dazu, dass keine Fax-Kopfzeile
-    # eingefügt wird.
+    # Kopfzeile. Ein leerer Eintrag fÃ¼hrt dazu, dass keine Fax-Kopfzeile
+    # eingefÃ¼gt wird.
     #
     # "LocalIdentifier" is the part of the fax header which can be configured
     # from CAPI. An empty entry specifies an empty header.
@@ -199,9 +199,9 @@ LogFileMode:            0600
 
 
     # Die maximale Anzahl von gleichzeitig empfangbaren Faxen kann
-    # durch "MaxConcurrentRecvs" angepaßt werden. Diese Anzahl wird
-    # durch die Anzahl der durch die Hardware zur Verfügung
-    # gestellten B-Kanäle begrenzt.
+    # durch "MaxConcurrentRecvs" angepaÃŸt werden. Diese Anzahl wird
+    # durch die Anzahl der durch die Hardware zur VerfÃ¼gung
+    # gestellten B-KanÃ¤le begrenzt.
     #
     # The maximum number of faxes that can be received at the same
     # time can be adjusted using "MaxConcurrentRecvs". This number
@@ -214,7 +214,7 @@ LogFileMode:            0600
 
     # ----------- outgoing params -----------
 
-    # "OutgoingController" gibt den Controller an, über den eine externe
+    # "OutgoingController" gibt den Controller an, Ã¼ber den eine externe
     # Verbindung aufgebaut werden soll.
     #
     # "OutgoingController" indicates the controller which is to be used to
@@ -225,7 +225,7 @@ LogFileMode:            0600
     OutgoingController:         1
 
 
-    # Die "OutgoingMSN" ist die MSN, die für ausgehenden Faxe benutzt wird.
+    # Die "OutgoingMSN" ist die MSN, die fÃ¼r ausgehenden Faxe benutzt wird.
     #
     # The "OutgoingMSN" is the MSN used for outgoing faxes.
     #
@@ -234,7 +234,7 @@ LogFileMode:            0600
     OutgoingMSN:
 
 
-    # CLIR (Rufnummernunterdrückung) kann über "SuppressMSN" und den Wert (0)
+    # CLIR (RufnummernunterdrÃ¼ckung) kann Ã¼ber "SuppressMSN" und den Wert (0)
     # abgeschaltet oder mit dem Wert (1) erneut angeschaltet werden.
     #
     # CLIR (Calling Line Identification Restriction) can be switched off using
@@ -246,8 +246,8 @@ LogFileMode:            0600
 
 
     # "NumberPrefix" wird vor jede Telefonnummer gestellt. Dies ist bei
-    # Nebenstellenanlagen wichtig, bei denen für den Aufbau einer externen
-    # Verbindung eine Ziffer vorgewählt werden muss.
+    # Nebenstellenanlagen wichtig, bei denen fÃ¼r den Aufbau einer externen
+    # Verbindung eine Ziffer vorgewÃ¤hlt werden muss.
     #
     # "NumberPrefix" is set to precede each telephone number. This is
     # important for PBX systems which require that a number be dialed to
@@ -260,7 +260,7 @@ LogFileMode:            0600
 
     # Mit der Option "NumberPlusReplacer" wird das Pluszeichen am Anfang einer
     # Telefonnummer durch Ziffen (z.B. 00) ersetzt. Diese Option hilfreich, wenn komplette
-    # Telefonbucheinträge verwendet werden sollen, denen ein '+' voranstehen.
+    # TelefonbucheintrÃ¤ge verwendet werden sollen, denen ein '+' voranstehen.
     #
     # Use the option "NumberPlusReplacer" to replace the '+' character
     # at the beginning of a telephone number by the contents of this field, usually
@@ -302,7 +302,7 @@ LogFileMode:            0600
 
     # ----------- incoming params -----------
     {
-        # Controller, für den diese Subsection gilt.
+        # Controller, fÃ¼r den diese Subsection gilt.
         #
         # Controller for which this subsection is valid.
         #
@@ -319,7 +319,7 @@ LogFileMode:            0600
         #
         # default   0
         #
-        AcceptSpeech:           0
+        AcceptSpeech:           1
 
 
         # Sofern man DDI nutzen will, sollte man "UseDDI" auf 1 stellen.
@@ -332,9 +332,9 @@ LogFileMode:            0600
 
 
         # Die DDI-Stammnummer wird bei "DDIOffset" eingetragen.
-        # Der Standardwert führt zu keinem korrekten Ergebnis und
+        # Der Standardwert fÃ¼hrt zu keinem korrekten Ergebnis und
         # sollte, sofern "UseDDI" auf 1 gestellt wurde, immer
-        # verändert werden.
+        # verÃ¤ndert werden.
         #
         # "DDIOffset" indicates the DDI offset number which precedes
         # extension number. Because the default value can't guarantee
@@ -347,7 +347,7 @@ LogFileMode:            0600
 
 
         # "DDILength" gibt die Anzahl der Durchwahlziffern an. (Diese Ziffern
-        # werden lediglich als Teil der Empfängernummer mitgeteilt.) Der
+        # werden lediglich als Teil der EmpfÃ¤ngernummer mitgeteilt.) Der
         # Standardwert sollte bei Verwendung von DDI ebenfalls angepasst
         # werden.
         #
@@ -360,9 +360,9 @@ LogFileMode:            0600
         DDILength:              3
 
 
-        # Bei "IncomingDDIs" können in einer durch Komma getrennten Liste alle
-        # Durchwahlziffern (DDIs) angegeben werden, für die Rufe angenommen
-        # werden sollen. Eine Bereichsangabe ist auch möglich (z.B. 100-300),
+        # Bei "IncomingDDIs" kÃ¶nnen in einer durch Komma getrennten Liste alle
+        # Durchwahlziffern (DDIs) angegeben werden, fÃ¼r die Rufe angenommen
+        # werden sollen. Eine Bereichsangabe ist auch mÃ¶glich (z.B. 100-300),
         # wobei aber keine offenen Bereiche (z.B. -100) erlaubt sind.
         # Sofern IncommingDDIs gesetzt ist, wird DDILength ignoriert.
         #
@@ -377,8 +377,8 @@ LogFileMode:            0600
         IncomingDDIs:
 
 
-        # Bei "IncomingMSNs" können in einer durch Komma getrennten Liste alle
-        # MSNs angegeben werden, für die Rufe angenommen werden sollen. Ist
+        # Bei "IncomingMSNs" kÃ¶nnen in einer durch Komma getrennten Liste alle
+        # MSNs angegeben werden, fÃ¼r die Rufe angenommen werden sollen. Ist
         # die Liste leer, werden alle Rufe auf ISDN FAX G3, 3,1kHz Audio und
         # eventuell "Sprache" angenommen.
         # Wenn "UseDDI" auf 1 gestellt ist, wird "IncomingMSNs" ignoriert.

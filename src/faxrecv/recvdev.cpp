@@ -114,7 +114,7 @@ void CFaxReceiveDevice::Config (CConfigParserSection *section) {
     CMultiString   tmpDDIs;
     CMultiString   tmpMSNs;
     CMultiString  *pMSNs;
-    tSize          FindPos;
+    tUInt          FindPos;
 
     ConfigAssignment_Item CntrlAssignments[] = {
         { "Controller",       ConfigAssignment_UInt,       &tmpController },
@@ -162,7 +162,7 @@ void CFaxReceiveDevice::Config (CConfigParserSection *section) {
                     MSNlauf->RemoveChars ((tChar *)" \t_()[]{}\"'`TtPp,.:;");
                     if (MSNlauf->IsEmpty() == vFalse) {
                         FindPos = MSNlauf->FindChar ('-');
-                        if (FindPos == MAXVAL_tSize) {
+                        if (FindPos == MAXVAL_tUInt) {
                             dprint ("Add MSN-Value=(%s) ", MSNlauf->GetPointer());
                             switch (CIPMSNList.AddMSN (tmpController, MSNlauf)) {
                             case iErr_OutOfMemory:

@@ -55,8 +55,8 @@ public:
     void SetB1Parameters (c_b1prot B1Protocol, cp_b1configuration *pB1Config = 0);
     void SetB2Parameters (c_b2prot B2Protocol);
     void SetB3Parameters (c_b3prot B3Protocol, cp_b3configuration *pB3Config = 0);
-    void SetAdditionalInfo (tUInt setflags, CCStruct *pBChannelInfo, CCStruct *pKeypadFacility, CCStruct *pUserUserData,
-                            CCStruct *pFacilityDataArray);
+    void SetAdditionalInfo (tUInt setflags, CCStruct *pBChannelInfo, CCStruct *pKeypadFacility = 0, CCStruct *pUserUserData = 0,
+                            CCStruct *pFacilityDataArray = 0, CCStruct *pSendingComplete = 0);
     void SetNCPI (cp_ncpi *pNCPI);
 
     tBool SetMSNList (CCntrlMSNList *pCntrlMSNList);
@@ -271,7 +271,7 @@ inline void CTransferChannel::SetB3Parameters (c_b3prot B3Protocol, cp_b3configu
 }
 
 inline void CTransferChannel::SetAdditionalInfo (tUInt setflags, CCStruct *pBChannelInfo, CCStruct *pKeypadFacility,
-                                                 CCStruct *pUserUserData, CCStruct *pFacilityDataArray) {
+                                                 CCStruct *pUserUserData, CCStruct *pFacilityDataArray, CCStruct *pSendingComplete) {
     if (CheckOneFlag (setflags, 0)) {
         m_AdditionalInfo.pBChannelInformation->ParseStruct (pBChannelInfo);
     }
@@ -283,6 +283,9 @@ inline void CTransferChannel::SetAdditionalInfo (tUInt setflags, CCStruct *pBCha
     }
     if (CheckOneFlag (setflags, 3)) {
         m_AdditionalInfo.pFacilityDataArray->ParseStruct (pFacilityDataArray);
+    }
+    if (CheckOneFlag (setflags, 4)) {
+        m_AdditionalInfo.pSendingComplete->ParseStruct (pSendingComplete);
     }
 }
 

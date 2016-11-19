@@ -51,14 +51,14 @@
 /*===========================================================================*\
 \*===========================================================================*/
 
-CConstString::CConstString (const tString string, tSize len)
+CConstString::CConstString (const tString string, tUInt len)
   : pntr (string),
     detectError (vFalse) {
 
     dhead ("CConstString-Constructor", DCON_CDynamicString);
     dassert (!len || pntr);
     if (!len)  {
-        len = s_strlen (string);
+        len = check_strlen (string);
     }
     curLen  = len;
     maxSize = (len) ? len + 1 : 0; // TODO?: Is this correct?
@@ -67,7 +67,40 @@ CConstString::CConstString (const tString string, tSize len)
 /*===========================================================================*\
 \*===========================================================================*/
 
-CDynamicString::CDynamicString (const tFormatChar *string, tSize len) {
+tUInt CConstString::check_strlen (const tChar *string) {
+    dhead ("CConstString::check_strlen", DCON_CDynamicString);
+    dassert (string != 0);
+    tSize s = s_strlen (string);
+    dassert (s < MAXVAL_tUInt);
+    return (tUInt)s;
+}
+
+/*===========================================================================*\
+\*===========================================================================*/
+
+tUInt CConstString::check_strlen (const tWiChar *string) {
+    dhead ("CConstString::check_strlenW", DCON_CDynamicString);
+    dassert (string != 0);
+    tSize s = s_strlen (string);
+    dassert (s < MAXVAL_tUInt);
+    return (tUInt)s;
+}
+
+/*===========================================================================*\
+\*===========================================================================*/
+
+tUInt CConstString::check_strlen (const char *string) {
+    dhead ("CConstString::check_strlenC", DCON_CDynamicString);
+    dassert (string != 0);
+    tSize s = s_strlen (string);
+    dassert (s < MAXVAL_tUInt);
+    return (tUInt)s;
+}
+
+/*===========================================================================*\
+\*===========================================================================*/
+
+CDynamicString::CDynamicString (const tFormatChar *string, tUInt len) {
     dhead ("CDynamicString-Constructor", DCON_CDynamicString);
     dparams ("%s,%x", string, len);
     Set (string, len);
@@ -108,16 +141,16 @@ CDynamicString::~CDynamicString (void) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Change (const tString string, tSize startPos, tSize len) {
+tBool CDynamicString::Change (const tString string, tUInt startPos, tUInt len) {
     dhead ("CDynamicString::Change", DCON_CDynamicString);
     dparams ("%s,%x,%x", string, startPos, len, pntr);
     dassert (string != 0);
     dassert (startPos <= GetLen());
     if (!len) {
-        len = s_strlen (string);
+        len = check_strlen (string);
         dprint ("CalcLen=%x ", len);
     }
-    tSize endPos = len + startPos;
+    tUInt endPos = len + startPos;
     if (endPos >= GetMaxSize()) {
         if (DynExpand (endPos + 1) == vFalse) {
             return vFalse;
@@ -136,16 +169,16 @@ tBool CDynamicString::Change (const tString string, tSize startPos, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Change (const tFormatChar *string, tSize startPos, tSize len) {
+tBool CDynamicString::Change (const tFormatChar *string, tUInt startPos, tUInt len) {
     dhead ("CDynamicString::Change", DCON_CDynamicString);
     dparams ("%s,%x,%x,%s", string, startPos, len, pntr);
     dassert (string != 0);
     dassert (startPos <= GetLen());
     if (!len) {
-        len = s_strlen (string);
+        len = check_strlen (string);
         dprint ("CalcLen=%x ", len);
     }
-    tSize endPos = len + startPos;
+    tUInt endPos = len + startPos;
     if (endPos >= GetMaxSize()) {
         if (DynExpand (endPos + 1) == vFalse) {
             return vFalse;
@@ -164,14 +197,14 @@ tBool CDynamicString::Change (const tFormatChar *string, tSize startPos, tSize l
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Insert (const tString string, tSize startPos, tSize len) {
+tBool CDynamicString::Insert (const tString string, tUInt startPos, tUInt len) {
     dhead ("CDynamicString::Insert", DCON_CDynamicString);
     dassert (string != 0);
     dassert (startPos <= GetLen());
     if (!len) {
-        len = s_strlen (string);
+        len = check_strlen (string);
     }
-    tSize endPos = len + GetLen();
+    tUInt endPos = len + GetLen();
     if (endPos >= GetMaxSize()) {
         if (DynExpand (endPos + 1) == vFalse) {
             return vFalse;
@@ -191,11 +224,11 @@ tBool CDynamicString::Insert (const tString string, tSize startPos, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Fill (const tStringChar fillChar, tSize len, tSize startPos) {
+tBool CDynamicString::Fill (const tStringChar fillChar, tUInt len, tUInt startPos) {
     dhead ("CDynamicString::Fill", DCON_CDynamicString);
     dparams ("%c,%x,%x,%s", fillChar, len, startPos, pntr);
     dassert (startPos <= GetLen());
-    tSize endPos = len + startPos;
+    tUInt endPos = len + startPos;
     if (endPos >= GetMaxSize()) {
         if (DynExpand (endPos + 1) == vFalse) {
             return vFalse;
@@ -215,11 +248,11 @@ tBool CDynamicString::Fill (const tStringChar fillChar, tSize len, tSize startPo
 /*===========================================================================*\
 \*===========================================================================*/
 
-tCompare CDynamicString::Compare (tString string, tSize len) {
+tCompare CDynamicString::Compare (tString string, tUInt len) {
     dhead ("CDynamicString::Compare", DCON_CDynamicString);
     dassert (string != 0);
     if (!len) {
-        len = s_strlen (string);
+        len = check_strlen (string);
     }
     tCompare cmp2;
     if (len == GetLen()) {
@@ -241,7 +274,7 @@ tCompare CDynamicString::Compare (tString string, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CDynamicString::Get (tString string, tSize len, tSize startPos) {
+void CDynamicString::Get (tString string, tUInt len, tUInt startPos) {
     dhead ("CDynamicString::Get", DCON_CDynamicString);
     dassert (string != 0);
     dassert (startPos <= GetLen());
@@ -254,40 +287,40 @@ void CDynamicString::Get (tString string, tSize len, tSize startPos) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tSize CDynamicString::FindChar (tStringChar ch, tSize startpos) {
+tUInt CDynamicString::FindChar (tStringChar ch, tUInt startpos) {
     dhead ("CDynamicString::FindChar", DCON_CDynamicString);
     for (; startpos < GetLen(); startpos++) {
         if (pntr[startpos] == ch) {
             RETURN ('x', startpos);
         }
     }
-    RETURN ('x', MAXVAL_tSize);
+    RETURN ('x', MAXVAL_tUInt);
 }
 
 /*===========================================================================*\
 \*===========================================================================*/
 
-tSize CDynamicString::FindLastChar (tStringChar ch) {
+tUInt CDynamicString::FindLastChar (tStringChar ch) {
     dhead ("CDynamicString::FindLastChar", DCON_CDynamicString);
-    tSize i = GetLen();
+    tUInt i = GetLen();
     while (i > 0) {
         if (pntr[--i] == ch) {
             RETURN ('x', i);
         }
     }
-    RETURN ('x', MAXVAL_tSize);
+    RETURN ('x', MAXVAL_tUInt);
 }
 
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CDynamicString::Remove (tSize startPos, tSize len) {
+void CDynamicString::Remove (tUInt startPos, tUInt len) {
     dhead ("CDynamicString::Remove", DCON_CDynamicString);
     dparams ("%x,%x,%x", startPos, len, GetLen());
     dassert (startPos <= GetLen());
     dassert (len <= GetLen());
     dassert (startPos + len <= GetLen());
-    tSize endPos = startPos + len;
+    tUInt endPos = startPos + len;
     if (endPos >= GetLen()) {
         SetLen (startPos);
     } else {
@@ -300,7 +333,7 @@ void CDynamicString::Remove (tSize startPos, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CDynamicString::RemoveChars (tString RemoveChars, tSize startPos, tSize len) {
+void CDynamicString::RemoveChars (tString RemoveChars, tUInt startPos, tUInt len) {
     dhead ("CDynamicString::RemoveChars", DCON_CDynamicString);
     if (startPos < GetLen()) {
         if (!len || (len + startPos > GetLen())) {
@@ -326,7 +359,7 @@ void CDynamicString::RemoveChars (tString RemoveChars, tSize startPos, tSize len
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Resize (tSize newMaxSize) {
+tBool CDynamicString::Resize (tUInt newMaxSize) {
     dhead ("CDynamicString::Resize", DCON_CDynamicString);
     dassert (GetLen() + 1 <= newMaxSize);
     tString delPntr = 0;
@@ -356,11 +389,11 @@ tSInt CDynamicString::i_vPrintAppend (const tFormatChar *format, va_list argptr,
     tFormatChar  localBuf[CSTRING_PRINT_BufferSize];    // Local internal buffer
     const tFormatChar *savepos = format;                   // Position of last "placeholder"
     tFormatChar *copyBuf    = &localBuf[0];             // Buffer that will be append to String
-    tSize        copyBufLen = 0;                        // Size of copyBuf
+    tUInt        copyBufLen = 0;                        // Size of copyBuf
     tUInt        PrtFlags   = 0;                        // Possible Flags for "placeholder"
     tUInt        PrtWidth   = 0;                        // Width of "placeholder"
     tSInt        PrtPreci   = -2;                       // Precision of "placeholder"
-    tSize        startLen   = GetLen();                 // Len of str before Print was executed
+    tUInt        startLen   = GetLen();                 // Len of str before Print was executed
 
     while (*format != 0) {
         if (PrtFlags) {
@@ -392,9 +425,9 @@ tSInt CDynamicString::i_vPrintAppend (const tFormatChar *format, va_list argptr,
                 PrtFlags |= PRINTFLAGS_SHORT;
                 break;
 
-	    case 'e':
-	        PrtFlags |= PRINTFLAGS_SHELLESCAPE;
-		break;
+            case 'e':
+                PrtFlags |= PRINTFLAGS_SHELLESCAPE;
+                break;
 
             /*----- WIDTH or PRECISION-----*/
             case '0':
@@ -529,11 +562,11 @@ tSInt CDynamicString::i_vPrintAppend (const tFormatChar *format, va_list argptr,
                 copyBuf = va_arg (argptr, tFormatChar *);
                 if (copyBuf) {
                     if (PrtFlags & PRINTFLAGS_LARGE) {
-                        copyBufLen = s_strlen ((tUWiChar *)copyBuf);
+                        copyBufLen = check_strlen ((tUWiChar *)copyBuf);
                     } else if (PrtFlags & PRINTFLAGS_SHORT) {
-                        copyBufLen = s_strlen ((tUChar *)copyBuf);
+                        copyBufLen = check_strlen ((tUChar *)copyBuf);
                     } else {
-                        copyBufLen = s_strlen (copyBuf);
+                        copyBufLen = check_strlen (copyBuf);
                     }
                 } else {
                     s_strncpy (localBuf, "[NULL]", 7);
@@ -574,7 +607,7 @@ tSInt CDynamicString::i_vPrintAppend (const tFormatChar *format, va_list argptr,
                 copyBuf = &localBuf[0];
                 //localBuf[CSTRING_PRINT_BufferSize-1] = '\0';
                 strncpy(copyBuf, savepos, CSTRING_PRINT_BufferSize);
-                copyBufLen = format - savepos + 1;
+                copyBufLen = (tUInt)(format - savepos + 1);
                 if (copyBufLen > CSTRING_PRINT_BufferSize)
                     copyBufLen = CSTRING_PRINT_BufferSize;
                 
@@ -592,113 +625,113 @@ tSInt CDynamicString::i_vPrintAppend (const tFormatChar *format, va_list argptr,
                         }
                         PrtWidth = 0;
                     }
-                    tSize endPos = curLen + copyBufLen;
-                    const tSize max_space_needed = endPos + ((PrtFlags & PRINTFLAGS_SHELLESCAPE) ? copyBufLen : 0);
+                    tUInt endPos = curLen + copyBufLen;
+                    const tUInt max_space_needed = endPos + ((PrtFlags & PRINTFLAGS_SHELLESCAPE) ? copyBufLen : 0);
                     if (max_space_needed >= GetMaxSize()) {
-			if (DynExpand (max_space_needed + 1) == vFalse) {
+                        if (DynExpand (max_space_needed + 1) == vFalse) {
                             RETURN ('x', CSTRING_PRINT_MemoryError);
                         }
                     }
                     dassert (max_space_needed < GetMaxSize());
                     dassert (pntr != 0);
-		    if (PrtFlags & PRINTFLAGS_SHELLESCAPE) {
-			const tChar * const c_bs = (tChar*) "\\";
-			const tChar * const c_0  = (tChar*) "\0";
-			const tChar * const c_dq = (tChar*) "\"";
-			const tChar * const c_d  = (tChar*) "$";
-			const tChar * const c_bq = (tChar*) "`";
-			const tChar * const c_qm = (tChar*) "?";
-			// Note that in this case, PrtWidth refers to the string _after_
-			// interpretation by /bin/sh, i.e. after the escaping is removed.
-			if (PrtFlags & PRINTFLAGS_STRINGTYPE) {
-			    const tStringChar *p = (tStringChar*)copyBuf;
-			    const tStringChar * const p_end = p + copyBufLen;
-			    for (;p < p_end; ++p) {
-				if (!s_strncmp(p,c_0,1)) {
-				    s_strncpy (pntr + curLen, c_qm, 1);
-				} else {
-				    if (!(s_strncmp(p,c_dq,1) &&
-					  s_strncmp(p,c_bs,1) &&
-					  s_strncmp(p,c_d ,1) &&
-					  s_strncmp(p,c_bq,1))) {
-					s_strncpy (pntr + curLen, c_bs, 1);
-					++curLen;
-					++endPos;
-				    }
-				    s_strncpy (pntr + curLen, p, 1);
-				}
-				++curLen;
-			    }
-			} else if (PrtFlags & PRINTFLAGS_LARGE) {
-			    const tUWiChar *p = (tUWiChar*)copyBuf;
-			    const tUWiChar * const p_end = p + copyBufLen;
-			    for (;p < p_end; ++p) {
-				if (!s_strncmp(p,c_0,1)) {
-				    s_strncpy (pntr + curLen, c_qm, 1);
-				} else {
-				    if (!(s_strncmp(p,c_dq,1) &&
-					  s_strncmp(p,c_bs,1) &&
-					  s_strncmp(p,c_d,1)  &&
-					  s_strncmp(p,c_bq,1))) {
-					s_strncpy (pntr + curLen, c_bs, 1);
-					++curLen;
-					++endPos;
-				    }
-				    s_strncpy (pntr + curLen, p, 1);
-				}
-				++curLen;
-			    }
-			} else if (PrtFlags & PRINTFLAGS_SHORT) {
-			    const tUChar *p = (tUChar*)copyBuf;
-			    const tUChar * const p_end = p + copyBufLen;
-			    for (;p < p_end; ++p) {
-				if (!s_strncmp(p,c_0,1)) {
-				    s_strncpy (pntr + curLen, c_qm, 1);
-				} else {
-				    if (!(s_strncmp(p,c_dq,1) &&
-					  s_strncmp(p,c_bs,1) &&
-					  s_strncmp(p,c_d,1)  &&
-					  s_strncmp(p,c_bq,1))) {
-					s_strncpy (pntr + curLen, c_bs, 1);
-					++curLen;
-					++endPos;
-				    }
-				    s_strncpy (pntr + curLen, p, 1);
-				}
-				++curLen;
-			    }
-			} else {
-			    dassert((sizeof(tChar))== (sizeof(tFormatChar)));
-			    const tChar *p = (tChar*)copyBuf;
-			    const tChar * const p_end = p + copyBufLen;
-			    for (;p < p_end; ++p) {
-				if (!s_strncmp(p,c_0,1)) {
-				    s_strncpy (pntr + curLen, c_qm, 1);
-				} else {
-				    if (!(s_strncmp(p,c_dq,1) &&
-					  s_strncmp(p,c_bs,1) &&
-					  s_strncmp(p,c_d,1)  &&
-					  s_strncmp(p,c_bq,1))) {
-					s_strncpy (pntr + curLen, c_bs, 1);
-					++curLen;
-					++endPos;
-				    }
-				    s_strncpy (pntr + curLen, p, 1);
-				}
-				++curLen;
-			    }
-			}
-		    } else {
-                    if (PrtFlags & PRINTFLAGS_STRINGTYPE) {
-                        s_strncpy (pntr + curLen, (tStringChar *)copyBuf, copyBufLen);
-                    } else if (PrtFlags & PRINTFLAGS_LARGE) {
-                        s_strncpy (pntr + curLen, (tUWiChar *)copyBuf, copyBufLen);
-                    } else if (PrtFlags & PRINTFLAGS_SHORT) {
-                        s_strncpy (pntr + curLen, (tUChar *)copyBuf, copyBufLen);
+                    if (PrtFlags & PRINTFLAGS_SHELLESCAPE) {
+                        const tChar * const c_bs = (tChar*) "\\";
+                        const tChar * const c_0  = (tChar*) "\0";
+                        const tChar * const c_dq = (tChar*) "\"";
+                        const tChar * const c_d  = (tChar*) "$";
+                        const tChar * const c_bq = (tChar*) "`";
+                        const tChar * const c_qm = (tChar*) "?";
+                        // Note that in this case, PrtWidth refers to the string _after_
+                        // interpretation by /bin/sh, i.e. after the escaping is removed.
+                        if (PrtFlags & PRINTFLAGS_STRINGTYPE) {
+                            const tStringChar *p = (tStringChar*)copyBuf;
+                            const tStringChar * const p_end = p + copyBufLen;
+                            for (;p < p_end; ++p) {
+                                if (!s_strncmp(p,c_0,1)) {
+                                    s_strncpy (pntr + curLen, c_qm, 1);
+                                } else {
+                                    if (!(s_strncmp(p,c_dq,1) &&
+                                          s_strncmp(p,c_bs,1) &&
+                                          s_strncmp(p,c_d ,1) &&
+                                          s_strncmp(p,c_bq,1))) {
+                                        s_strncpy (pntr + curLen, c_bs, 1);
+                                        ++curLen;
+                                        ++endPos;
+                                    }
+                                    s_strncpy (pntr + curLen, p, 1);
+                                }
+                                ++curLen;
+                            }
+                        } else if (PrtFlags & PRINTFLAGS_LARGE) {
+                            const tUWiChar *p = (tUWiChar*)copyBuf;
+                            const tUWiChar * const p_end = p + copyBufLen;
+                            for (;p < p_end; ++p) {
+                                if (!s_strncmp(p,c_0,1)) {
+                                    s_strncpy (pntr + curLen, c_qm, 1);
+                                } else {
+                                    if (!(s_strncmp(p,c_dq,1) &&
+                                          s_strncmp(p,c_bs,1) &&
+                                          s_strncmp(p,c_d,1)  &&
+                                          s_strncmp(p,c_bq,1))) {
+                                        s_strncpy (pntr + curLen, c_bs, 1);
+                                        ++curLen;
+                                        ++endPos;
+                                    }
+                                    s_strncpy (pntr + curLen, p, 1);
+                                }
+                                ++curLen;
+                            }
+                        } else if (PrtFlags & PRINTFLAGS_SHORT) {
+                            const tUChar *p = (tUChar*)copyBuf;
+                            const tUChar * const p_end = p + copyBufLen;
+                            for (;p < p_end; ++p) {
+                                if (!s_strncmp(p,c_0,1)) {
+                                    s_strncpy (pntr + curLen, c_qm, 1);
+                                } else {
+                                    if (!(s_strncmp(p,c_dq,1) &&
+                                          s_strncmp(p,c_bs,1) &&
+                                          s_strncmp(p,c_d,1)  &&
+                                          s_strncmp(p,c_bq,1))) {
+                                        s_strncpy (pntr + curLen, c_bs, 1);
+                                        ++curLen;
+                                        ++endPos;
+                                    }
+                                    s_strncpy (pntr + curLen, p, 1);
+                                }
+                                ++curLen;
+                            }
+                        } else {
+                            dassert((sizeof(tChar) == sizeof(tFormatChar)));
+                            const tChar *p = (tChar*)copyBuf;
+                            const tChar * const p_end = p + copyBufLen;
+                            for (;p < p_end; ++p) {
+                                if (!s_strncmp(p,c_0,1)) {
+                                    s_strncpy (pntr + curLen, c_qm, 1);
+                                } else {
+                                    if (!(s_strncmp(p,c_dq,1) &&
+                                          s_strncmp(p,c_bs,1) &&
+                                          s_strncmp(p,c_d,1)  &&
+                                          s_strncmp(p,c_bq,1))) {
+                                        s_strncpy (pntr + curLen, c_bs, 1);
+                                        ++curLen;
+                                        ++endPos;
+                                    }
+                                    s_strncpy (pntr + curLen, p, 1);
+                                }
+                                ++curLen;
+                            }
+                        }
                     } else {
-                        s_strncpy (pntr + curLen, copyBuf, copyBufLen);
+                        if (PrtFlags & PRINTFLAGS_STRINGTYPE) {
+                            s_strncpy (pntr + curLen, (tStringChar *)copyBuf, copyBufLen);
+                        } else if (PrtFlags & PRINTFLAGS_LARGE) {
+                            s_strncpy (pntr + curLen, (tUWiChar *)copyBuf, copyBufLen);
+                        } else if (PrtFlags & PRINTFLAGS_SHORT) {
+                            s_strncpy (pntr + curLen, (tUChar *)copyBuf, copyBufLen);
+                        } else {
+                            s_strncpy (pntr + curLen, copyBuf, copyBufLen);
+                        }
                     }
-		    }
                     pntr[endPos] = '\0';
                     curLen       = endPos;
                     if ((PrtWidth > copyBufLen) && (FillAppend (' ', PrtWidth - copyBufLen) == vFalse)) {
@@ -716,7 +749,7 @@ tSInt CDynamicString::i_vPrintAppend (const tFormatChar *format, va_list argptr,
             switch (*format) {
             case '%':
                 //ASSERT (PrtFlags == 0);
-                if ((format > savepos) && (Append (savepos, format - savepos) == vFalse)) {
+                if ((format > savepos) && (Append (savepos, (tUInt)(format - savepos)) == vFalse)) {
                     RETURN ('x', CSTRING_PRINT_MemoryError);
                 }
                 if (format[1] == '%') {
@@ -731,7 +764,7 @@ tSInt CDynamicString::i_vPrintAppend (const tFormatChar *format, va_list argptr,
             case '\n':
                 if ((tabsize > 0) && (tabchar > 0)) {
                     if (  (  (format > savepos)
-                          && (Append (savepos, format - savepos) == vFalse))
+                          && (Append (savepos, (tUInt)(format - savepos)) == vFalse))
                        || (FillAppend (tabchar, tabsize) == vFalse)) {
                         RETURN ('x', CSTRING_PRINT_MemoryError);
                     }
@@ -742,7 +775,7 @@ tSInt CDynamicString::i_vPrintAppend (const tFormatChar *format, va_list argptr,
         }
         format++;
     } //end: while
-    if ((format > savepos) && (Append (savepos, format - savepos) == vFalse)) {
+    if ((format > savepos) && (Append (savepos, (tUInt)(format - savepos)) == vFalse)) {
         RETURN ('x', CSTRING_PRINT_MemoryError);
     }
     dassert (GetLen() >= startLen);
@@ -771,8 +804,8 @@ tUInt CDynamicString::i_Print_ltoa (tFormatChar **pBuffer, tUInt64 value, tSByte
     tFormatChar *DigitForStrings = &LowDigitForStrings[0];
     tFormatChar *buffer          = *pBuffer + CSTRING_PRINT_BufferSize - 1;
     tFormatChar  prechar         = 0;
-    tSize        prelen          = 0;
-    tSize        bufpos          = 0;
+    tUInt        prelen          = 0;
+    tUInt        bufpos          = 0;
 
     if (Flags & PRINTFLAGS_PLUS) {
         prechar = '+';

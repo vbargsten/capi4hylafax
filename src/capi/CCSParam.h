@@ -361,17 +361,19 @@ private:
 
 class cp_addinfo : public CCStruct {
 public:
-    cp_addinfo (CCStruct *chinfo = 0, CCStruct *keyfac = 0, CCStruct *useruser = 0, CCStruct *facdata = 0)
+    cp_addinfo (CCStruct *chinfo = 0, CCStruct *keyfac = 0, CCStruct *useruser = 0, CCStruct *facdata = 0, CCStruct *sendcomp = 0)
       : CCStruct (cxt_AdditionalInfo, &pBChannelInformation, cxf_STRUCT cxf_STRUCT cxf_STRUCT cxf_STRUCT),
         pBChannelInformation (chinfo),
         pKeypadFacility (keyfac),
         pUserUserData (useruser),
-        pFacilityDataArray (facdata) {}
+        pFacilityDataArray (facdata),
+        pSendingComplete (sendcomp) {}
 
     CCStruct *pBChannelInformation;
     CCStruct *pKeypadFacility;
     CCStruct *pUserUserData;
     CCStruct *pFacilityDataArray;
+    CCStruct *pSendingComplete;
 };
 
 /*---------------------------------------------------------------------------*\
@@ -380,13 +382,14 @@ public:
 class cp_addinfo_store : public cp_addinfo {
 public:
     cp_addinfo_store (void)
-      : cp_addinfo (&m_BChannelInformation, &m_KeypadFacility, &m_UserUserData, &m_FacilityDataArray) {}
+      : cp_addinfo (&m_BChannelInformation, &m_KeypadFacility, &m_UserUserData, &m_FacilityDataArray, &m_SendingComplete) {}
 
 private:
     CCStructStore m_BChannelInformation;
     CCStructStore m_KeypadFacility;
     CCStructStore m_UserUserData;
     CCStructStore m_FacilityDataArray;
+    CCStructStore m_SendingComplete;
 };
 
 /*---------------------------------------------------------------------------*\
@@ -395,13 +398,14 @@ private:
 class cp_addinfo_ref : public cp_addinfo {
 public:
     cp_addinfo_ref (void)
-      : cp_addinfo (&m_BChannelInformation, &m_KeypadFacility, &m_UserUserData, &m_FacilityDataArray) {}
+      : cp_addinfo (&m_BChannelInformation, &m_KeypadFacility, &m_UserUserData, &m_FacilityDataArray, &m_SendingComplete) {}
 
 private:
     CCStruct m_BChannelInformation;
     CCStruct m_KeypadFacility;
     CCStruct m_UserUserData;
     CCStruct m_FacilityDataArray;
+    CCStruct m_SendingComplete;
 };
 
 

@@ -49,9 +49,9 @@ void InitPrctlDumpable (void) {
                 fprintf (stderr, "Error: PR_SET_DUMPABLE failed - %s (%d)\n", strerror(errno), errno);
             }
         } else if (prctl(PR_GET_DUMPABLE) != 0) {
-            //printf ("Info: programm will dump core if needed");
+            //printf ("Info: program will dump core if needed");
         } else {
-            fprintf (stderr, "Error: programm not dumpable after PR_SET_DUMPABLE :-(\n");
+            fprintf (stderr, "Error: program not dumpable after PR_SET_DUMPABLE :-(\n");
         }
     }
 }
