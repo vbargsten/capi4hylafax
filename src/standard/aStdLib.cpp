@@ -233,7 +233,7 @@ tUInt a_pointer2string (void *pointer, tChar *string) {
 
 tUInt a_pointer2string (void *pointer, tWiChar *string) {
     tULong    p   = (tULong) pointer;
-    tWiChar  *fmt = (sizeof (p) > 4) ? L"    .    :    .    " : L"    :    "; // must be symmetric!
+    const tWiChar  *fmt = (sizeof (p) > 4) ? L"    .    :    .    " : L"    :    "; // must be symmetric!
     unsigned i  = s_strlen (fmt);
 
     string[i] = '\0';
