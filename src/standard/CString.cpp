@@ -44,6 +44,9 @@
 #define PRINTFLAGS_NEAR             0x0400      // Placeholder is a NEAR-pointer
 #define PRINTFLAGS_QUESTION         0x0800      // Sizeof Char specified before string
 #define PRINTFLAGS_STRINGTYPE       0x1000      // Placeholder is a CDynamicString-Pointer
+#define PRINTFLAGS_SHELLESCAPE      0x2000      // The placeholder should be filled in with
+                                                // a string suitable for passing to /bin/sh
+                                                // between double quotes.
 
 /*===========================================================================*\
 \*===========================================================================*/
@@ -389,6 +392,10 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
                 PrtFlags |= PRINTFLAGS_SHORT;
                 break;
 
+	    case 'e':
+	        PrtFlags |= PRINTFLAGS_SHELLESCAPE;
+		break;
+
             /*----- WIDTH or PRECISION-----*/
             case '0':
                 if (PrtPreci == -2) {
@@ -580,13 +587,102 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
                         PrtWidth = 0;
                     }
                     tSize endPos = curLen + copyBufLen;
-                    if (endPos >= GetMaxSize()) {
-                        if (DynExpand (endPos + 1) == vFalse) {
+                    const tSize max_space_needed = endPos + ((PrtFlags & PRINTFLAGS_SHELLESCAPE) ? copyBufLen : 0);
+                    if (max_space_needed >= GetMaxSize()) {
+			if (DynExpand (max_space_needed + 1) == vFalse) {
                             RETURN ('x', CSTRING_PRINT_MemoryError);
                         }
                     }
-                    dassert (endPos < GetMaxSize());
+                    dassert (max_space_needed < GetMaxSize());
                     dassert (pntr != 0);
+		    if (PrtFlags & PRINTFLAGS_SHELLESCAPE) {
+			const tChar * const c_bs = (tChar*) "\\";
+			const tChar * const c_0  = (tChar*) "\0";
+			const tChar * const c_dq = (tChar*) "\"";
+			const tChar * const c_d  = (tChar*) "$";
+			const tChar * const c_bq = (tChar*) "`";
+			const tChar * const c_qm = (tChar*) "?";
+			// Note that in this case, PrtWidth refers to the string _after_
+			// interpretation by /bin/sh, i.e. after the escaping is removed.
+			if (PrtFlags & PRINTFLAGS_STRINGTYPE) {
+			    const tStringChar *p = (tStringChar*)copyBuf;
+			    const tStringChar * const p_end = p + copyBufLen;
+			    for (;p < p_end; ++p) {
+				if (!s_strncmp(p,c_0,1)) {
+				    s_strncpy (pntr + curLen, c_qm, 1);
+				} else {
+				    if (!(s_strncmp(p,c_dq,1) &&
+					  s_strncmp(p,c_bs,1) &&
+					  s_strncmp(p,c_d ,1) &&
+					  s_strncmp(p,c_bq,1))) {
+					s_strncpy (pntr + curLen, c_bs, 1);
+					++curLen;
+					++endPos;
+				    }
+				    s_strncpy (pntr + curLen, p, 1);
+				}
+				++curLen;
+			    }
+			} else if (PrtFlags & PRINTFLAGS_LARGE) {
+			    const tUWiChar *p = (tUWiChar*)copyBuf;
+			    const tUWiChar * const p_end = p + copyBufLen;
+			    for (;p < p_end; ++p) {
+				if (!s_strncmp(p,c_0,1)) {
+				    s_strncpy (pntr + curLen, c_qm, 1);
+				} else {
+				    if (!(s_strncmp(p,c_dq,1) &&
+					  s_strncmp(p,c_bs,1) &&
+					  s_strncmp(p,c_d,1)  &&
+					  s_strncmp(p,c_bq,1))) {
+					s_strncpy (pntr + curLen, c_bs, 1);
+					++curLen;
+					++endPos;
+				    }
+				    s_strncpy (pntr + curLen, p, 1);
+				}
+				++curLen;
+			    }
+			} else if (PrtFlags & PRINTFLAGS_SHORT) {
+			    const tUChar *p = (tUChar*)copyBuf;
+			    const tUChar * const p_end = p + copyBufLen;
+			    for (;p < p_end; ++p) {
+				if (!s_strncmp(p,c_0,1)) {
+				    s_strncpy (pntr + curLen, c_qm, 1);
+				} else {
+				    if (!(s_strncmp(p,c_dq,1) &&
+					  s_strncmp(p,c_bs,1) &&
+					  s_strncmp(p,c_d,1)  &&
+					  s_strncmp(p,c_bq,1))) {
+					s_strncpy (pntr + curLen, c_bs, 1);
+					++curLen;
+					++endPos;
+				    }
+				    s_strncpy (pntr + curLen, p, 1);
+				}
+				++curLen;
+			    }
+			} else {
+			    dassert((sizeof tChar)== (sizeof tFormatChar));
+			    const tChar *p = (tChar*)copyBuf;
+			    const tChar * const p_end = p + copyBufLen;
+			    for (;p < p_end; ++p) {
+				if (!s_strncmp(p,c_0,1)) {
+				    s_strncpy (pntr + curLen, c_qm, 1);
+				} else {
+				    if (!(s_strncmp(p,c_dq,1) &&
+					  s_strncmp(p,c_bs,1) &&
+					  s_strncmp(p,c_d,1)  &&
+					  s_strncmp(p,c_bq,1))) {
+					s_strncpy (pntr + curLen, c_bs, 1);
+					++curLen;
+					++endPos;
+				    }
+				    s_strncpy (pntr + curLen, p, 1);
+				}
+				++curLen;
+			    }
+			}
+		    } else {
                     if (PrtFlags & PRINTFLAGS_STRINGTYPE) {
                         s_strncpy (pntr + curLen, (tStringChar *)copyBuf, copyBufLen);
                     } else if (PrtFlags & PRINTFLAGS_LARGE) {
@@ -596,6 +692,7 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
                     } else {
                         s_strncpy (pntr + curLen, copyBuf, copyBufLen);
                     }
+		    }
                     pntr[endPos] = '\0';
                     curLen       = endPos;
                     if ((PrtWidth > copyBufLen) && (FillAppend (' ', PrtWidth - copyBufLen) == vFalse)) {

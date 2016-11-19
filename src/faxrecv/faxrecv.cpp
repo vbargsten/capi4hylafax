@@ -331,7 +331,7 @@ void CFaxReceive::IsDisconnected (c_info Reason) {
                 }
 
                 // Hylafax: <qfile> <ModemDeviceID> <CommID> <Reason> <CIDNumber> <CIDName> <destination>
-                executeCommand.PrintAppend (" \"%S\" \"%S\" \"%09u\" \"%s\" \"%S\" \"\" \"%S\"",
+                executeCommand.PrintAppend (" \"%eS\" \"%eS\" \"%09u\" \"%es\" \"%eS\" \"\" \"%eS\"",
                                             GetRecvFiles()->GetFirst(), &FaxDevice->DeviceName, jobNr,
                                             StateText, GetReceiveID(), &MyNumber);
                 WriteXferLog ("RECV", jobNr, 0, 0, (char *)FaxDevice->DeviceName.GetPointer(), 0,
@@ -361,14 +361,14 @@ void CFaxReceive::IsDisconnected (c_info Reason) {
                 }
 
                 executeCommand.PrintAppend (" %u 0x%X \"", recvStatus, Reason);
-                executeCommand.Append (GetReceiveID());
+                executeCommand.PrintAppend ("%eS", GetReceiveID());
                 executeCommand.Append ("\" \"");
                 if (!MyNumber.IsEmpty()) {
-                    executeCommand.Append (&MyNumber);
+                    executeCommand.PrintAppend ("%eS", &MyNumber);
                 }
                 executeCommand.PrintAppend ("\" %u", GetPageCount());
                 for (COneMultiString *pLauf = GetRecvFiles()->GetFirst(); (pLauf != 0); pLauf = pLauf->GetNext()) {
-                    executeCommand.PrintAppend (" \"%S\"", pLauf);
+                    executeCommand.PrintAppend (" \"%eS\"", pLauf);
                 }
             }
 
