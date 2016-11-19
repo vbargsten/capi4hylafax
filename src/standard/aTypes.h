@@ -24,8 +24,12 @@
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-#if !defined C_PLATFORM_64 && defined SIZEOF_VOID_P && (SIZEOF_VOID_P == 8)
+#if defined __WORDSIZE && (__WORDSIZE == 64)
 #define C_PLATFORM_64
+#else
+#if defined SIZEOF_VOID_P && (SIZEOF_VOID_P == 8)
+#define C_PLATFORM_64
+#endif
 #endif
 
 /*---------------------------------------------------------------------------*\
@@ -48,7 +52,7 @@ typedef unsigned short int uint16_t;
 typedef unsigned int       uint32_t;
 
 #ifdef __linux__
-    #if __WORDSIZE == 64
+    #ifdef C_PLATFORM_64
         typedef long int int64_t;
         typedef unsigned long int uint64_t;
     #else
