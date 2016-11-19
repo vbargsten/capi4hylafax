@@ -31,7 +31,7 @@ enum ConfigAssignment_Types {           // Data-Type
 };
 
 struct ConfigAssignment_Item {
-    char                  *Name;
+    const char            *Name;
     ConfigAssignment_Types Type;
     void                  *Data;
 };

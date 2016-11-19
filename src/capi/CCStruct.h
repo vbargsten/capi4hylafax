@@ -141,7 +141,7 @@ enum tCapiStructType {
 class CCStruct {
 public:
     CCStruct (tCapiStructType datatype = cxt_RawData);
-    CCStruct (const void *data, tUInt len, tCapiStructType datatype = cxt_RawData);
+    CCStruct (const void *data, tUInt len, const tCapiStructType datatype = cxt_RawData);
     virtual ~CCStruct (void);
     void Reset (void);
 
@@ -170,21 +170,21 @@ public:
     tCapiStructType GetClassType (void);
 
 protected:
-    CCStruct (void *data, tFormatChar *format);
-    CCStruct (tCapiStructType type, void *data, tUInt len, tFormatChar *format = cxf_CONST);
-    CCStruct (tCapiStructType type, void *data, tFormatChar *format);
+    CCStruct (void *data, const tFormatChar *format);
+    CCStruct (tCapiStructType type, void *data, tUInt len, const tFormatChar *format = cxf_CONST);
+    CCStruct (tCapiStructType type, void *data, const tFormatChar *format);
 
 private:
     void   FillData  (tUByte **ppBuffer);
     tSInfo ParseData (tUByte **ppBuffer, tUInt Len);
     tBool  Resize    (tUInt maxlen);
 
-    tCapiStructType m_ClassType;
-    tCapiStructType m_DataType;
-    tFormatChar    *m_Format;
-    tUInt           m_Len;
-    tUInt           m_MaxLen;
-    tUByte         *m_pData;
+    tCapiStructType       m_ClassType;
+    tCapiStructType       m_DataType;
+    const tFormatChar    *m_Format;
+    tUInt                 m_Len;
+    tUInt                 m_MaxLen;
+    tUByte               *m_pData;
 };
 
 
@@ -219,7 +219,7 @@ inline CCStruct::CCStruct (const void *data, tUInt len, tCapiStructType datatype
     m_pData ((tUByte *)data) {
 }
 
-inline CCStruct::CCStruct (void *data, tFormatChar *format)
+inline CCStruct::CCStruct (void *data, const tFormatChar *format)
   : m_ClassType (cxt_StructData),
     m_DataType (cxt_StructData),
     m_Format (format),
@@ -228,7 +228,7 @@ inline CCStruct::CCStruct (void *data, tFormatChar *format)
     m_pData ((tUByte *)data) {
 }
 
-inline CCStruct::CCStruct (tCapiStructType type, void *data, tUInt len, tFormatChar *format)
+inline CCStruct::CCStruct (tCapiStructType type, void *data, tUInt len, const tFormatChar *format)
   : m_ClassType (type),
     m_DataType (type),
     m_Format (format),
@@ -239,7 +239,7 @@ inline CCStruct::CCStruct (tCapiStructType type, void *data, tUInt len, tFormatC
     // dassert (type != cxt_RawData);
 }
 
-inline CCStruct::CCStruct (tCapiStructType type, void *data, tFormatChar *format)
+inline CCStruct::CCStruct (tCapiStructType type, void *data, const tFormatChar *format)
   : m_ClassType (type),
     m_DataType (type),
     m_Format (format),

@@ -41,7 +41,7 @@
 
 void fmtTime (CDynamicString *pString, time_t t) {
     time_t v;
-    char  *fmt = "%u:%02u";
+    const char  *fmt = "%u:%02u";
     if (t < 0) {
         pString->Append ("0:00", 4);
     } else if (t > 99*60*60) {
@@ -164,7 +164,7 @@ void CBasicFaxConversion::ConnectLog (cp_ncpi_all *pNCPI) {
 \*===========================================================================*/
 
 void CBasicFaxConversion::WriteXferLog (const char *cmd, tUInt commid, tUChar *jobtag, tUInt *pJobid, char *devname,
-                                        CDynamicString *pUser, CDynamicString *pDestination, char *statustext) {
+                                        CDynamicString *pUser, CDynamicString *pDestination, const char *statustext) {
     dhead ("CBasicFaxConversion::WriteXferLog", DCON_CBasicFaxConversion);
     dassert (cmd != 0);
     dassert (devname != 0);
@@ -174,7 +174,7 @@ void CBasicFaxConversion::WriteXferLog (const char *cmd, tUInt commid, tUChar *j
         return;
     }
     char buf[80];
-    char *timestrf = "%D %H:%M";
+    const char *timestrf = "%D %H:%M";
     strftime (buf, sizeof (buf), timestrf, localtime (&m_StartTime));
     CDynamicString xferline (200);
     xferline.Print ("%s\t%s\t%09u\t%s", buf, cmd, commid, devname);
@@ -253,7 +253,7 @@ tSInfo CBasicFaxConversion::OpenSend (CMultiString *pSendFileList, tUInt Resolut
     m_StopTime            = m_StartTime;
     m_ConnectStartTime    = 0;
     m_BaudRate            = 0;
-    char *ModeText        = "SFF";
+    const char *ModeText        = "SFF";
     switch (m_format) {
     default:
         dassert (0);

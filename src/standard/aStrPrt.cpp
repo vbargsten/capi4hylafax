@@ -127,10 +127,12 @@ tSInt a_vsnprintf_tab (char *buffer, tUInt maxcount, const char *format, va_list
     tSInt PrtPreci   = -2;          // Precision of "placeholder"
     tUInt PrtValue   = 0;           // Returnvalue of convert function
     const char *savepos    = format;
-    char *argchar    = 0;
+    char  argchar[255]    = "";
     char  tabchar    = ' ';
     tUInt count      = maxcount;    // free place in buffer
     tUInt ErrorFound = 0;
+
+    char * va_arg_res = NULL;
 
     while ((count > 1) && (*format != 0) && (!ErrorFound)) {
         if (PrtFlags) {
@@ -196,10 +198,10 @@ tSInt a_vsnprintf_tab (char *buffer, tUInt maxcount, const char *format, va_list
             /*----- TYPE -----*/
             case 'b':
                 if ((char)va_arg (argptr, int)) {
-                    argchar = "TRUE";
+                    strncpy(argchar, "TRUE", sizeof(argchar));
                     PrtValue = 4;
                 } else {
-                    argchar = "FALSE";
+                    strncpy(argchar, "FALSE", sizeof(argchar));
                     PrtValue = 5;
                 }
                 if (PrtPreci == 1) {
@@ -282,10 +284,15 @@ tSInt a_vsnprintf_tab (char *buffer, tUInt maxcount, const char *format, va_list
                 if ((PrtFlags & PRINTFLAGS_QUESTION) && (va_arg (argptr, tUInt) > 1)) {
                     PrtFlags |= PRINTFLAGS_LARGE;
                 }
-                argchar = va_arg (argptr, char *);
-                if (!argchar) {
-                    PrtFlags &= ~PRINTFLAGS_LARGE;  // remove LARGE-FLAG
-                    argchar = "[NULL]";
+
+                va_arg_res = va_arg (argptr, char *);
+                
+                if (!va_arg_res) {
+                    PrtFlags &= ~PRINTFLAGS_LARGE;  // remove LARGE-FLAG    
+                    strncpy(argchar, "[NULL]", sizeof(argchar));
+                } else {
+                    strncpy(argchar, va_arg_res, sizeof(argchar));
+                    argchar[sizeof(argchar)-1] = '\0';
                 }
                 if (PrtFlags & PRINTFLAGS_LARGE) {
                     PrtValue = 0;

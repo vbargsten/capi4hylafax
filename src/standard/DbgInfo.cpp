@@ -22,6 +22,7 @@
 #include "aStrPrt.h"
 #include "aString.h"
 #include "ExtFuncs.h"
+#include <stdlib.h>
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
@@ -47,7 +48,7 @@ void dActivateBreakPoint (tBool activate) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void dwriteErr (unsigned DL, char *format, ...) {
+void dwriteErr (unsigned DL, const char *format, ...) {
     if (DL >= Dbg_Level_Errors) {
         char string[dwrite_MAX_CHAR_LENGTH];
         va_list param;
@@ -60,7 +61,7 @@ void dwriteErr (unsigned DL, char *format, ...) {
     }
 }
 
-void dwriteWrn (unsigned DL, char *format, ...) {
+void dwriteWrn (unsigned DL, const char *format, ...) {
     if (DL >= Dbg_Level_Infos) {
         char string[dwrite_MAX_CHAR_LENGTH];
         va_list param;
@@ -73,7 +74,7 @@ void dwriteWrn (unsigned DL, char *format, ...) {
     }
 }
 
-void dwriteLog (unsigned DL, char *format, ...) {
+void dwriteLog (unsigned DL, const char *format, ...) {
     if (DL >= Dbg_Level_Logs) {
         char string[dwrite_MAX_CHAR_LENGTH];
         va_list param;
@@ -86,7 +87,7 @@ void dwriteLog (unsigned DL, char *format, ...) {
     }
 }
 
-void dwriteS (unsigned DL, char *format, ...) {
+void dwriteS (unsigned DL, const char *format, ...) {
     if (DL >= Dbg_Level_Short) {
         char string[dwrite_MAX_CHAR_LENGTH];
         va_list param;
@@ -99,7 +100,7 @@ void dwriteS (unsigned DL, char *format, ...) {
     }
 }
 
-void dwriteE (unsigned DL, char *format, ...) {
+void dwriteE (unsigned DL, const char *format, ...) {
     if (DL >= Dbg_Level_Entry) {
         char string[dwrite_MAX_CHAR_LENGTH];
         va_list param;
@@ -112,7 +113,7 @@ void dwriteE (unsigned DL, char *format, ...) {
     }
 }
 
-void dwriteI (unsigned DL, char *format, ...) {
+void dwriteI (unsigned DL, const char *format, ...) {
     if (DL >= Dbg_Level_Internal) {
         char string[dwrite_MAX_CHAR_LENGTH];
         va_list param;
@@ -238,22 +239,38 @@ static unsigned IndentSpaces = 0;
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-CDebugInfo::CDebugInfo(char *FuncName, unsigned DebugLevel, unsigned PrintLevel,
-                       char *_FileName, unsigned _LineNumber) {
+CDebugInfo::CDebugInfo(const char *FuncName, unsigned DebugLevel, unsigned PrintLevel,
+                       const char *_FileName, unsigned _LineNumber) {
     RetValue.format = 0;
     debuglevel = DebugLevel;
+    filename = NULL;
+    
     if (DebugLevel > Dbg_Level_Nothing) {
         spaces        = IndentSpaces;
         IndentSpaces += DEBUG_INDENT_WIDTH;
         name          = FuncName;
         linenumber    = _LineNumber;
         printlevel    = PrintLevel;
-        filename      = _FileName;
-        for (; *_FileName != '\0'; _FileName++) {
-            if ((*_FileName == '\\') || (*_FileName == '/')) {
-                filename = _FileName + 1;
+        //filename      = _FileName;
+        
+        unsigned int filenameLength = 0;
+        unsigned int pathLength = 0;
+        const char * curFileNameChar = _FileName;
+        
+        for (; *curFileNameChar != '\0'; curFileNameChar++) {
+            if ((*curFileNameChar == '\\') || (*curFileNameChar == '/')) {
+                //filename = _FileName + 1;
+                filenameLength = 0;
+            } else {
+                ++filenameLength;
             }
+            ++pathLength;
         }
+        
+        filename = (char *) malloc(filenameLength + 1);
+        s_strcpy(filename, _FileName+pathLength-filenameLength);
+    
+        
         if (printlevel & Prt_Level_NameAtFuncStart) {
             if (debuglevel == Dbg_Level_Short) {
                 RememberOutput (NAMEFORSHORT_BEGIN "%s%s", DbgIPrintLinePrefix, name);
@@ -271,7 +288,7 @@ CDebugInfo::CDebugInfo(char *FuncName, unsigned DebugLevel, unsigned PrintLevel,
         }
     } else {
         name       = 0;
-        filename   = 0;
+        //filename   = 0;
         linenumber = 0;
         printlevel = 0;
         spaces     = 0;
@@ -308,7 +325,8 @@ CDebugInfo::~CDebugInfo (void) {
 
     /*----- Speicherplatz aufräumen -----*/
     name = 0;
-    filename = 0;
+    //filename = 0;
+    free(filename);
     linenumber = 0;
     debuglevel = printlevel = 0;
     spaces = 0;

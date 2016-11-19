@@ -104,6 +104,22 @@ private:
         tUInt   DSL_Speed;
         tUByte  DSL_MACAddress [6];
         tUByte  DSL_Retries;
+    
+        ctIntCntrlData() : 
+           NumBChannels(0),
+           GlobalOptions(0),
+           B1ProtocolSupport(0),
+           B2ProtocolSupport(0),
+           B3ProtocolSupport(0),
+           SupplServices(0),
+           DSL_ModemState(0),
+           DSL_Speed(0),
+           DSL_Retries(0) {
+            for (unsigned int i=0; i<6; i++) {
+                DSL_MACAddress[i] = 0;
+            }        
+        }
+    
     };
     struct ctIntCapiData {
         c_info          CapiInstalled;

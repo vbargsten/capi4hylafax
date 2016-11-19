@@ -36,7 +36,7 @@ public:
     virtual ~CBasicFaxConversion (void);
     void ConnectLog (cp_ncpi_all *pNCPI);
     void WriteXferLog (const char *cmd, tUInt commid, tUChar *jobtag, tUInt *pJobid, char *devname,
-                       CDynamicString *pUser, CDynamicString *pDestination, char *statustext);
+                       CDynamicString *pUser, CDynamicString *pDestination, const char *statustext);
 
     tSInfo OpenSend (CMultiString *pSendFileList, tUInt Resolution);
     void StopSend (void);
@@ -69,7 +69,7 @@ public:
     time_t GetStartTime (void);
 
     virtual void PageEndReached (tBool IsLastPage) = 0;
-    virtual void WriteLog (tSInt /*priority*/, char * /*text*/, ...) {}
+    virtual void WriteLog (tSInt /*priority*/, const char * /*text*/, ...) {}
     virtual tUInt GetRecvFileMode (void) { return DEFAULT_FILE_MODE; }
     virtual CDynamicString *GetSpoolDir (void) { return 0; }
 

@@ -69,16 +69,16 @@ CFaxReceiveMain::CFaxReceiveMain (void)
 
 CFaxReceiveMain::~CFaxReceiveMain (void) {
     dhead ("CFaxReceiveMain-Destructor", DCON_CFaxReceiveMain);
-    if (hLogFile > 0) {
+    if (hLogFile != NULL) {
         fclose (hLogFile);
-        hLogFile = 0;
+        hLogFile = NULL;
     }
 }
 
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CFaxReceiveMain::WriteLog (tSInt priority, char *text, ...) {
+void CFaxReceiveMain::WriteLog (tSInt priority, const char *text, ...) {
     dhead ("CFaxReceiveMain::WriteLog", DCON_CFaxReceiveMain);
     va_list params;
     va_start (params, text);
@@ -89,9 +89,9 @@ void CFaxReceiveMain::WriteLog (tSInt priority, char *text, ...) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CFaxReceiveMain::vWriteLog (tSInt priority, char *text, va_list params) {
+void CFaxReceiveMain::vWriteLog (tSInt priority, const char *text, va_list params) {
     dhead ("CFaxReceiveMain::vWriteLog", DCON_CFaxReceiveMain);
-    char   *statusText = 0;
+    const char   *statusText = NULL;
     char    timebuf[MAX_STRING_SIZE];
     va_list lparams;
     timeval tv;
@@ -323,7 +323,7 @@ tBool CFaxReceiveMain::StartReceive (void) {
                   "The directory is missing or inaccessible.\n", SpoolDir.GetPointer());
         return vFalse;
     }
-    char *ModeText = "Hylafax";
+    const char *ModeText = "Hylafax";
     switch (format) {
     case FaxFormat_TIFF:
         ModeText = "TIFF";
@@ -527,7 +527,7 @@ void CFaxReceiveMain::usage (void) {
 
 tSInt CFaxReceiveMain::main (tSInt argc, char **argv) {
     dhead ("CFaxReceive::main", DCON_CFaxReceiveMain);
-    char *deviceName  = DEFAULT_DEVICE_NAME;
+    char deviceName[255]  = DEFAULT_DEVICE_NAME;
     char *cl_spooldir = 0;
     int   ch;
 
@@ -593,11 +593,13 @@ tSInt CFaxReceiveMain::main (tSInt argc, char **argv) {
     }
     dprint ("%x,%x-", optind, argc);
     if (optind < argc) {
-        deviceName = strrchr (argv[optind], '/');
-        if (deviceName) {
-            deviceName++;
+        char * deviceName_in = strrchr (argv[optind], '/');
+        if (deviceName_in) {
+            deviceName_in++;
+            strncpy(deviceName, deviceName_in, sizeof(deviceName));
         } else {
-            deviceName = argv[optind];
+            //deviceName = argv[optind];
+            strncpy(deviceName, argv[optind], sizeof(deviceName));
         }
     }
     if (!configName) {

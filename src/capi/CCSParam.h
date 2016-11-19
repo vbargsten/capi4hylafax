@@ -175,7 +175,7 @@ private:
 
 class cp_b1configuration : public CCStruct {
 protected:
-    cp_b1configuration (tCapiStructType type, void *data, tFormatChar *format)
+    cp_b1configuration (tCapiStructType type, void *data, const tFormatChar *format)
       : CCStruct (type, data, format) {}
 };
 
@@ -262,7 +262,7 @@ private:
 
 class cp_b3configuration : public CCStruct {
 protected:
-    cp_b3configuration (void *data, tFormatChar *format)
+    cp_b3configuration (void *data, const tFormatChar *format)
       : CCStruct (cxt_B1Config, data, format) {}
 };
 
@@ -410,7 +410,7 @@ private:
 
 class cp_ncpi : public CCStruct {
 protected:
-    cp_ncpi (void *data, tFormatChar *format)
+    cp_ncpi (void *data, const tFormatChar *format)
       : CCStruct (cxt_Ncpi, data, format) {}
 };
 

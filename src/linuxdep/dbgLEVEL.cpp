@@ -72,14 +72,14 @@ tUInt DCON_Eventing                 = Dbg_Level_Infos;
 /*===========================================================================*\
 \*===========================================================================*/
 
-char    *DbgIPrintLinePrefix    = "";
+const char *DbgIPrintLinePrefix = "";
 unsigned DbgIPrintLinePrefixLen = 0;
 
 #if defined (DCON_FILE_NAME) && (USE_DCON_INFO_CLASS > 0)
 
 #include "DbgFile.h"
 
-void DbgIPrintStr (char *output) {
+void DbgIPrintStr (const char *output) {
     DebugFilePrint (output);
 }
 
@@ -87,7 +87,7 @@ void DbgIPrintStr (char *output) {
 
 #include <stdio.h>
 
-void DbgIPrintStr (char *output) {
+void DbgIPrintStr (const char *output) {
     puts (output);
 }
 

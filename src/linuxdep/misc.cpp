@@ -110,7 +110,7 @@ tBool runCmd (char* cmd, bool changeIDs) {
 \*---------------------------------------------------------------------------*/
 
 const char *DataFormat2str (tUInt DataFormat) {
-    char *t;
+    const char *t;
     switch (DataFormat) {
     case 0:
         t = "SFF";

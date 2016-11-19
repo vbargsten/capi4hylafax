@@ -31,18 +31,18 @@
 class CPathName : public CDynamicString {
 public:
     CPathName (void);
-    CPathName (tFormatChar *GlobalPathName);
+    CPathName (const tFormatChar *GlobalPathName);
     CPathName (CDynamicString *GlobalPathName);
 
     tBool SetGlobal (CDynamicString *PathName);
-    tBool SetGlobal (tFormatChar *PathName, tSize len = 0);
+    tBool SetGlobal (const tFormatChar *PathName, tSize len = 0);
     tBool SetRelative (CDynamicString *RelPathName);
-    tBool SetRelative (tFormatChar *RelPathName, tSize len = 0);
+    tBool SetRelative (const tFormatChar *RelPathName, tSize len = 0);
 
     tUInt UpperPath (tUInt levels = 1);
     // return: the remaining levels (=> 0 always means success)
 
-    void SetDelimiter (tChar delimiter);
+    void SetDelimiter (const tChar delimiter);
 
 private:
     tChar m_Delimiter;
@@ -57,7 +57,7 @@ inline CPathName::CPathName (void)
   : m_Delimiter (CPATHNAME_DELIMITER) {
 }
 
-inline CPathName::CPathName (tFormatChar *GlobalPathName)
+inline CPathName::CPathName (const tFormatChar *GlobalPathName)
   : CDynamicString (GlobalPathName),
     m_Delimiter (CPATHNAME_DELIMITER) {
 }
@@ -71,7 +71,7 @@ inline tBool CPathName::SetGlobal (CDynamicString *PathName) {
     return Set (PathName);
 }
 
-inline tBool CPathName::SetGlobal (tFormatChar *PathName, tSize len) {
+inline tBool CPathName::SetGlobal (const tFormatChar *PathName, tSize len) {
     return Set (PathName, len);
 }
 
@@ -91,7 +91,7 @@ inline tBool CPathName::SetRelative (CDynamicString *RelPathName) {
     return Append (RelPathName);
 }
 
-inline tBool CPathName::SetRelative (tFormatChar *RelPathName, tSize len) {
+inline tBool CPathName::SetRelative (const tFormatChar *RelPathName, tSize len) {
     //dassert (RelPathName != 0);
     if (IsEmpty() == vFalse) {
         if (GetLastChar() == m_Delimiter) {
@@ -118,7 +118,7 @@ inline tUInt CPathName::UpperPath (tUInt levels) {
     return levels;
 }
 
-inline void CPathName::SetDelimiter (tChar delimiter) {
+inline void CPathName::SetDelimiter (const tChar delimiter) {
     m_Delimiter = delimiter;
 }
 

@@ -43,13 +43,13 @@ public:
     tBool RecreateFIFO (void);
     tSInt GetFIFOHandle (void);
     void FIFOchanged (void);
-    tBool NotifyFIFO (tBool Receive, char Type, char *Data);
-    tBool NotifyFIFO (char Type);
+    tBool NotifyFIFO (tBool Receive, const char Type, const char *Data);
+    tBool NotifyFIFO (const char Type);
 
     // write functions
-    void WriteLog (tSInt priority, char *text, ...);
-    void vWriteLog (tSInt priority, char *text, va_list args);
-    void WriteStatus (char *text);
+    void WriteLog (tSInt priority, const char *text, ...);
+    void vWriteLog (tSInt priority, const char *text, va_list args);
+    void WriteStatus (const char *text);
 
     CDynamicString   DeviceName;
     CFaxReceiveMain *MainClass;

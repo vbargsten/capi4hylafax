@@ -74,7 +74,7 @@ CFaxReceive::CFaxReceive (CFaxReceiveDevice *FaxRecvDevice, FaxFormatType faxtyp
 CFaxReceive::~CFaxReceive (void) {
     dhead ("CFaxReceive - Destructor", DCON_CFaxReceive);
     CloseRecv();
-    if (hJobFile > 0) {
+    if (hJobFile != NULL) {
         fclose (hJobFile);
         hJobFile = 0;
     }
@@ -306,7 +306,7 @@ void CFaxReceive::IsDisconnected (c_info Reason) {
         if (FaxDevice->MainClass->FaxRcvdCmd.IsEmpty() == vFalse) {
             CDynamicString executeCommand;
             executeCommand.Set (&FaxDevice->MainClass->FaxRcvdCmd);
-            char *StateText = "";
+            const char *StateText = "";
 
             if (GetFormat() == FaxFormat_Hylafax) {
                 switch (GetRecvState()) {
@@ -390,10 +390,10 @@ void CFaxReceive::IsDisconnected (c_info Reason) {
         GetRecvFiles()->RemoveAndDeleteAll();
     }
     WriteLog (LOG_INFO, "Connection is droped with reason 0x%X (%s).\n", Reason, capi_info2str (Reason));
-    if (hJobFile > 0) {
+    if (hJobFile != NULL) {
         WriteLog (LOG_INFO, "SESSION END\n");
         fclose (hJobFile);
-        hJobFile = 0;
+        hJobFile = NULL;
     }
     jobNr       = 0;
     ONumber.RemoveAll();
@@ -430,7 +430,7 @@ void CFaxReceive::PageEndReached (tBool /*IsLastPage*/) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CFaxReceive::WriteLog (tSInt priority, char *text, ...) {
+void CFaxReceive::WriteLog (tSInt priority, const char *text, ...) {
     dhead ("CFaxReceive::WriteLog", DCON_CFaxReceive);
     char    timebuf[MAX_STRING_SIZE];
     timeval tv;

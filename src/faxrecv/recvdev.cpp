@@ -421,7 +421,7 @@ void CFaxReceiveDevice::FIFOchanged (void) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CFaxReceiveDevice::NotifyFIFO (tBool Receive, char Type, char *Data) {
+tBool CFaxReceiveDevice::NotifyFIFO (tBool Receive, const char Type, const char *Data) {
     dhead ("CFaxReceiveDevice::NotifyFIFO", DCON_CFaxReceive);
     tBool fret = vFalse;
     if (format != FaxFormat_Hylafax) {
@@ -455,10 +455,10 @@ tBool CFaxReceiveDevice::NotifyFIFO (char Type) {
         return vTrue;
     }
     tBool  recv = vFalse;
-    char  *text = 0;
+    const char  *text = 0;
     switch (Type) {
     case 'N':
-        text = (char *)FaxNumber.GetPointer();
+        text = (const char *)FaxNumber.GetPointer();
         break;
     case 'R':
         recv = vFalse;
@@ -478,7 +478,7 @@ tBool CFaxReceiveDevice::NotifyFIFO (char Type) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CFaxReceiveDevice::WriteLog (tSInt priority, char *text, ...) {
+void CFaxReceiveDevice::WriteLog (tSInt priority, const char *text, ...) {
     dhead ("CFaxReceiveDevice::WriteLog", DCON_CFaxReceive);
     va_list params;
     va_start (params, text);
@@ -489,7 +489,7 @@ void CFaxReceiveDevice::WriteLog (tSInt priority, char *text, ...) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CFaxReceiveDevice::vWriteLog (tSInt priority, char *text, va_list args) {
+void CFaxReceiveDevice::vWriteLog (tSInt priority, const char *text, va_list args) {
     dhead ("CFaxReceiveDevice::WriteLog", DCON_CFaxReceive);
     MainClass->vWriteLog (priority, text, args);
 }
@@ -497,7 +497,7 @@ void CFaxReceiveDevice::vWriteLog (tSInt priority, char *text, va_list args) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CFaxReceiveDevice::WriteStatus (char *text) {
+void CFaxReceiveDevice::WriteStatus (const char *text) {
     dhead ("CFaxReceiveDevice::WriteStatus", DCON_CFaxReceive);
     if (hStatusFile == 0) {
         return;

@@ -25,7 +25,7 @@
 \*===========================================================================*/
 
 static tUChar *DbgStrCapiCommand (c_byte Command, c_byte SubCommand) {
-    char *fret;
+    const char *fret;
     switch (SubCommand) {
     case CAPI_REQ:
         switch (Command) {

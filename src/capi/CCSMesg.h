@@ -43,10 +43,10 @@ struct cm_getprofile {
 
 class cm_messagebody : public CCStruct {
 protected:
-    cm_messagebody (tCapiStructType type, void *data, tUInt len, tFormatChar *format)
+    cm_messagebody (tCapiStructType type, void *data, tUInt len, const tFormatChar *format)
       : CCStruct (type, data, len, format) {}
 
-    cm_messagebody (tCapiStructType type, void *data, tFormatChar *format)
+    cm_messagebody (tCapiStructType type, void *data, const tFormatChar *format)
       : CCStruct (type, data, format) {}
 };
 

@@ -47,7 +47,7 @@ static void FinishFunc (void) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-static void WriteQFile (tChar *QFileName, tUInt commID, tUInt HylafaxExitState, CFaxSend *fs, char **statustext) {
+static void WriteQFile (tChar *QFileName, tUInt commID, tUInt HylafaxExitState, CFaxSend *fs, const char **statustext) {
     dhead ("WriteQFile", DCON_CFaxSend);
     dassert (QFileName != 0);
     CDynamicQueue textQ (60, sizeof (char *));
@@ -240,7 +240,7 @@ static void OneQFileSend (CFaxSend *pFS, char *deviceName, CDynamicString *pQFil
     tUInt             JobID         = 0;
     tUInt             commID        = 0;
     tUInt             HylaExitState = 1;
-    char             *statustext;
+    const char             *statustext;
     CConfigFileParser FileParser;
     switch (FileParser.ParseFile (pQFile->GetPointer())) {
     case iErr_File_OpenFailed:
@@ -404,8 +404,8 @@ int main (int argc, char **argv) {
     CDynamicString PollStr;
     FaxFormatType  format     = FaxFormat_Hylafax;
     tUInt          Resolution = 0;
-    char          *deviceName = DEFAULT_DEVICE_NAME;
-    char          *configName = 0;
+    char           deviceName[255] = DEFAULT_DEVICE_NAME;
+    char           configName[255] = DEFAULT_CONFIG_FILE;
     int            ch;
 
     // find device name
@@ -428,7 +428,13 @@ int main (int argc, char **argv) {
             break;
         case 'C':
             if (optarg && *optarg) {
-                configName = optarg;
+                //configName = optarg;
+                if (strlen(optarg) > sizeof(configName)-1) {
+                    printf("configName too long.");
+                    return 13;
+                }
+                
+                strncpy(configName, optarg, sizeof(configName)-1);
             }
             break;
         case 'd':
@@ -438,7 +444,12 @@ int main (int argc, char **argv) {
             break;
         case 'm':
             if (optarg && *optarg) {
-                deviceName = optarg;
+                if (strlen(optarg) > sizeof(deviceName)-1) {
+                    printf("deviceName too long.");
+                    return 13;
+                }
+                //deviceName = optarg;
+                strncpy(deviceName, optarg, sizeof(deviceName)-1);
             }
             break;
         case 'P':
@@ -466,9 +477,15 @@ int main (int argc, char **argv) {
             break;
         }
     }
-    if (!configName) {
-        configName = DEFAULT_CONFIG_FILE;
-    }
+    /*if (strlen(configName) < 1) {
+        if (strlen(DEFAULT_CONFIG_FILE) > sizeof(configName)-1) {
+            printf("default configName too long.");
+            return 13;
+        }
+  
+        strncpy(configName, DEFAULT_CONFIG_FILE, sizeof(configName)-1);
+        //configName = DEFAULT_CONFIG_FILE;
+    }*/
     if ((optind >= argc) && (PollStr.IsEmpty() == vTrue)) {
         printf ("No fax file specified!\n");
         return 1;

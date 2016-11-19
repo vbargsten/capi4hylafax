@@ -86,12 +86,12 @@ void dActivateBreakPoint (tBool activate);
 
 #else
 
-void dwriteErr (unsigned DL, char *format, ...);      // Logs
-void dwriteWrn (unsigned DL, char *format, ...);      // Logs
-void dwriteLog (unsigned DL, char *format, ...);      // Logs
-void dwriteS   (unsigned DL, char *format, ...);      // Short
-void dwriteE   (unsigned DL, char *format, ...);      // Entry
-void dwriteI   (unsigned DL, char *format, ...);      // Internal
+void dwriteErr (unsigned DL, const char *format, ...);      // Logs
+void dwriteWrn (unsigned DL, const char *format, ...);      // Logs
+void dwriteLog (unsigned DL, const char *format, ...);      // Logs
+void dwriteS   (unsigned DL, const char *format, ...);      // Short
+void dwriteE   (unsigned DL, const char *format, ...);      // Entry
+void dwriteI   (unsigned DL, const char *format, ...);      // Internal
 
 #endif
 
@@ -135,17 +135,17 @@ void dwriteI   (unsigned DL, char *format, ...);      // Internal
     TODO: noch nicht vollständig implementiert!!!!!
 \*---------------------------------------------------------------------------*/
 
-#define dhead(name, DL)             char *_CDI_Object_Name  = (name);               \
+#define dhead(name, DL)             const char *_CDI_Object_Name  = (const char *)(name);               \
                                     tUInt _CDI_Object_Level = (DL);                 \
-                                    if (_CDI_Object_Level >= Dbg_Level_Short) {     \
+                                    if (_CDI_Object_Level => Dbg_Level_Short) {     \
                                         DbgIPrintFull (NAMEATFUNCSTART_BEGIN "%s%s" \
                                                        NAMEATFUNCSTART_END,         \
                                                        DbgIPrintLinePrefix,         \
                                                        _CDI_Object_Name);           \
                                     }
-#define dheadP(name, DL, PL)        char *_CDI_Object_Name = (name);                \
+#define dheadP(name, DL, PL)        const char *_CDI_Object_Name = (const char *)(name);                \
                                     tUInt _CDI_Object_Level = (DL);                 \
-                                    if (_CDI_Object_Level >= Dbg_Level_Short) {     \
+                                    if (_CDI_Object_Level => Dbg_Level_Short) {     \
                                         DbgIPrintFull (NAMEATFUNCSTART_BEGIN "%s%s" \
                                                        NAMEATFUNCSTART_END,         \
                                                        DbgIPrintLinePrefix,         \
@@ -193,8 +193,8 @@ void dwriteI   (unsigned DL, char *format, ...);      // Internal
     Debug Makros & Funktionen
 \*---------------------------------------------------------------------------*/
 
-#define dhead(name, DL)             CDebugInfo _CDI_Object (name, DL, Prt_Level_Default, __FILE__, __LINE__)
-#define dheadP(name, DL, PL)        CDebugInfo _CDI_Object (name, DL, PL, __FILE__, __LINE__)
+#define dhead(name, DL)             CDebugInfo _CDI_Object ((const char *)name, DL, Prt_Level_Default, __FILE__, __LINE__)
+#define dheadP(name, DL, PL)        CDebugInfo _CDI_Object ((const char *)name, DL, PL, __FILE__, __LINE__)
 
 
 //void dparams (const char *format, ...);
@@ -236,8 +236,8 @@ void dwriteI   (unsigned DL, char *format, ...);      // Internal
 
 class CDebugInfo {
 public:
-    CDebugInfo (char *FuncName, unsigned DebugLevel, unsigned PrintLevel,
-                char *_FileName = "?", unsigned _LineNumber = 0);
+    CDebugInfo (const char *FuncName, unsigned DebugLevel, unsigned PrintLevel,
+                const char *_FileName = "?", unsigned _LineNumber = 0);
     virtual ~CDebugInfo (void);
 
     void print (const char *format, ...);
@@ -265,7 +265,7 @@ protected:
     void vRememberOutput (const char *format, va_list param);
 
 private:
-    char *name;
+    const char *name;
     char *filename;
     unsigned linenumber;
     unsigned debuglevel;

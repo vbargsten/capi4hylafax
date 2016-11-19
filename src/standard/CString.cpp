@@ -51,7 +51,7 @@
 /*===========================================================================*\
 \*===========================================================================*/
 
-CConstString::CConstString (tString string, tSize len)
+CConstString::CConstString (const tString string, tSize len)
   : pntr (string),
     detectError (vFalse) {
 
@@ -67,7 +67,7 @@ CConstString::CConstString (tString string, tSize len)
 /*===========================================================================*\
 \*===========================================================================*/
 
-CDynamicString::CDynamicString (tFormatChar *string, tSize len) {
+CDynamicString::CDynamicString (const tFormatChar *string, tSize len) {
     dhead ("CDynamicString-Constructor", DCON_CDynamicString);
     dparams ("%s,%x", string, len);
     Set (string, len);
@@ -76,7 +76,7 @@ CDynamicString::CDynamicString (tFormatChar *string, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-CDynamicString::CDynamicString (CConstString *pcstr) {
+CDynamicString::CDynamicString (const CConstString *pcstr) {
     dhead ("CDynamicString-Constructor", DCON_CDynamicString);
     dparams ("%s", pcstr);
     Set (pcstr);
@@ -108,7 +108,7 @@ CDynamicString::~CDynamicString (void) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Change (tString string, tSize startPos, tSize len) {
+tBool CDynamicString::Change (const tString string, tSize startPos, tSize len) {
     dhead ("CDynamicString::Change", DCON_CDynamicString);
     dparams ("%s,%x,%x", string, startPos, len, pntr);
     dassert (string != 0);
@@ -136,7 +136,7 @@ tBool CDynamicString::Change (tString string, tSize startPos, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Change (tFormatChar *string, tSize startPos, tSize len) {
+tBool CDynamicString::Change (const tFormatChar *string, tSize startPos, tSize len) {
     dhead ("CDynamicString::Change", DCON_CDynamicString);
     dparams ("%s,%x,%x,%s", string, startPos, len, pntr);
     dassert (string != 0);
@@ -164,7 +164,7 @@ tBool CDynamicString::Change (tFormatChar *string, tSize startPos, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Insert (tString string, tSize startPos, tSize len) {
+tBool CDynamicString::Insert (const tString string, tSize startPos, tSize len) {
     dhead ("CDynamicString::Insert", DCON_CDynamicString);
     dassert (string != 0);
     dassert (startPos <= GetLen());
@@ -191,7 +191,7 @@ tBool CDynamicString::Insert (tString string, tSize startPos, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Fill (tStringChar fillChar, tSize len, tSize startPos) {
+tBool CDynamicString::Fill (const tStringChar fillChar, tSize len, tSize startPos) {
     dhead ("CDynamicString::Fill", DCON_CDynamicString);
     dparams ("%c,%x,%x,%s", fillChar, len, startPos, pntr);
     dassert (startPos <= GetLen());
@@ -350,11 +350,11 @@ tBool CDynamicString::Resize (tSize newMaxSize) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt tabsize, tStringChar tabchar) {
+tSInt CDynamicString::i_vPrintAppend (const tFormatChar *format, va_list argptr, tUInt tabsize, tStringChar tabchar) {
     dhead ("CDynamicString::i_vPrintAppend", DCON_CDynamicString);
     dassert (format != 0);
     tFormatChar  localBuf[CSTRING_PRINT_BufferSize];    // Local internal buffer
-    tFormatChar *savepos    = format;                   // Position of last "placeholder"
+    const tFormatChar *savepos = format;                   // Position of last "placeholder"
     tFormatChar *copyBuf    = &localBuf[0];             // Buffer that will be append to String
     tSize        copyBufLen = 0;                        // Size of copyBuf
     tUInt        PrtFlags   = 0;                        // Possible Flags for "placeholder"
@@ -412,9 +412,9 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
             case '8':
             case '9':
                 if (PrtPreci == -2) {
-                    PrtWidth = a_strtol (format, &format, 10);
+                    PrtWidth = a_strtol ((char*)format, (char**)&format, 10);
                 } else {
-                    PrtPreci = a_strtol (format, &format, 10);
+                    PrtPreci = a_strtol ((char*)format, (char**)&format, 10);
                 }
                 format--;
                 break;
@@ -570,8 +570,14 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
 
             /*----- OTHERS: wrong placeholder -----*/
             default:
-                copyBuf    = savepos;
+                //copyBuf    = (char*)savepos; // todo: avoid this cast
+                copyBuf = &localBuf[0];
+                //localBuf[CSTRING_PRINT_BufferSize-1] = '\0';
+                strncpy(copyBuf, savepos, CSTRING_PRINT_BufferSize);
                 copyBufLen = format - savepos + 1;
+                if (copyBufLen > CSTRING_PRINT_BufferSize)
+                    copyBufLen = CSTRING_PRINT_BufferSize;
+                
                 PrtFlags  |= PRINTFLAGS_READY;
                 break;
             } //end: switch (*format)
@@ -662,7 +668,7 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
 				++curLen;
 			    }
 			} else {
-			    dassert((sizeof tChar)== (sizeof tFormatChar));
+			    dassert((sizeof(tChar))== (sizeof(tFormatChar)));
 			    const tChar *p = (tChar*)copyBuf;
 			    const tChar * const p_end = p + copyBufLen;
 			    for (;p < p_end; ++p) {

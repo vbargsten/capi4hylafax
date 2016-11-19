@@ -38,7 +38,7 @@ public:
     tSInfo Send (CDynamicString *Number, CMultiString *FaxFilesList, tUInt Resolution,
                  tUInt jobID, tUInt *pCommID, CDynamicString *pPollStr);
 
-    void WriteLog (tSInt priority, char *text, ...);
+    void WriteLog (tSInt priority, const char *text, ...);
 
     tUInt exitState;
     void CloseJobFile (void);

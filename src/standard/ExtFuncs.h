@@ -24,7 +24,7 @@
 
 #ifndef NDEBUG
 
-    #define USE_DEBUG_INFO_CLASS        2
+    #define USE_DEBUG_INFO_CLASS        7
     #define DEBUG_INDENT_WIDTH          0
     //#define DEBUG_FILE_NAME             "/var/log/c2faxfcalls.log"
 
@@ -63,10 +63,10 @@
 
 #define DbgIAssert(a)
 
-extern char    *DbgIPrintLinePrefix;
+extern const char *DbgIPrintLinePrefix;
 extern unsigned DbgIPrintLinePrefixLen;
 
-extern void DbgIPrintStr (char *output);
+extern void DbgIPrintStr (const char *output);
 
 extern void DbgIBreakPoint (void);
 

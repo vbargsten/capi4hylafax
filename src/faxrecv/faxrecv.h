@@ -53,7 +53,7 @@ private:
 
     // virtual functions from CBasicFaxConversion
     void PageEndReached (tBool IsLastPage);
-    void WriteLog (tSInt priority, char *text, ...);
+    void WriteLog (tSInt priority, const char *text, ...);
     tUInt GetRecvFileMode (void);
     CDynamicString *GetSpoolDir (void);
 

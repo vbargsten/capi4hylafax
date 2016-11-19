@@ -43,14 +43,14 @@ typedef char        tFormatChar;
 
 class CConstString {
 public:
-    CConstString (tString string, tSize len = 0);   // string have to be null terminated! len ist not tested!
+    CConstString (const tString string, tSize len = 0);   // string have to be null terminated! len ist not tested!
     virtual ~CConstString (void) {}
 
-    tBool   IsEmpty (void);
-    tSize   GetLen (void);      // GetLen & Get(Max)Size return multiples of tStringChar!
-    tSize   GetSize (void);
-    tSize   GetMaxSize (void);
-    tString GetPointer (void);
+    tBool   IsEmpty (void) const;
+    tSize   GetLen (void) const;      // GetLen & Get(Max)Size return multiples of tStringChar!
+    tSize   GetSize (void) const;
+    tSize   GetMaxSize (void) const;
+    tString GetPointer (void) const;
     tBool   ErrorDetected (void);
 
 protected:
@@ -69,41 +69,41 @@ protected:
 class CDynamicString : public CConstString {
 public:
     CDynamicString (void) {}
-    CDynamicString (tFormatChar *string, tSize len = 0);
-    CDynamicString (CConstString *pcstr);
+    CDynamicString (const tFormatChar *string, tSize len = 0);
+    CDynamicString (const CConstString *pcstr);
     CDynamicString (tUInt startSize);
     virtual ~CDynamicString (void);
 
-    tBool Set (tString       string, tSize len = 0);
-    tBool Set (tFormatChar  *string, tSize len = 0);
-    tBool Set (CConstString *pcstr);
-    tBool Append (tString       string, tSize len = 0);
-    tBool Append (tFormatChar  *string, tSize len = 0);
-    tBool Append (CConstString *pcstr);
+    tBool Set (const tString       string, tSize len = 0);
+    tBool Set (const tFormatChar  *string, tSize len = 0);
+    tBool Set (const CConstString *pcstr);
+    tBool Append (const tString       string, tSize len = 0);
+    tBool Append (const tFormatChar  *string, tSize len = 0);
+    tBool Append (const CConstString *pcstr);
 
-    tBool Change (tString       string, tSize startPos, tSize len = 0);
-    tBool Change (tFormatChar  *string, tSize startPos, tSize len = 0);
-    tBool Change (CConstString *pcstr,  tSize startPos, tSize len = 0);
-    tBool Insert (tString       string, tSize startPos, tSize len = 0);
-    tBool Insert (tFormatChar  *string, tSize startPos, tSize len = 0);
-    tBool Insert (CConstString *pcstr,  tSize startPos, tSize len = 0);
+    tBool Change (const tString       string, tSize startPos, tSize len = 0);
+    tBool Change (const tFormatChar  *string, tSize startPos, tSize len = 0);
+    tBool Change (const CConstString *pcstr,  tSize startPos, tSize len = 0);
+    tBool Insert (const tString       string, tSize startPos, tSize len = 0);
+    tBool Insert (const tFormatChar  *string, tSize startPos, tSize len = 0);
+    tBool Insert (const CConstString *pcstr,  tSize startPos, tSize len = 0);
 
     tBool Fill (tStringChar fillChar, tSize len, tSize startPos = 0);
     tBool FillAppend (tStringChar fillChar, tUInt len);
 
-    tSInt Print  (tFormatChar *format, ...);
-    tSInt vPrint (tFormatChar *format, va_list argptr);
-    tSInt PrintAppend  (tFormatChar *format, ...);
-    tSInt vPrintAppend (tFormatChar *format, va_list argptr);
+    tSInt Print  (const tFormatChar *format, ...);
+    tSInt vPrint (const tFormatChar *format, va_list argptr);
+    tSInt PrintAppend  (const tFormatChar *format, ...);
+    tSInt vPrintAppend (const tFormatChar *format, va_list argptr);
 
-    tCompare Compare (tString string, tSize len = 0);
-    tBool IsIdentical (tString string, tSize len = 0);
+    tCompare Compare (const tString string, tSize len = 0);
+    tBool IsIdentical (const tString string, tSize len = 0);
 
     void Get (tString string, tSize len = 0, tSize startPos = 0);
     tStringChar GetChar (tSize pos);
     tStringChar GetLastChar (void);
-    tSize FindChar (tStringChar ch, tSize startpos = 0); // not found => return = MAXVAL_tSize
-    tSize FindLastChar (tStringChar ch);                 // not found => return = MAXVAL_tSize
+    tSize FindChar (const tStringChar ch, tSize startpos = 0); // not found => return = MAXVAL_tSize
+    tSize FindLastChar (const tStringChar ch);                 // not found => return = MAXVAL_tSize
 
     void  SetLen (tSize newLen);
     void  CutLen (tSize cutLen);   // Result: newlen = oldLen - cutLen
@@ -113,7 +113,7 @@ public:
     tBool Resize (tSize newMaxSize);
 
 private:
-    tSInt i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt tabsize, tStringChar tabchar);
+    tSInt i_vPrintAppend (const tFormatChar *format, va_list argptr, tUInt tabsize, tStringChar tabchar);
     tUInt i_Print_ltoa (tFormatChar **pBuffer, tUInt64 value, tSByte radix, tUInt *pWidth, tUInt pFlags);
     tBool DynExpand (tSize newMaxSize);
 };
@@ -130,23 +130,23 @@ inline CConstString::CConstString (void)
     detectError (vFalse) {
 }
 
-inline tBool CConstString::IsEmpty (void) {
+inline tBool CConstString::IsEmpty (void) const {
     return (curLen == 0);
 }
 
-inline tSize CConstString::GetLen (void) {
+inline tSize CConstString::GetLen (void) const {
     return curLen;
 }
 
-inline tSize CConstString::GetSize (void) {
+inline tSize CConstString::GetSize (void) const {
     return (GetLen()) ? curLen + 1 : 0;
 }
 
-inline tSize CConstString::GetMaxSize (void) {
+inline tSize CConstString::GetMaxSize (void) const {
     return maxSize;
 }
 
-inline tString CConstString::GetPointer (void) {
+inline tString CConstString::GetPointer (void) const {
     return (GetLen()) ? pntr : 0;
 }
 
@@ -163,17 +163,17 @@ inline tBool CConstString::ErrorDetected (void) {
     inline fuctions from CDynamicString
 \*===========================================================================*/
 
-inline tBool CDynamicString::Set (tString string, tSize len) {
+inline tBool CDynamicString::Set (const tString string, tSize len) {
     RemoveAll();
     return Append (string, len);
 }
 
-inline tBool CDynamicString::Set (tFormatChar *string, tSize len) {
+inline tBool CDynamicString::Set (const tFormatChar *string, tSize len) {
     RemoveAll();
     return Append (string, len);
 }
 
-inline tBool CDynamicString::Set (CConstString *pcstr) {
+inline tBool CDynamicString::Set (const CConstString *pcstr) {
     if (pcstr->GetLen()) {
         return Set (pcstr->GetPointer(), pcstr->GetLen());
     }
@@ -181,37 +181,37 @@ inline tBool CDynamicString::Set (CConstString *pcstr) {
     return vTrue;
 }
 
-inline tBool CDynamicString::Append (tString string, tSize len) {
+inline tBool CDynamicString::Append (const tString string, tSize len) {
     return Change (string, GetLen(), len);
 }
 
-inline tBool CDynamicString::Append (tFormatChar *string, tSize len) {
+inline tBool CDynamicString::Append (const tFormatChar *string, tSize len) {
     return Change (string, GetLen(), len);
 }
 
-inline tBool CDynamicString::Append (CConstString *pcstr) {
+inline tBool CDynamicString::Append (const CConstString *pcstr) {
     return (pcstr->GetLen()) ? Change (pcstr->GetPointer(), GetLen(), pcstr->GetLen()) : vTrue;
 }
 
-inline tBool CDynamicString::Change (CConstString *pcstr, tSize startPos, tSize len) {
+inline tBool CDynamicString::Change (const CConstString *pcstr, tSize startPos, tSize len) {
     return (pcstr->GetLen()) ? Change (pcstr->GetPointer(), startPos, (len) ? len : pcstr->GetLen()) : vTrue;
 }
 
-inline tBool CDynamicString::Insert (CConstString *pcstr, tSize startPos, tSize len) {
+inline tBool CDynamicString::Insert (const CConstString *pcstr, tSize startPos, tSize len) {
     return (pcstr->GetLen()) ? Insert (pcstr->GetPointer(), startPos, (len) ? len : pcstr->GetLen()) : vTrue;
 }
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-inline tBool CDynamicString::FillAppend (tStringChar fillChar, tUInt len) {
+inline tBool CDynamicString::FillAppend (const tStringChar fillChar, tUInt len) {
     return Fill (fillChar, len, GetLen());
 }
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-inline tSInt CDynamicString::Print (tFormatChar *format, ...) {
+inline tSInt CDynamicString::Print (const tFormatChar *format, ...) {
     va_list arg_ptr;
     va_start (arg_ptr, format);
     tUInt fret = vPrint (format, arg_ptr);
@@ -219,12 +219,12 @@ inline tSInt CDynamicString::Print (tFormatChar *format, ...) {
     return fret;
 }
 
-inline tSInt CDynamicString::vPrint (tFormatChar *format, va_list argptr) {
+inline tSInt CDynamicString::vPrint (const tFormatChar *format, va_list argptr) {
     RemoveAll();
     return vPrintAppend (format, argptr);
 }
 
-inline tSInt CDynamicString::PrintAppend (tFormatChar *format, ...) {
+inline tSInt CDynamicString::PrintAppend (const tFormatChar *format, ...) {
     va_list arg_ptr;
     va_start (arg_ptr, format);
     tUInt fret = vPrintAppend (format, arg_ptr);
@@ -232,7 +232,7 @@ inline tSInt CDynamicString::PrintAppend (tFormatChar *format, ...) {
     return fret;
 }
 
-inline tSInt CDynamicString::vPrintAppend (tFormatChar *format, va_list argptr) {
+inline tSInt CDynamicString::vPrintAppend (const tFormatChar *format, va_list argptr) {
     return i_vPrintAppend (format, argptr, 0, 0);
 }
 
@@ -260,7 +260,13 @@ inline tStringChar CDynamicString::GetChar (tSize pos) {
 inline tStringChar CDynamicString::GetLastChar (void) {
     //assert (GetLen() > 0);
     //assert (pntr != 0);
-    return pntr[GetLen() - 1];
+    int len = GetLen();
+    
+    if (len > 0) {
+        return pntr[GetLen() - 1];
+    } else {
+        return '\0';
+    }
 }
 
 inline void CDynamicString::SetLen (tSize newLen) {

@@ -376,11 +376,21 @@ tBool CCAPI20_Statistic::DSL_GetMACAddress (tUInt Controller, tUByte *pAddress) 
     if (m_pCurrentData && m_pCurrentData->pControllerData) {
         dassert (Controller > 0);
         dassert (Controller <= m_pCurrentData->CountControllers);
-        if (  (CheckOneFlag (m_pCurrentData->pControllerData[Controller - 1].B1ProtocolSupport, b1prot_ATM) == vTrue)
-           && (*(tUInt32 *)m_pCurrentData->pControllerData[Controller - 1].DSL_MACAddress != 0)) {
-            // seems to be a valid MAC Address
-            s_memcpy (pAddress, m_pCurrentData->pControllerData[Controller - 1].DSL_MACAddress, 6);
-            fret = vTrue;
+        if (  (CheckOneFlag (m_pCurrentData->pControllerData[Controller - 1].B1ProtocolSupport, b1prot_ATM) == vTrue)) {
+//           && (*(tUInt32 *)m_pCurrentData->pControllerData[Controller - 1].DSL_MACAddress != 0)) {
+            
+            bool all_mac_bytes_zero = true;
+            for (size_t mac_byte_idx=0; mac_byte_idx < sizeof(((ctIntCntrlData*)NULL)->DSL_MACAddress); ++mac_byte_idx) {
+                if (m_pCurrentData->pControllerData[Controller - 1].DSL_MACAddress[mac_byte_idx] != 0) {
+                    all_mac_bytes_zero = false;
+                }
+            }
+           
+            if (!all_mac_bytes_zero) {
+                // seems to be a valid MAC Address
+                s_memcpy (pAddress, m_pCurrentData->pControllerData[Controller - 1].DSL_MACAddress, 6);
+                fret = vTrue;
+            }
         }
     }
     m_Protect.EndRead();

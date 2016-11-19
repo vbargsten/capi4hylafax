@@ -33,8 +33,8 @@ public:
     CFaxReceiveMain (void);
     ~CFaxReceiveMain (void);
 
-    void WriteLog (tSInt priority, char *text, ...);
-    void vWriteLog (tSInt priority, char *text, va_list params);
+    void WriteLog (tSInt priority, const char *text, ...);
+    void vWriteLog (tSInt priority, const char *text, va_list params);
     void GenerateHylafaxConfigFile (CDynamicString *pName, CDynamicString *pFaxNumber, CDynamicString *pIdentifier);
 
     tBool Config (char *CommandLineSpoolDir);

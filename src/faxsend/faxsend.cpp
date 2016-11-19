@@ -276,7 +276,7 @@ tSInfo CFaxSend::Send (CDynamicString *Number, CMultiString *FaxFilesList, tUInt
         dassert (FaxFilesList->IsEmpty() == vFalse);
     }
 
-    char *ModeText;
+    const char *ModeText;
     switch (GetFormat()) {
     default: {
         ModeText = "Hylafax";
@@ -550,7 +550,7 @@ void CFaxSend::IsDisconnected (c_info Reason) {
         dassert (!PollRcvdCmd.IsEmpty());
         CDynamicString executeCommand;
         executeCommand.Set (&PollRcvdCmd);
-        char *StateText = "";
+        const char *StateText = "";
 
         if (GetFormat() == FaxFormat_Hylafax) {
             switch (GetRecvState()) {
@@ -686,9 +686,9 @@ void CFaxSend::SendData (void) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CFaxSend::WriteLog (tSInt priority, char *text, ...) {
+void CFaxSend::WriteLog (tSInt priority, const char *text, ...) {
     dhead ("CFaxSend::WriteLog", DCON_CFaxSend);
-    char   *statusText = 0;
+    const char *statusText = NULL;
     char    timebuf[MAX_STRING_SIZE];
     timeval tv;
     va_list params;

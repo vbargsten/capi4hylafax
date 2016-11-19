@@ -74,7 +74,7 @@ CCStruct::~CCStruct (void) {
 
 void CCStruct::Reset (void) {
     dhead ("CCStruct::Reset", DCON_CCStruct);
-    tFormatChar *format = m_Format;
+    const tFormatChar *format = (char*)m_Format;
     switch (*format) {
     case cxfv_NOLEN:
     case cxfv_MSGLEN:
@@ -220,7 +220,7 @@ tUInt CCStruct::CalcStructSize (void) {
     dparams ("%x,%x,l=%x", m_ClassType, m_DataType, m_Len);
     dassert (m_Format != 0);
     if (m_Len == 0) {
-        tFormatChar *format = m_Format;
+        const tFormatChar *format = m_Format;
         tUByte      *pSData = m_pData;
         switch (*format) {
         case cxfv_CONST:
@@ -385,7 +385,7 @@ tUInt CCStruct::CalcStructSize (void) {
 
 void CCStruct::ResetStructSize (tBool recursive) {
     dhead ("CCStruct::ResetStructSize", DCON_CCStruct);
-    tFormatChar *format = m_Format;
+    const tFormatChar *format = m_Format;
     switch (*format) {
     case cxfv_CONST:
         break;
@@ -664,7 +664,7 @@ void CCStruct::FillData (tUByte **ppBuffer) {
     dassert (m_Len <= MAXVAL_tUShort);
     dassert ((m_pData != 0) || (m_Len == 0));
     dassert (m_Format != 0);
-    tFormatChar *format = m_Format;
+    const tFormatChar *format = m_Format;
     switch (*format) {
     case cxfv_NOLEN:
     case cxfv_MSGLEN:
@@ -851,7 +851,7 @@ tSInfo CCStruct::ParseData (tUByte **ppBuffer, tUInt len) {
     dassert (*ppBuffer != 0);
     dassert (m_Format != 0);
     dprintBuf (*ppBuffer, len);
-    tFormatChar *format = m_Format;
+    const tFormatChar *format = m_Format;
     switch (*format) {
     case cxfv_NOLEN:
     case cxfv_MSGLEN:
