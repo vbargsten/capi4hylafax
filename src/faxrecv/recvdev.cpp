@@ -259,10 +259,13 @@ tBool CFaxReceiveDevice::StartReceive (void) {
     for (i = CountThreads; i > 0; i--) {
         printf("StartReceive %i...\n", i);
         CFaxReceive *pFR = new CFaxReceive (this, format);
+        sleep(200);
         if (pFR) {
             FaxThreads.AddLast (pFR);
-            pFR->StartReceive();
             pFR->SetMSNList (&CIPMSNList);
+            sleep(200);
+            pFR->StartReceive();
+            sleep(200);
         }
     }
     if (FaxThreads.IsEmpty() == vTrue) {
