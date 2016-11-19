@@ -39,7 +39,7 @@
 #
 # default   /var/spool/fax
 #
-SpoolDir:               /var/spool/fax
+SpoolDir:               /var/spool/hylafax
 
 
 # "FaxRcvdCmd" gibt das Skript an, das ausgeführt wird, sobald ein Fax
@@ -52,7 +52,7 @@ SpoolDir:               /var/spool/fax
 #
 # default   /var/spool/hylafax/bin/faxrcvd
 #
-FaxRcvdCmd:             /var/spool/fax/bin/faxrcvd
+FaxRcvdCmd:             /var/spool/hylafax/bin/faxrcvd
 
 
 # "PollRcvdCmd" gibt das Skript an, das ausgeführt wird, sobald ein
@@ -67,7 +67,7 @@ FaxRcvdCmd:             /var/spool/fax/bin/faxrcvd
 #
 # default   /var/spool/hylafax/bin/pollrcvd
 #
-PollRcvdCmd:             /var/spool/fax/bin/pollrcvd
+PollRcvdCmd:             /var/spool/hylafax/bin/pollrcvd
 
 
 # "FaxReceiveUser" und "FaxReceiveGroup" geben den User und die Gruppenkennung
@@ -87,7 +87,7 @@ PollRcvdCmd:             /var/spool/fax/bin/pollrcvd
 #
 # default   ""
 #
-FaxReceiveUser:         fax
+FaxReceiveUser:         uucp
 FaxReceiveGroup:        dialout
 
 
@@ -97,7 +97,7 @@ FaxReceiveGroup:        dialout
 #
 # default   "/tmp/capifax.log"
 #
-LogFile:                /tmp/capifax.log
+LogFile:                /var/spool/hylafax/log/capi4hylafax
 
 
 # Der Befehl "LogTraceLevel" gibt die Menge der Daten an, die in ein LogFile
@@ -319,7 +319,7 @@ LogFileMode:            0600
         #
         # default   0
         #
-        AcceptSpeech:           0
+        AcceptSpeech:           1
 
 
         # Sofern man DDI nutzen will, sollte man "UseDDI" auf 1 stellen.
