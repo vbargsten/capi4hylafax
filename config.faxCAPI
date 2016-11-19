@@ -97,7 +97,7 @@ FaxReceiveGroup:        dialout
 #
 # default   "/tmp/capifax.log"
 #
-LogFile:                /var/spool/hylafax/log/capi4hylafax
+LogFile:                /var/log/hylafax/capifax.log
 
 
 # Der Befehl "LogTraceLevel" gibt die Menge der Daten an, die in ein LogFile
