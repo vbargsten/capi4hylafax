@@ -1,0 +1,12 @@
+Short hints for using capi4hylafax under SuSE Linux
+
+1. call faxsetup and follow the dialog
+2. call faxaddmodem, answer the first question
+   "Do you want setup a CAPI 2.0 based ISDN modem"
+   with yes, follow the dialog.
+3. start c2faxrecv via telinit -q
+
+After this fax receiving and sending should work you can test it for example
+with:
+sendfax -d <FaxPhoneNumber> <this file>
+

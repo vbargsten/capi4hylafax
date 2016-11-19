@@ -1,0 +1,16 @@
+Einige kurze Hinweise zur Benutzung von capi4hylafax unter SuSE Linux
+
+1. faxsetup starten und entsprechend configurieren
+2. faxaddmodem starten und die Frage
+   "Do you want setup a CAPI 2.0 based ISDN modem"
+   mit yes beantworten.
+3. Starten des c2faxrecv daemons durch telinit -q
+
+Danach sollte der Faxempfang und das Faxsenden funktionieren.
+Sie können das z.B. mit
+sendfax -d <Rufnummer> <dieses file>
+
+ein Testfax verschicken.
+
+Um aus anderen Anwendungen Faxe zu verschicken siehe
+http://sdb.suse.de/de/sdb/html/ghillie_hylafax_einrichten.html

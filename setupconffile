@@ -12,6 +12,9 @@ InDDIs=""
 FaxNumber="+49.00.00000"
 Identifier="AVM CAPI4HylaFAX"
 NumberPrefix=""
+AcceptSpeech=0
+AcceptGlobalCall=0
+
 DDISamples="             DDI Params\n"
 DDISamples="$DDISamples\nSample for DDI Offset   : 11223344"
 DDISamples="$DDISamples\nSample for DDI Length   : 3"
@@ -36,6 +39,26 @@ function test_for_number {
     return 0
 }
 
+ReadConfigFile() {
+    while read item value; do
+        case $item in
+            "#");;
+            "FAXNumber:") FaxNumber=$value;;
+            "LocalIdentifier:") eval Identifier=$value ;;
+            "OutgoingMSN:") OutMSN=$value;;
+            "NumberPrefix:") NumberPrefix=$value;;
+            "UseDDI:") UseDDI=$value;;
+            "AcceptSpeech:") AcceptSpeech=$value;;
+            "AcceptGlobalCall:") AcceptGlobalCall=$value;;
+            "DDIOffset:") DDIOffset=$value;;
+            "DDILength:") DDILen=$value;;
+            "IncomingDDIs:") InDDIs=$value;;
+            "IncomingMSNs:") InMSNs=$value;;
+            *) ;;
+        esac
+    done < $1
+}
+
 function WriteToConfigFile {
 sed "
 /^ *FAXNumber *:/c\\
@@ -48,6 +71,8 @@ sed "
     NumberPrefix:               $NumberPrefix
 /^ *UseDDI *:/c\\
         UseDDI:                 $UseDDI
+/^ *AcceptSpeech *:/c\\
+        AcceptSpeech:           $AcceptSpeech
 /^ *DDIOffset *:/c\\
         DDIOffset:              $DDIOffset
 /^ *DDILength *:/c\\
@@ -55,7 +80,9 @@ sed "
 /^ *IncomingDDIs *:/c\\
         IncomingDDIs:           $InDDIs
 /^ *IncomingMSNs *:/c\\
-        IncomingMSNs:           $InMSNs" "$ConfigFileName" > "$ConfigFileName.c2fax"
+        IncomingMSNs:           $InMSNs
+/^ *AcceptGlobalCall *:/c\\
+        AcceptGlobalCall:           $AcceptGlobalCall" "$ConfigFileName" > "$ConfigFileName.c2fax"
     mv -f "$ConfigFileName.c2fax" "$ConfigFileName"
 }
 
@@ -101,6 +128,8 @@ if [ ! -e "$ConfigFileName" ] ; then
     return 1
 fi
 
+ReadConfigFile $ConfigFileName
+
 #
 #   show info dialog
 #
@@ -131,6 +160,16 @@ while [ $terminate -eq 0 ] ; do
     if [ -n "$InMSNs" ] ; then
         dialogInMSN="-- is set ---"
     fi
+    if [ $AcceptSpeech -ne 0 ]; then
+	dialogAcceptSpeech="yes"
+    else
+	dialogAcceptSpeech="no"
+    fi
+    if [ $AcceptGlobalCall -ne 0 ]; then
+	dialogAcceptGlobalCall="yes"
+    else
+        dialogAcceptGlobalCall="no"
+    fi
     if [ $UseDDI -ne 0 ] ; then
         dialogDDI="-- use ddi --"
         dialogInMSN="-- disabled -"
@@ -148,32 +187,52 @@ while [ $terminate -eq 0 ] ; do
         dialogNumPre="[   empty   ]"
     fi
 
-    dialog --backtitle "$BT" --clear            \
-           --menu "Main menu" 15 50 7           \
-           "Outgoing MSN  "   "$dialogOutMSN"   \
-           "Incoming MSNs "   "$dialogInMSN"    \
-           "DDI Params    "   "$dialogDDI"      \
-           "Fax Number    "   "$dialogFaxNum"   \
-           "Fax Identifier"   "$dialogId"       \
-           "Number Prefix "   "$dialogNumPre"   \
-           "Save & Exit   "   "" 2> res
+    dialog --backtitle "$BT" --clear                         \
+           --menu "Main menu" 17 60 9                        \
+           "Outgoing MSN       "   "$dialogOutMSN"           \
+           "Incoming MSNs      "   "$dialogInMSN"            \
+           "Accept Speech      "   "$dialogAcceptSpeech"     \
+           "Accept Global Calls"   "$dialogAcceptGlobalCall" \
+           "DDI Params         "   "$dialogDDI"              \
+           "Fax Number         "   "$dialogFaxNum"           \
+           "Fax Identifier     "   "$dialogId"               \
+           "Number Prefix      "   "$dialogNumPre"           \
+           "Save & Exit        "   "" 2> res
     if [ $? -eq 0 ] ; then
         case "`cat res`" in
-        "Outgoing MSN  ")
+        "Outgoing MSN       ")
             dialog --backtitle "$BT" --clear \
                    --inputbox "Outgoing MSN" 9 50 "$OutMSN" 2> res
             if [ $? -eq 0 ] ; then
                 OutMSN="`cat res`"
             fi
             ;;
-        "Incoming MSNs ")
+        "Incoming MSNs      ")
             dialog --backtitle "$BT" --clear \
                    --inputbox "List of Incomming MSNs (comma seperated)" 9 70 "$InMSNs" 2> res
             if [ $? -eq 0 ] ; then
                 InMSNs="`cat res`"
             fi
             ;;
-        "DDI Params    ")
+        "Accept Speech      ")
+            dialog --backtitle "$BT" --clear \
+                   --yesno "Accept also calls which a service id for speech ?" 7 30
+            if [ $? -eq 0 ] ; then
+                AcceptSpeech=1
+            else
+                AcceptSpeech=0
+            fi
+            ;;
+        "Accept Global Calls")
+            dialog --backtitle "$BT" --clear \
+                   --yesno "Accept also global calls (calls without a MSN) ?" 7 30
+            if [ $? -eq 0 ] ; then
+                AcceptGlobalCall=1
+            else
+                AcceptGlobalCall=0
+            fi
+            ;;
+        "DDI Params         ")
             tmpDDIOffset=$DDIOffset
             tmpDDILen=$DDILen
             tmpInDDIs=$InDDIs
@@ -240,28 +299,28 @@ while [ $terminate -eq 0 ] ; do
             done
             terminate=0
             ;;
-        "Fax Number    ")
+        "Fax Number         ")
             dialog --backtitle "$BT" --clear \
                    --inputbox "Fax Number (use dots instead of spaces)" 9 50 "$FaxNumber" 2> res
             if [ $? -eq 0 ] ; then
                 FaxNumber="`cat res`"
             fi
             ;;
-        "Fax Identifier")
+        "Fax Identifier     ")
             dialog --backtitle "$BT" --clear \
                    --inputbox "Fax Identifier" 9 50 "$Identifier" 2> res
             if [ $? -eq 0 ] ; then
                 Identifier="`cat res`"
             fi
             ;;
-        "Number Prefix ")
+        "Number Prefix      ")
             dialog --backtitle "$BT" --clear \
                    --inputbox "Number Prefix" 9 50 "$NumberPrefix" 2> res
             if [ $? -eq 0 ] ; then
                 NumberPrefix="`cat res`"
             fi
             ;;
-        "Save & Exit   ")
+        "Save & Exit        ")
             WriteToConfigFile
             terminate=1
             ;;
