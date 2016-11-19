@@ -29,11 +29,11 @@ typedef tSInt32 tSInfo;
 /*===========================================================================*\
 \*===========================================================================*/
 
-#define infoSuccess(a)              ((a) >= 0)
-#define infoWarning(a)              ((a) > 0)
-#define infoError(a)                ((a) < 0)
-#define infoType(a)                 (((a) >> 16) & 0x7FFF)
-#define infoID(a)                   ((a) & 0xFFFF)
+inline tBool   infoSuccess (tSInfo i)       { return (i >= 0); }
+inline tBool   infoWarning (tSInfo i)       { return (i > 0);  }
+inline tBool   infoError   (tSInfo i)       { return (i < 0);  }
+inline tUInt16 infoType    (tSInfo i)       { return (tUInt16)((((tUInt32)i) >> 16) & 0x7FFF); }
+inline tUInt16 infoID      (tSInfo i)       { return (tUInt16)(i & 0xFFFF); }
 
 /*===========================================================================*\
 \*===========================================================================*/
@@ -79,7 +79,9 @@ typedef tSInt32 tSInfo;
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-#define MapWinErr2Info(val)         ((val) ? CalculateInfoValue (infoType_WinAppl, infoKind_Error, (val)) : i_Okay)
+inline tSInfo MapWinErr2Info (tSInt32 val) {
+    return (val) ? CalculateInfoValue (infoType_WinAppl, infoKind_Error, val) : i_Okay;
+}
 
 /*===========================================================================*\
 \*===========================================================================*/

@@ -1,0 +1,10 @@
+Document: capi4hylafax
+Title: Documentation for capi4hylafax
+Author: AVM GmbH
+Abstract: This documentations describe the functionality and
+ usage of the program capi4hylafax.
+Section: System/Administration
+
+Format: html
+Index: /usr/share/doc/capi4hylafax/README.html
+Files: /usr/share/doc/capi4hylafax/*.html

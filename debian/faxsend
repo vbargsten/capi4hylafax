@@ -1,0 +1,20 @@
+#! /bin/bash
+
+isdev=0
+for a; do
+    if [ x"$isdev" == x'1' ]; then
+	isdev=0
+	dev="$a"
+    elif [ x"$a" == x'-m' ]; then
+	isdev=1
+    fi
+done
+
+case "$dev" in
+   faxCAPI*)
+	exec /usr/bin/c2faxsend "$@"
+   ;;
+   *)
+	exec /usr/sbin/faxsend.hylafax "$@"
+   ;;
+esac

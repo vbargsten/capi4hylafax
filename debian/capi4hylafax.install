@@ -1,0 +1,3 @@
+config.faxCAPI etc/hylafax
+debian/faxsend usr/sbin
+debian/76-faxcapi.rules lib/udev/rules.d

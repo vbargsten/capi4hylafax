@@ -48,14 +48,14 @@
 /*===========================================================================*\
 \*===========================================================================*/
 
-CConstString::CConstString (tString string, tSize len)
+CConstString::CConstString (tString string, tUInt len)
   : pntr (string),
     detectError (vFalse) {
 
     dhead ("CConstString-Constructor", DCON_CDynamicString);
     dassert (!len || pntr);
     if (!len)  {
-        len = s_strlen (string);
+        len = check_strlen (string);
     }
     curLen  = len;
     maxSize = (len) ? len + 1 : 0; // TODO?: Is this correct?
@@ -64,7 +64,40 @@ CConstString::CConstString (tString string, tSize len)
 /*===========================================================================*\
 \*===========================================================================*/
 
-CDynamicString::CDynamicString (tFormatChar *string, tSize len) {
+tUInt CConstString::check_strlen (const tChar *string) {
+    dhead ("CConstString::check_strlen", DCON_CDynamicString);
+    dassert (string != 0);
+    tSize s = s_strlen (string);
+    dassert (s < MAXVAL_tUInt);
+    return (tUInt)s;
+}
+
+/*===========================================================================*\
+\*===========================================================================*/
+
+tUInt CConstString::check_strlen (const tWiChar *string) {
+    dhead ("CConstString::check_strlenW", DCON_CDynamicString);
+    dassert (string != 0);
+    tSize s = s_strlen (string);
+    dassert (s < MAXVAL_tUInt);
+    return (tUInt)s;
+}
+
+/*===========================================================================*\
+\*===========================================================================*/
+
+tUInt CConstString::check_strlen (const char *string) {
+    dhead ("CConstString::check_strlenC", DCON_CDynamicString);
+    dassert (string != 0);
+    tSize s = s_strlen (string);
+    dassert (s < MAXVAL_tUInt);
+    return (tUInt)s;
+}
+
+/*===========================================================================*\
+\*===========================================================================*/
+
+CDynamicString::CDynamicString (tFormatChar *string, tUInt len) {
     dhead ("CDynamicString-Constructor", DCON_CDynamicString);
     dparams ("%s,%x", string, len);
     Set (string, len);
@@ -105,16 +138,16 @@ CDynamicString::~CDynamicString (void) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Change (tString string, tSize startPos, tSize len) {
+tBool CDynamicString::Change (tString string, tUInt startPos, tUInt len) {
     dhead ("CDynamicString::Change", DCON_CDynamicString);
     dparams ("%s,%x,%x", string, startPos, len, pntr);
     dassert (string != 0);
     dassert (startPos <= GetLen());
     if (!len) {
-        len = s_strlen (string);
+        len = check_strlen (string);
         dprint ("CalcLen=%x ", len);
     }
-    tSize endPos = len + startPos;
+    tUInt endPos = len + startPos;
     if (endPos >= GetMaxSize()) {
         if (DynExpand (endPos + 1) == vFalse) {
             return vFalse;
@@ -133,16 +166,16 @@ tBool CDynamicString::Change (tString string, tSize startPos, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Change (tFormatChar *string, tSize startPos, tSize len) {
+tBool CDynamicString::Change (tFormatChar *string, tUInt startPos, tUInt len) {
     dhead ("CDynamicString::Change", DCON_CDynamicString);
     dparams ("%s,%x,%x,%s", string, startPos, len, pntr);
     dassert (string != 0);
     dassert (startPos <= GetLen());
     if (!len) {
-        len = s_strlen (string);
+        len = check_strlen (string);
         dprint ("CalcLen=%x ", len);
     }
-    tSize endPos = len + startPos;
+    tUInt endPos = len + startPos;
     if (endPos >= GetMaxSize()) {
         if (DynExpand (endPos + 1) == vFalse) {
             return vFalse;
@@ -161,14 +194,14 @@ tBool CDynamicString::Change (tFormatChar *string, tSize startPos, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Insert (tString string, tSize startPos, tSize len) {
+tBool CDynamicString::Insert (tString string, tUInt startPos, tUInt len) {
     dhead ("CDynamicString::Insert", DCON_CDynamicString);
     dassert (string != 0);
     dassert (startPos <= GetLen());
     if (!len) {
-        len = s_strlen (string);
+        len = check_strlen (string);
     }
-    tSize endPos = len + GetLen();
+    tUInt endPos = len + GetLen();
     if (endPos >= GetMaxSize()) {
         if (DynExpand (endPos + 1) == vFalse) {
             return vFalse;
@@ -188,11 +221,11 @@ tBool CDynamicString::Insert (tString string, tSize startPos, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Fill (tStringChar fillChar, tSize len, tSize startPos) {
+tBool CDynamicString::Fill (tStringChar fillChar, tUInt len, tUInt startPos) {
     dhead ("CDynamicString::Fill", DCON_CDynamicString);
     dparams ("%c,%x,%x,%s", fillChar, len, startPos, pntr);
     dassert (startPos <= GetLen());
-    tSize endPos = len + startPos;
+    tUInt endPos = len + startPos;
     if (endPos >= GetMaxSize()) {
         if (DynExpand (endPos + 1) == vFalse) {
             return vFalse;
@@ -212,11 +245,11 @@ tBool CDynamicString::Fill (tStringChar fillChar, tSize len, tSize startPos) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tCompare CDynamicString::Compare (tString string, tSize len) {
+tCompare CDynamicString::Compare (tString string, tUInt len) {
     dhead ("CDynamicString::Compare", DCON_CDynamicString);
     dassert (string != 0);
     if (!len) {
-        len = s_strlen (string);
+        len = check_strlen (string);
     }
     tCompare cmp2;
     if (len == GetLen()) {
@@ -238,7 +271,7 @@ tCompare CDynamicString::Compare (tString string, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CDynamicString::Get (tString string, tSize len, tSize startPos) {
+void CDynamicString::Get (tString string, tUInt len, tUInt startPos) {
     dhead ("CDynamicString::Get", DCON_CDynamicString);
     dassert (string != 0);
     dassert (startPos <= GetLen());
@@ -251,40 +284,40 @@ void CDynamicString::Get (tString string, tSize len, tSize startPos) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tSize CDynamicString::FindChar (tStringChar ch, tSize startpos) {
+tUInt CDynamicString::FindChar (tStringChar ch, tUInt startpos) {
     dhead ("CDynamicString::FindChar", DCON_CDynamicString);
     for (; startpos < GetLen(); startpos++) {
         if (pntr[startpos] == ch) {
             RETURN ('x', startpos);
         }
     }
-    RETURN ('x', MAXVAL_tSize);
+    RETURN ('x', MAXVAL_tUInt);
 }
 
 /*===========================================================================*\
 \*===========================================================================*/
 
-tSize CDynamicString::FindLastChar (tStringChar ch) {
+tUInt CDynamicString::FindLastChar (tStringChar ch) {
     dhead ("CDynamicString::FindLastChar", DCON_CDynamicString);
-    tSize i = GetLen();
+    tUInt i = GetLen();
     while (i > 0) {
         if (pntr[--i] == ch) {
             RETURN ('x', i);
         }
     }
-    RETURN ('x', MAXVAL_tSize);
+    RETURN ('x', MAXVAL_tUInt);
 }
 
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CDynamicString::Remove (tSize startPos, tSize len) {
+void CDynamicString::Remove (tUInt startPos, tUInt len) {
     dhead ("CDynamicString::Remove", DCON_CDynamicString);
     dparams ("%x,%x,%x", startPos, len, GetLen());
     dassert (startPos <= GetLen());
     dassert (len <= GetLen());
     dassert (startPos + len <= GetLen());
-    tSize endPos = startPos + len;
+    tUInt endPos = startPos + len;
     if (endPos >= GetLen()) {
         SetLen (startPos);
     } else {
@@ -297,7 +330,7 @@ void CDynamicString::Remove (tSize startPos, tSize len) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CDynamicString::RemoveChars (tString RemoveChars, tSize startPos, tSize len) {
+void CDynamicString::RemoveChars (tString RemoveChars, tUInt startPos, tUInt len) {
     dhead ("CDynamicString::RemoveChars", DCON_CDynamicString);
     if (startPos < GetLen()) {
         if (!len || (len + startPos > GetLen())) {
@@ -323,7 +356,7 @@ void CDynamicString::RemoveChars (tString RemoveChars, tSize startPos, tSize len
 /*===========================================================================*\
 \*===========================================================================*/
 
-tBool CDynamicString::Resize (tSize newMaxSize) {
+tBool CDynamicString::Resize (tUInt newMaxSize) {
     dhead ("CDynamicString::Resize", DCON_CDynamicString);
     dassert (GetLen() + 1 <= newMaxSize);
     tString delPntr = 0;
@@ -353,11 +386,11 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
     tFormatChar  localBuf[CSTRING_PRINT_BufferSize];    // Local internal buffer
     tFormatChar *savepos    = format;                   // Position of last "placeholder"
     tFormatChar *copyBuf    = &localBuf[0];             // Buffer that will be append to String
-    tSize        copyBufLen = 0;                        // Size of copyBuf
+    tUInt        copyBufLen = 0;                        // Size of copyBuf
     tUInt        PrtFlags   = 0;                        // Possible Flags for "placeholder"
     tUInt        PrtWidth   = 0;                        // Width of "placeholder"
     tSInt        PrtPreci   = -2;                       // Precision of "placeholder"
-    tSize        startLen   = GetLen();                 // Len of str before Print was executed
+    tUInt        startLen   = GetLen();                 // Len of str before Print was executed
 
     while (*format != 0) {
         if (PrtFlags) {
@@ -522,11 +555,11 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
                 copyBuf = va_arg (argptr, tFormatChar *);
                 if (copyBuf) {
                     if (PrtFlags & PRINTFLAGS_LARGE) {
-                        copyBufLen = s_strlen ((tUWiChar *)copyBuf);
+                        copyBufLen = check_strlen ((tUWiChar *)copyBuf);
                     } else if (PrtFlags & PRINTFLAGS_SHORT) {
-                        copyBufLen = s_strlen ((tUChar *)copyBuf);
+                        copyBufLen = check_strlen ((tUChar *)copyBuf);
                     } else {
-                        copyBufLen = s_strlen (copyBuf);
+                        copyBufLen = check_strlen (copyBuf);
                     }
                 } else {
                     s_strncpy (localBuf, "[NULL]", 7);
@@ -564,7 +597,7 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
             /*----- OTHERS: wrong placeholder -----*/
             default:
                 copyBuf    = savepos;
-                copyBufLen = format - savepos + 1;
+                copyBufLen = (tUInt)(format - savepos + 1);
                 PrtFlags  |= PRINTFLAGS_READY;
                 break;
             } //end: switch (*format)
@@ -579,7 +612,7 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
                         }
                         PrtWidth = 0;
                     }
-                    tSize endPos = curLen + copyBufLen;
+                    tUInt endPos = curLen + copyBufLen;
                     if (endPos >= GetMaxSize()) {
                         if (DynExpand (endPos + 1) == vFalse) {
                             RETURN ('x', CSTRING_PRINT_MemoryError);
@@ -613,7 +646,7 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
             switch (*format) {
             case '%':
                 //ASSERT (PrtFlags == 0);
-                if ((format > savepos) && (Append (savepos, format - savepos) == vFalse)) {
+                if ((format > savepos) && (Append (savepos, (tUInt)(format - savepos)) == vFalse)) {
                     RETURN ('x', CSTRING_PRINT_MemoryError);
                 }
                 if (format[1] == '%') {
@@ -628,7 +661,7 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
             case '\n':
                 if ((tabsize > 0) && (tabchar > 0)) {
                     if (  (  (format > savepos)
-                          && (Append (savepos, format - savepos) == vFalse))
+                          && (Append (savepos, (tUInt)(format - savepos)) == vFalse))
                        || (FillAppend (tabchar, tabsize) == vFalse)) {
                         RETURN ('x', CSTRING_PRINT_MemoryError);
                     }
@@ -639,7 +672,7 @@ tSInt CDynamicString::i_vPrintAppend (tFormatChar *format, va_list argptr, tUInt
         }
         format++;
     } //end: while
-    if ((format > savepos) && (Append (savepos, format - savepos) == vFalse)) {
+    if ((format > savepos) && (Append (savepos, (tUInt)(format - savepos)) == vFalse)) {
         RETURN ('x', CSTRING_PRINT_MemoryError);
     }
     dassert (GetLen() >= startLen);
@@ -668,8 +701,8 @@ tUInt CDynamicString::i_Print_ltoa (tFormatChar **pBuffer, tUInt64 value, tSByte
     tFormatChar *DigitForStrings = &LowDigitForStrings[0];
     tFormatChar *buffer          = *pBuffer + CSTRING_PRINT_BufferSize - 1;
     tFormatChar  prechar         = 0;
-    tSize        prelen          = 0;
-    tSize        bufpos          = 0;
+    tUInt        prelen          = 0;
+    tUInt        bufpos          = 0;
 
     if (Flags & PRINTFLAGS_PLUS) {
         prechar = '+';

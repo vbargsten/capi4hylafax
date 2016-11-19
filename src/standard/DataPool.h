@@ -44,7 +44,7 @@ public:
     tUInt CountPackets (void);
 
     CDataPacket *RecvPacket (void);
-    void ReturnPacket (CDataPacket *pPacket);
+    void ReturnPacket (CDataPacket *pPacket, tSInfo info);
 
 private:
     Protect_Define (m_hProtect);
@@ -71,7 +71,7 @@ public:
     tUInt CountPackets (void);
 
     CDataPacket *RecvPacket (void);
-    void ReturnPacket (CDataPacket *pPacket);
+    void ReturnPacket (CDataPacket *pPacket, tSInfo info);
 
 private:
     Protect_Define (m_hProtect);
@@ -85,7 +85,8 @@ private:
 class CDataPacketPoolStore : public CDataPacketPool {
 public:
     CDataPacketPoolStore (tUInt PacketMaxLen = 0);
-    void SetPacketMaxLen (tUInt PacketMaxLen);
+    void  SetPacketMaxLen (tUInt PacketMaxLen);
+    tUInt GetPacketMaxLen (void);
 
     tBool Init (tUInt StartCount);
     CDataPacket *FetchOrNew (void);
@@ -215,7 +216,7 @@ inline CDataPacket *CDataPacketQueue::RecvPacket (void) {
     return Get();
 }
 
-inline void CDataPacketQueue::ReturnPacket (CDataPacket *pPacket) {
+inline void CDataPacketQueue::ReturnPacket (CDataPacket *pPacket, tSInfo) {
     Put (pPacket);
 }
 
@@ -289,7 +290,7 @@ inline CDataPacket *CDataPacketPool::RecvPacket (void) {
     return Fetch();
 }
 
-inline void CDataPacketPool::ReturnPacket (CDataPacket *pPacket) {
+inline void CDataPacketPool::ReturnPacket (CDataPacket *pPacket, tSInfo) {
     Fill (pPacket);
 }
 
@@ -304,6 +305,10 @@ inline CDataPacketPoolStore::CDataPacketPoolStore (tUInt PacketMaxLen)
 
 inline void CDataPacketPoolStore::SetPacketMaxLen (tUInt PacketMaxLen) {
     m_PacketMaxLen = PacketMaxLen;
+}
+
+inline tUInt CDataPacketPoolStore::GetPacketMaxLen (void) {
+    return m_PacketMaxLen;
 }
 
 inline tBool CDataPacketPoolStore::Init (tUInt StartCount) {

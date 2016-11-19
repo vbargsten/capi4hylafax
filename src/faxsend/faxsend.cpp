@@ -282,7 +282,7 @@ tSInfo CFaxSend::Send (CDynamicString *Number, CMultiString *FaxFilesList, tUInt
         ModeText = "Hylafax";
         tUInt commID = GetJobFile();
         dassert (pCommID != 0);
-        if (*pCommID) {
+        if (pCommID) {
             *pCommID = commID;
         }
         WriteLog (LOG_INFO, "SESSION BEGIN %09u %s\n", jobID, FaxNumber.GetPointer());
@@ -437,14 +437,16 @@ void CFaxSend::IsConnected (cp_ncpi_all *pNCPI) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CFaxSend::PutDataComplete (void *hDataID, c_info /*Reason*/) {
+void CFaxSend::PutDataComplete (void *hDataID, c_info Reason) {
     dhead ("CFaxSend::PutDataComplete", DCON_CFaxSend);
     //dprint ("CFaxSend::PutDataComplete Reason 0x%X (%s).\n", Reason, capi_info2str (Reason));
     dprint ("CFaxSend::PutDataComplete PageCount = %d\n", GetPageCount());
     dassert (PollString.IsEmpty() == vTrue);
 
     delete [] (tUChar *)hDataID;
-    SendData();
+    if (Reason != ci_Int_NotConnected) {
+        SendData();
+    }
 }
 
 /*===========================================================================*\
@@ -462,12 +464,13 @@ void CFaxSend::GetData (tUByte *Data, tUShort DataLength, tUShort DataHandle) {
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CFaxSend::DoDisconnecting (c_info Reason, cp_ncpi_all *pNCPI) {
-    dhead ("CFaxSend::DoDisconnecting", DCON_CFaxSend);
+void CFaxSend::DisconnectInquiry (c_info Reason, cp_ncpi_all *pNCPI) {
+    dhead ("CFaxSend::DisconnectInquiry", DCON_CFaxSend);
     dprint ("CFaxSend::DoDisconnecting GetSendState = %d\n", GetSendState());
-    dwarning (pNCPI == 0);
+    dwarning (pNCPI != 0);
     if (pNCPI) {
         // sync PageCount with the value returned from CAPI
+        dprint ("PageCount=%x/%x ", GetPageCount(), pNCPI->Pages);
         if (GetFormat() == FaxFormat_SFF) {
             SetPageCount (pNCPI->Pages);
         } else if (GetPageCount() != pNCPI->Pages) {
@@ -497,6 +500,7 @@ void CFaxSend::DoDisconnecting (c_info Reason, cp_ncpi_all *pNCPI) {
     }
     StopSend();
     StopRecv();
+    DisconnectConfirm();
 }
 
 /*===========================================================================*\

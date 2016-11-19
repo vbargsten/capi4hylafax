@@ -18,6 +18,8 @@
 
 #include "aStdLib.h"
 #include "aString.h"
+#include "CString.h"
+#include "DataPack.h"
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
@@ -30,7 +32,7 @@ static char DigitForStrings[16] =  {
 /*===========================================================================*\
 \*===========================================================================*/
 
-tUByte a_count1bits (tUInt value) {
+tUByte a_count1bits (tUInt32 value) {
     tUByte fret = 0;
     for (; value > 0; value >>= 1) {
         if (value & 0x1) {
@@ -40,6 +42,21 @@ tUByte a_count1bits (tUInt value) {
     return fret;
 }
 
+tUByte a_count1bits (tUInt64 value) {
+    tUByte fret = 0;
+
+    #ifdef USE_64TO32BIT_DIVISION
+        fret = a_count1bits (*(tUInt32 *)&value) + a_count1bits (*(((tUInt32 *)&value) + 1));
+    #else
+        for (; value > 0; value >>= 1) {
+            if (value & 0x1) {
+                fret++;
+            }
+        }
+    #endif
+
+    return fret;
+}
 
 /*===========================================================================*\
 \*===========================================================================*/
@@ -211,9 +228,9 @@ char *a_strupr (char *pString) {
 \*===========================================================================*/
 
 tUInt a_pointer2string (void *pointer, tChar *string) {
-    tULong  p   = (tULong) pointer;
-    tChar  *fmt = ((sizeof (p) > 4) ? (tChar *)"    .    :    .    " : (tChar *)"    :    "); // must be symmetric!
-    unsigned i  = s_strlen (fmt);
+    tULong p   = (tULong) pointer;
+    tChar *fmt = ((sizeof (p) > 4) ? (tChar *)"    .    :    .    " : (tChar *)"    :    "); // must be symmetric!
+    tUInt  i   = s_strlen (fmt);
 
     string[i] = '\0';
     string--;
@@ -232,9 +249,9 @@ tUInt a_pointer2string (void *pointer, tChar *string) {
 \*===========================================================================*/
 
 tUInt a_pointer2string (void *pointer, tWiChar *string) {
-    tULong    p   = (tULong) pointer;
-    tWiChar  *fmt = (sizeof (p) > 4) ? L"    .    :    .    " : L"    :    "; // must be symmetric!
-    unsigned i  = s_strlen (fmt);
+    tULong   p   = (tULong) pointer;
+    tWiChar *fmt = (sizeof (p) > 4) ? L"    .    :    .    " : L"    :    "; // must be symmetric!
+    tUInt    i   = s_strlen (fmt);
 
     string[i] = '\0';
     string--;
@@ -248,6 +265,74 @@ tUInt a_pointer2string (void *pointer, tWiChar *string) {
     }
     return (sizeof (p) > 4) ? 19 : 9;
 }
+
+/*===========================================================================*\
+\*===========================================================================*/
+
+static tSByte a_hex2bin_conv (tStringChar ch) {
+    switch (ch) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+        return ch - '0';
+    case 'A':
+    case 'B':
+    case 'C':
+    case 'D':
+    case 'E':
+    case 'F':
+        return ch - 'A' + 10;
+    case 'a':
+    case 'b':
+    case 'c':
+    case 'd':
+    case 'e':
+    case 'f':
+        return ch - 'a' + 10;
+    }
+    return -1;
+}
+
+
+/*---------------------------------------------------------------------------*\
+\*---------------------------------------------------------------------------*/
+
+tBool a_hex2bin (CConstString *pHexString, CDataPacket *pBinPacket) {
+    //dassert (pHexString != 0);
+    //dassert (pBinPacket != 0);
+    tString str  = pHexString->GetPointer();
+    tUByte *bin  = pBinPacket->GetLenPointer();
+    tSByte  val1 = -1;
+    tSByte  val2;
+    //dassert (bin != 0);
+    for (tSize len = pHexString->GetLen(); len > 0; len--, str++) {
+        val2 = a_hex2bin_conv (*str);
+        if (val2 >= 0) {
+            if (val1 == -1) {
+                val1 = val2;
+            } else {
+                if (!pBinPacket->GetFreeLen()) {
+                    if (infoError (pBinPacket->Resize (pBinPacket->GetMaxLen() + (len / 2)))) {
+                        return vFalse;
+                    }
+                }
+                *bin = (val1 << 4) + val2;
+                val1 = -1;
+                bin++;
+                pBinPacket->IncLen();
+            }
+        }
+    }
+    return vTrue;
+}
+
 
 /*===========================================================================*\
 \*===========================================================================*/

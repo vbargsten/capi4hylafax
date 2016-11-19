@@ -253,8 +253,8 @@ void CFaxReceive::GetData (tUByte *Data, tUShort DataLength, tUShort DataHandle)
 /*===========================================================================*\
 \*===========================================================================*/
 
-void CFaxReceive::DoDisconnecting (c_info, cp_ncpi_all *pNCPI) {
-    dhead ("CFaxReceive::DoDisconnecting", DCON_CFaxReceive);
+void CFaxReceive::DisconnectInquiry (c_info, cp_ncpi_all *pNCPI) {
+    dhead ("CFaxReceive::DisconnectInquiry", DCON_CFaxReceive);
     dwarning (pNCPI != 0);
     StopRecv();
     if (pNCPI) {
@@ -266,6 +266,7 @@ void CFaxReceive::DoDisconnecting (c_info, cp_ncpi_all *pNCPI) {
             //SetPageCount (pNCPI->Pages);
         }
     }
+    DisconnectConfirm();
 }
 
 /*===========================================================================*\

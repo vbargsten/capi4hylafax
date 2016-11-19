@@ -148,7 +148,7 @@ void CCAPI20_MsgBase::RELEASE  (void) {
     dwarning (PutMsgbufferQueue.IsQueueEmpty() == vTrue);
     PutMsgbufferQueue.FreeQueue();
     // queue a illegal Message to indicate EmptyPutMsgbufferQueue that it must call Release
-    AllocAndPutMsg (0xFF, 0xFF, 0, 0, 0);
+    AllocAndPutMsg (0xFF, 0xFF, 0, 0, vFalse, 0);
 }
 
 
@@ -245,7 +245,7 @@ void CCAPI20_MsgBase::HandleMessageError (tUInt type, c_info ErrorCode, c_messag
 \*===========================================================================*/
 
 void CCAPI20_MsgBase::AllocAndPutMsg (c_byte Command, c_byte SubCommand, c_word Messagenumber,
-                                      c_dword Address, CCStruct *Params) {
+                                      c_dword Address, tBool ZeroIsEmptyStruct, CCStruct *Params) {
     dhead ("CCAPI20_MsgBase::AllocAndPutMsg", DCON_CCAPI20_MsgBase);
     dparams ("%x,%x,%x,%x", Command, SubCommand, Messagenumber, Address);
     dassert (Command != 0);
@@ -256,7 +256,21 @@ void CCAPI20_MsgBase::AllocAndPutMsg (c_byte Command, c_byte SubCommand, c_word 
     dwarning (cmsg != 0);
     if (cmsg) {
         dprint ("Message(%x,%x) ", Command, SubCommand);
-        FillMessage (cmsg, Command, SubCommand, Messagenumber, Address, Params);
+
+        CapiMsg_SetFullHeader (cmsg, GetApplID(), Command, SubCommand, Messagenumber, Address);
+        tUInt slen = CAPI_MSG_HEADER_ADDR_SIZE;
+        if (Params) {
+            slen += Params->CalcStructSize();
+            dassert (slen <= CAPI_MAX_MESSAGE_SIZE);
+            if (slen <= CAPI_MAX_MESSAGE_SIZE) {
+                Params->FillBuffer (cmsg + CAPI_MSG_HEADER_ADDR_SIZE);
+            }
+        } else if (ZeroIsEmptyStruct) {
+            cmsg[CAPI_MSG_HEADER_ADDR_SIZE] = 0;
+            slen += 1;
+        }
+        CapiMsg_SetMsgLen (cmsg, (c_word)slen);
+
         //dprint ("Buffer=%x, Len=%x", cmsg, CapiMsg_GetMsgLen (cmsg));
         //dprintBuf (cmsg, CapiMsg_GetMsgLen(cmsg));
         PutMsgbufferQueue.InQueue (cmsg);
@@ -267,34 +281,8 @@ void CCAPI20_MsgBase::AllocAndPutMsg (c_byte Command, c_byte SubCommand, c_word 
         // alloc lMessage on the stack is worse so we use static, thats only a little better
         // because for all MsgBase-classes exit only one lMessage
         //static c_byte lMessage[CAPI_MAX_MESSAGE_SIZE];
-        //FillMessage (lMessage, Command, SubCommand, Messagenumber, Address, Params);
         HandleMessageError (0, ci_Int_MemoryFullErr, 0);
     }
-}
-
-
-/*===========================================================================*\
-    CCAPI20_MsgBase::FillMessage
-\*===========================================================================*/
-
-void CCAPI20_MsgBase::FillMessage (c_message cmsg, c_byte Command, c_byte SubCommand, c_word Messagenumber,
-                                   c_dword Address, CCStruct *Params) {
-    dhead ("CCAPI20_MsgBase::FillMessage", DCON_CCAPI20_MsgBase);
-    dparams ("%x,%x,%x,%x", Command, SubCommand, Messagenumber, Address);
-    dassert (cmsg != 0);
-    dassert (Command != 0);
-    dassert (SubCommand != 0);
-
-    CapiMsg_SetFullHeader (cmsg, GetApplID(), Command, SubCommand, Messagenumber, Address);
-    tUInt slen = CAPI_MSG_HEADER_ADDR_SIZE;
-    if (Params) {
-        slen += Params->CalcStructSize();
-        dassert (slen <= CAPI_MAX_MESSAGE_SIZE);
-        if (slen <= CAPI_MAX_MESSAGE_SIZE) {
-            Params->FillBuffer (cmsg + CAPI_MSG_HEADER_ADDR_SIZE);
-        }
-    }
-    CapiMsg_SetMsgLen (cmsg, (c_word)slen);
 }
 
 

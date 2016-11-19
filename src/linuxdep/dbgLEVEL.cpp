@@ -28,10 +28,10 @@
 tUInt DCON_CFaxSend                 = Dbg_Level_Internal;
 tUInt DCON_CFaxReceive              = Dbg_Level_Internal;
 tUInt DCON_CFaxReceiveDevice        = Dbg_Level_Internal;
-tUInt DCON_CFaxReceiveMain          = Dbg_Level_Infos;
+tUInt DCON_CFaxReceiveMain          = Dbg_Level_Internal;
 tUInt DCON_SffFilter                = Dbg_Level_Infos;
 tUInt DCON_TifFilter                = Dbg_Level_Infos;
-tUInt DCON_CBasicFaxConversion      = Dbg_Level_Infos;
+tUInt DCON_CBasicFaxConversion      = Dbg_Level_Internal;
 
 
 /*===========================================================================*\
@@ -42,8 +42,8 @@ tUInt DCON_CAPITrace                = Dbg_Level_Logs;
 tUInt DCON_CCAPI20_MsgBase          = Dbg_Level_Infos;
 tUInt DCON_CCAPI20_Channel          = Dbg_Level_Infos;
 tUInt DCON_CCAPI20_Facility         = Dbg_Level_Infos;
-tUInt DCON_CTransferChannel         = Dbg_Level_Infos;
-tUInt DCON_CCntrlMSNList            = Dbg_Level_Infos;
+tUInt DCON_CTransferChannel         = Dbg_Level_Internal;
+tUInt DCON_CCntrlMSNList            = Dbg_Level_Internal;
 tUInt DCON_PLCIList                 = Dbg_Level_Infos;
 tUInt DCON_CCStruct                 = Dbg_Level_Infos;
 tUInt DCON_CCAPI20_Statistic        = Dbg_Level_Infos;
@@ -61,9 +61,9 @@ tUInt DCON_CStandardArray           = Dbg_Level_Infos;
 tUInt DCON_CDynamicStore            = Dbg_Level_Infos;
 tUInt DCON_CPointerList             = Dbg_Level_Infos;
 tUInt DCON_CBasicTimerSupport       = Dbg_Level_Infos;
-tUInt DCON_ConfigParser             = Dbg_Level_Infos;
-tUInt DCON_ConfigParserAssi         = Dbg_Level_Infos;
-    
+tUInt DCON_ConfigParser             = Dbg_Level_Internal;
+tUInt DCON_ConfigParserAssi         = Dbg_Level_Internal;
+
 tUInt DCON_CapiBase                 = Dbg_Level_Infos;
 tUInt DCON_Protect                  = Dbg_Level_Infos;
 tUInt DCON_SecTimer                 = Dbg_Level_Infos;

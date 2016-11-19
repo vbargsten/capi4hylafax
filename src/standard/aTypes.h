@@ -29,7 +29,9 @@
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-#include <wchar.h>
+#ifndef ASTRING_DONT_USE_WCHAR
+    #include <wchar.h>
+#endif
 
 #if defined HAVE_STDINT_H && HAVE_STDINT_H > 0
     #include <stdint.h>
@@ -99,7 +101,11 @@ typedef uint8_t     tUChar;
 typedef int8_t      tSChar;
 typedef tUChar      tChar;
 
+#ifndef ASTRING_DONT_USE_WCHAR
 typedef wchar_t     tWiChar;
+#else
+typedef uint16_t    tWiChar;
+#endif
 typedef tWiChar     tUWiChar;
 
 typedef uint8_t     tUByte;

@@ -381,7 +381,7 @@ static void usage (char *prgName) {
     printf ("\t-v       Start in verbose mode\n");
     printf ("\t-V       Show version information\n");
     printf ("\tfile(s): Depending on the format(-f) switch.\n");
-    printf ("\t         HYLAFAX: one         qfile\n");
+    printf ("\t         HYLAFAX: one or more qfile(s)\n");
     printf ("\t         SFF:     one         sff file\n");
     printf ("\t         TIFF:    one or more tiff file(s)\n");
 }

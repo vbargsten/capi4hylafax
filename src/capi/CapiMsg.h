@@ -266,9 +266,7 @@ private:
         Interne Funtkionen
     \*-----------------------------------------------------------------------*/
     void AllocAndPutMsg (c_byte Command, c_byte SubCommand, c_word Messagenumber,
-                         c_dword Address, CCStruct *Params);
-    void FillMessage (c_message cmsg, c_byte Command, c_byte SubCommand, c_word Messagenumber,
-                      c_dword Address, CCStruct *Params);
+                         c_dword Address, tBool ZeroIsEmptyStruct, CCStruct *Params);
     void FreeCurPutMsg (void);
     void EmptyPutMsgbufferQueue (void);
     void HandleGetMessage (c_byte *Message);
@@ -333,56 +331,56 @@ inline void CCAPI20_MsgBase::FreeCurPutMsg (void) {
 \*===========================================================================*/
 
 inline void CCAPI20_MsgBase::ALERT_REQ (c_word Messagenumber, c_dword PLCI, CCStruct *pAdditionalInfo) {
-    AllocAndPutMsg (CAPI_ALERT, CAPI_REQ, Messagenumber, PLCI, pAdditionalInfo);
+    AllocAndPutMsg (CAPI_ALERT, CAPI_REQ, Messagenumber, PLCI, vTrue, pAdditionalInfo);
 }
 
 inline void CCAPI20_MsgBase::CONNECT_REQ (c_word Messagenumber, c_dword Controller, cm_connectreq *Params) {
-    AllocAndPutMsg (CAPI_CONNECT, CAPI_REQ, Messagenumber, Controller, Params);
+    AllocAndPutMsg (CAPI_CONNECT, CAPI_REQ, Messagenumber, Controller, vTrue, Params);
 }
 
 inline void CCAPI20_MsgBase::CONNECT_RESP (c_word Messagenumber, c_dword PLCI, cm_connectresp *Params) {
-    AllocAndPutMsg (CAPI_CONNECT, CAPI_RESP, Messagenumber, PLCI, Params);
+    AllocAndPutMsg (CAPI_CONNECT, CAPI_RESP, Messagenumber, PLCI, vTrue, Params);
 }
 
 
 inline void CCAPI20_MsgBase::CONNECT_B3_REQ (c_word Messagenumber, c_dword PLCI, CCStruct *pNCPI) {
-    AllocAndPutMsg (CAPI_CONNECT_B3, CAPI_REQ, Messagenumber, PLCI, pNCPI);
+    AllocAndPutMsg (CAPI_CONNECT_B3, CAPI_REQ, Messagenumber, PLCI, vTrue, pNCPI);
 }
 
 inline void CCAPI20_MsgBase::DATA_B3_REQ (c_word Messagenumber, c_dword NCCI, cm_datab3 *Params) {
-    AllocAndPutMsg (CAPI_DATA_B3, CAPI_REQ, Messagenumber, NCCI, Params);
+    AllocAndPutMsg (CAPI_DATA_B3, CAPI_REQ, Messagenumber, NCCI, vTrue, Params);
 }
 
 inline void CCAPI20_MsgBase::DISCONNECT_B3_REQ (c_word Messagenumber, c_dword NCCI, CCStruct *pNCPI) {
-    AllocAndPutMsg (CAPI_DISCONNECT_B3, CAPI_REQ, Messagenumber, NCCI, pNCPI);
+    AllocAndPutMsg (CAPI_DISCONNECT_B3, CAPI_REQ, Messagenumber, NCCI, vTrue, pNCPI);
 }
 
 inline void CCAPI20_MsgBase::DISCONNECT_REQ (c_word Messagenumber, c_dword PLCI) {
-    AllocAndPutMsg (CAPI_DISCONNECT, CAPI_REQ, Messagenumber, PLCI, 0);
+    AllocAndPutMsg (CAPI_DISCONNECT, CAPI_REQ, Messagenumber, PLCI, vTrue, 0);
 }
 
 inline void CCAPI20_MsgBase::FACILITY_REQ (c_word Messagenumber, c_dword Address, cm_facilityreq *Params) {
-    AllocAndPutMsg (CAPI_FACILITY, CAPI_REQ, Messagenumber, Address, Params);
+    AllocAndPutMsg (CAPI_FACILITY, CAPI_REQ, Messagenumber, Address, vTrue, Params);
 }
 
 inline void CCAPI20_MsgBase::INFO_REQ (c_word Messagenumber, c_dword Address, cm_inforeq *Params) {
-    AllocAndPutMsg (CAPI_INFO, CAPI_REQ, Messagenumber, Address, Params);
+    AllocAndPutMsg (CAPI_INFO, CAPI_REQ, Messagenumber, Address, vTrue, Params);
 }
 
 inline void CCAPI20_MsgBase::LISTEN_REQ (c_word Messagenumber, c_dword Controller, cm_listenreq *Params) {
-    AllocAndPutMsg (CAPI_LISTEN, CAPI_REQ, Messagenumber, Controller, Params);
+    AllocAndPutMsg (CAPI_LISTEN, CAPI_REQ, Messagenumber, Controller, vTrue, Params);
 }
 
 inline void CCAPI20_MsgBase::MANUFACTURER_REQ (c_word Messagenumber, c_dword Controller, cm_manufacturer *Params) {
-    AllocAndPutMsg (CAPI_MANUFACTURER, CAPI_REQ, Messagenumber, Controller, Params);
+    AllocAndPutMsg (CAPI_MANUFACTURER, CAPI_REQ, Messagenumber, Controller, vTrue, Params);
 }
 
 inline void CCAPI20_MsgBase::RESET_B3_REQ (c_word Messagenumber, c_dword NCCI, CCStruct *pNCPI) {
-    AllocAndPutMsg (CAPI_RESET_B3, CAPI_REQ, Messagenumber, NCCI, pNCPI);
+    AllocAndPutMsg (CAPI_RESET_B3, CAPI_REQ, Messagenumber, NCCI, vTrue, pNCPI);
 }
 
 inline void CCAPI20_MsgBase::SELECT_B_PROTOCOL_REQ (c_word Messagenumber, c_dword PLCI, cp_bprotocol *Params) {
-    AllocAndPutMsg (CAPI_SELECT_B_PROTOCOL, CAPI_REQ, Messagenumber, PLCI, Params);
+    AllocAndPutMsg (CAPI_SELECT_B_PROTOCOL, CAPI_REQ, Messagenumber, PLCI, vTrue, Params);
 }
 
 
@@ -464,47 +462,47 @@ inline tBool CCAPI20_MsgBase::RESET_B3_IND (c_word Messagenumber, c_dword NCCI, 
 \*===========================================================================*/
 
 inline void CCAPI20_MsgBase::CONNECT_ACTIVE_RESP (c_word Messagenumber, c_dword PLCI) {
-    AllocAndPutMsg (CAPI_CONNECT_ACTIVE, CAPI_RESP, Messagenumber, PLCI, 0);
+    AllocAndPutMsg (CAPI_CONNECT_ACTIVE, CAPI_RESP, Messagenumber, PLCI, vFalse, 0);
 }
 
 inline void CCAPI20_MsgBase::CONNECT_B3_RESP (c_word Messagenumber, c_dword NCCI, cm_connectb3resp *Params) {
-    AllocAndPutMsg (CAPI_CONNECT_B3, CAPI_RESP, Messagenumber, NCCI, Params);
+    AllocAndPutMsg (CAPI_CONNECT_B3, CAPI_RESP, Messagenumber, NCCI, vTrue, Params);
 }
 
 inline void CCAPI20_MsgBase::CONNECT_B3_ACTIVE_RESP (c_word Messagenumber, c_dword NCCI) {
-    AllocAndPutMsg (CAPI_CONNECT_B3_ACTIVE, CAPI_RESP, Messagenumber, NCCI, 0);
+    AllocAndPutMsg (CAPI_CONNECT_B3_ACTIVE, CAPI_RESP, Messagenumber, NCCI, vFalse, 0);
 }
 
 inline void CCAPI20_MsgBase::CONNECT_B3_T90_ACTIVE_RESP (c_word Messagenumber, c_dword NCCI) {
-    AllocAndPutMsg (CAPI_CONNECT_B3_T90_ACTIVE, CAPI_RESP, Messagenumber, NCCI, 0);
+    AllocAndPutMsg (CAPI_CONNECT_B3_T90_ACTIVE, CAPI_RESP, Messagenumber, NCCI, vFalse, 0);
 }
 
 inline void CCAPI20_MsgBase::DATA_B3_RESP (c_word Messagenumber, c_dword NCCI, cm_datab3resp *Params) {
-    AllocAndPutMsg (CAPI_DATA_B3, CAPI_RESP, Messagenumber, NCCI, Params);
+    AllocAndPutMsg (CAPI_DATA_B3, CAPI_RESP, Messagenumber, NCCI, vTrue, Params);
 }
 
 inline void CCAPI20_MsgBase::DISCONNECT_B3_RESP (c_word Messagenumber, c_dword NCCI) {
-    AllocAndPutMsg (CAPI_DISCONNECT_B3, CAPI_RESP, Messagenumber, NCCI, 0);
+    AllocAndPutMsg (CAPI_DISCONNECT_B3, CAPI_RESP, Messagenumber, NCCI, vFalse, 0);
 }
 
 inline void CCAPI20_MsgBase::DISCONNECT_RESP (c_word Messagenumber, c_dword PLCI) {
-    AllocAndPutMsg (CAPI_DISCONNECT, CAPI_RESP, Messagenumber, PLCI, 0);
+    AllocAndPutMsg (CAPI_DISCONNECT, CAPI_RESP, Messagenumber, PLCI, vFalse, 0);
 }
 
 inline void CCAPI20_MsgBase::FACILITY_RESP (c_word Messagenumber, c_dword Address, cm_facilityresp *Params) {
-    AllocAndPutMsg (CAPI_FACILITY, CAPI_RESP, Messagenumber, Address, Params);
+    AllocAndPutMsg (CAPI_FACILITY, CAPI_RESP, Messagenumber, Address, vTrue, Params);
 }
 
 inline void CCAPI20_MsgBase::INFO_RESP (c_word Messagenumber, c_dword Address) {
-    AllocAndPutMsg (CAPI_INFO, CAPI_RESP, Messagenumber, Address, 0);
+    AllocAndPutMsg (CAPI_INFO, CAPI_RESP, Messagenumber, Address, vFalse, 0);
 }
 
 inline void CCAPI20_MsgBase::MANUFACTURER_RESP (c_word Messagenumber, c_dword Controller, cm_manufacturer *Params) {
-    AllocAndPutMsg (CAPI_MANUFACTURER, CAPI_RESP, Messagenumber, Controller, Params);
+    AllocAndPutMsg (CAPI_MANUFACTURER, CAPI_RESP, Messagenumber, Controller, vTrue, Params);
 }
 
 inline void CCAPI20_MsgBase::RESET_B3_RESP (c_word Messagenumber, c_dword NCCI) {
-    AllocAndPutMsg (CAPI_RESET_B3, CAPI_RESP, Messagenumber, NCCI, 0);
+    AllocAndPutMsg (CAPI_RESET_B3, CAPI_RESP, Messagenumber, NCCI, vFalse, 0);
 }
 
 

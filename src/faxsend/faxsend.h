@@ -56,7 +56,7 @@ private:
     void IsConnected (cp_ncpi_all *pNCPI);
     void PutDataComplete (void *hDataID, c_info Info);
     void GetData (tUByte *Data, tUShort DataLength, tUShort DataHandle);
-    void DoDisconnecting (c_info ReasonB3, cp_ncpi_all *pNCPI);
+    void DisconnectInquiry (c_info ReasonB3, cp_ncpi_all *pNCPI);
     void IsDisconnected (c_info Reason);
     void IsReseted (void);
 

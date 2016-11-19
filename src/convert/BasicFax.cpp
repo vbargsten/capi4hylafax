@@ -708,7 +708,7 @@ tSInt CBasicFaxConversion::GetRecvFile (void) {
         tmpfaxFileNr = atoi (dummybuf) + 1;
     }
     if (m_format == FaxFormat_Hylafax) {
-        NewNameFormat.PrintAppend ("fax%%05u" FILE_EXTENSION_TIFF);
+        NewNameFormat.PrintAppend ("fax%%09u" FILE_EXTENSION_TIFF);
     } else {
         NewNameFormat.PrintAppend ("cf%c%%07u", (m_VResolution > 98) ? 'f' : 'n');
         if (GetReceiveID()->IsEmpty() == vFalse) {

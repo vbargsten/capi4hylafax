@@ -1,0 +1,9 @@
+/var/log/hylafax/capifax.log {
+	monthly
+	rotate 4
+	delaycompress
+	compress
+	missingok
+	notifempty
+	create 600 uucp dialout
+}

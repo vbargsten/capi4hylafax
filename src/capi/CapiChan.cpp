@@ -133,7 +133,7 @@ tBool CCAPI20_Channel::AcceptIncomingCall (void) {
     CCAPI20_Channel::Register
 \*===========================================================================*/
 
-void CCAPI20_Channel::Register (tUInt MaxDataSize) {
+void CCAPI20_Channel::Register (tUInt MaxDataSize, tUInt MaxInFrames) {
     dhead ("CCAPI20_Channel::Register", DCON_CCAPI20_Channel);
     dparams ("t=%x", this);
     dassert (GetState() == cs_Released);
@@ -144,7 +144,7 @@ void CCAPI20_Channel::Register (tUInt MaxDataSize) {
           && (SecTimer_Create (&hStateChangeTimer) == vFalse))) {
         Register_Complete (ci_Int_TimerInitFailure);
     } else if (SetState (cs_Registering, cs_Released) == vTrue) {
-        REGISTER (1, CAPI_MAX_OUTSTANDING_FRAMES, MaxDataSize);
+        REGISTER (1, MaxInFrames, MaxDataSize);
     } else {
         dwarning (0);
     }
