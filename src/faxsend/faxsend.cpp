@@ -576,7 +576,7 @@ void CFaxSend::IsDisconnected (c_info Reason) {
             commStr.Print ("%09u", m_commID);
 
             // Hylafax: <mailaddr> <qfile> <ModemDeviceID> <CommID> <Reason>
-            executeCommand.PrintAppend (" \"%S\" \"%S\" \"%S\" \"%S\" \"%s\"", &PollString,
+            executeCommand.PrintAppend (" \"%eS\" \"%eS\" \"%eS\" \"%eS\" \"%es\"", &PollString,
                                         GetRecvFiles()->GetFirst(), &DeviceName, &commStr, StateText);
         } else  {
             // mgetty:  <RecvStatus> <Hangup Code> "<sender id>" "<poll text>" <nr of pages> <file(s)>
@@ -595,10 +595,10 @@ void CFaxSend::IsDisconnected (c_info Reason) {
             case 3:
                 break;
             }
-            executeCommand.PrintAppend (" %u 0x%X \"%S\" \"%S\" %u", recvStatus, Reason, GetReceiveID(),
+            executeCommand.PrintAppend (" %u 0x%X \"%eS\" \"%eS\" %u", recvStatus, Reason, GetReceiveID(),
                                         &PollString, GetPageCount());
             for (COneMultiString *pLauf = GetRecvFiles()->GetFirst(); (pLauf != 0); pLauf = pLauf->GetNext()) {
-                executeCommand.PrintAppend (" \"%s\"", pLauf->GetPointer());
+                executeCommand.PrintAppend (" \"%es\"", pLauf->GetPointer());
             }
         }
 
@@ -671,7 +671,7 @@ void CFaxSend::SendData (void) {
                     if (GetSendState() == 2) {
                         WriteLog (LOG_INFO, "Fax file completely transfered to CAPI.\n");
                         exitState = 0;
-                        Disconnect (DisconnectKind_WaitNoPut);
+                        Disconnect (DisconnectKind_Normal);
                     }
                     break;
                 case iErr_File_NotExist:

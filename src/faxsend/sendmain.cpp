@@ -138,7 +138,7 @@ static void WriteQFile (tChar *QFileName, tUInt commID, tUInt HylafaxExitState, 
         } else if (strcasecmp ("npages", text) == 0) {
             dprint ("found npages ");
             sprintf (ne + 1, "%u\n", fs->GetPageCount());
-        } else if ((dialortry == 1) && ((strcasecmp ("ndials", text) == 0) || (strcasecmp ("totdials", text) == 0))) {
+        } else if (((dialortry == 1) || (dialortry == 2)) && ((strcasecmp ("ndials", text) == 0) || (strcasecmp ("totdials", text) == 0))) {
             dprint ("found _dials ");
             triescount = atol (ne + 1) + 1;
             if (triescount <= 0) {
