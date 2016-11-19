@@ -30,6 +30,7 @@ build-arch: build-stamp
 build-indep: build-stamp
 build-stamp:
 	dh_testdir
+	dh_autotools-dev_updateconfig
 	./configure $(confflags) --prefix=/usr \
 	  --with-hylafax-spooldir=/var/spool/hylafax \
 	  $(shell $(dpkg_buildflags) --export=configure)
@@ -42,6 +43,7 @@ clean:
 	rm -f build-stamp
 	[ ! -f Makefile ] || $(MAKE) distclean
 	[ ! -f Makefile ] || $(MAKE) clean
+	dh_autotools-dev_restoreconfig
 	dh_clean
 
 install: build

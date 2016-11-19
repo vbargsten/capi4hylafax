@@ -1,10 +1,10 @@
 Source: capi4hylafax
 Section: comm
 Priority: extra
-Maintainer: Joachim Wiedorn <ad_debian@joonet.de>
-Standards-Version: 3.9.3
-Build-Depends: debhelper (>= 8),
- libcapi20-dev, libtiff-dev
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Standards-Version: 3.9.4
+Build-Depends: debhelper (>= 9),
+ libcapi20-dev, libtiff-dev, autotools-dev
 Vcs-Git: git://anonscm.debian.org/collab-maint/capi4hylafax.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/capi4hylafax.git
 
