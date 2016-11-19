@@ -51,8 +51,8 @@
 \*---------------------------------------------------------------------------*/
 
 #define _USE_DEBUG_INFO_CLASS_NONE          0       // Reihenfolge wichtig!!
-#define _USE_DEBUG_INFO_CLASS_EMULATION     1       // noch nicht ganz implementiert
-#define _USE_DEBUG_INFO_CLASS_NORMAL        2
+#define _USE_DEBUG_INFO_CLASS_EMULATION     -1       // noch nicht ganz implementiert
+#define _USE_DEBUG_INFO_CLASS_NORMAL        1
 
 #ifndef USE_DEBUG_INFO_CLASS
 #error USE_DEBUG_INFO_CLASS not defined!
@@ -77,12 +77,12 @@ void dActivateBreakPoint (tBool activate);
 \*---------------------------------------------------------------------------*/
 #if (USE_DEBUG_INFO_CLASS == _USE_DEBUG_INFO_CLASS_NONE)
 
-#define dwriteErr(DL, format)
-#define dwriteWrn(DL, format)
-#define dwriteLog(DL, format)
-#define dwriteS(DL, format)
-#define dwriteE(DL, format)
-#define dwriteI(DL, format)
+#define dwriteErr(DL, format, ...)
+#define dwriteWrn(DL, format, ...)
+#define dwriteLog(DL, format, ...)
+#define dwriteS(DL, format, ...)
+#define dwriteE(DL, format, ...)
+#define dwriteI(DL, format, ...)
 
 #else
 

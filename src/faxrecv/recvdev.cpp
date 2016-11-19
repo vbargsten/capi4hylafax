@@ -257,6 +257,7 @@ tBool CFaxReceiveDevice::StartReceive (void) {
     }
 
     for (i = CountThreads; i > 0; i--) {
+        printf("StartReceive %i...\n", i);
         CFaxReceive *pFR = new CFaxReceive (this, format);
         if (pFR) {
             FaxThreads.AddLast (pFR);
