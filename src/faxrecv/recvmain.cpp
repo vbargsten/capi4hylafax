@@ -490,13 +490,13 @@ void CFaxReceiveMain::setupPermissions (void) {
         }
         switch (errflags) {
         case 0:
-            WriteLog (LOG_INFO, "Changed to effective user \"%s\" and group \"%s\" succesfully.\n", FaxUser.GetPointer(), FaxGroup.GetPointer());
+            WriteLog (LOG_INFO, "Changed to effective user \"%s\" and group \"%s\" successfully.\n", FaxUser.GetPointer(), FaxGroup.GetPointer());
             break;
         case 1:
-            WriteLog (LOG_INFO, "Changed to effective user \"%s\" succesfully.\n", FaxUser.GetPointer());
+            WriteLog (LOG_INFO, "Changed to effective user \"%s\" successfully.\n", FaxUser.GetPointer());
             break;
         case 2:
-            WriteLog (LOG_INFO, "Changed to effective group \"%s\" succesfully.\n", FaxGroup.GetPointer());
+            WriteLog (LOG_INFO, "Changed to effective group \"%s\" successfully.\n", FaxGroup.GetPointer());
             break;
         default:
             break;

@@ -112,7 +112,7 @@ void CFaxReceive::ListenError (tUInt Controller, c_info Info) {
     if (Controller) {
         WriteLog (LOG_ERR, "Try to listen for call on Controller %d, but got error code 0x%X.\n", Controller, Info);
     } else if (CapiInfoIsRegError (Info)) {
-        // Get a Register-Errror as Reason => CAPI not installed, terminate Programm
+        // Get a register error as reason => CAPI not installed, terminate program
         dprint ("\nCAPI not installed! ");
         WriteLog (LOG_ERR, "CAPI not installed, started or have no access rights on it!\n");
         FaxDevice->WriteStatus ("CAPI not installed, started or have no access rights on it!!");
@@ -160,7 +160,7 @@ void CFaxReceive::IncomingCall (c_cipvalue CIPValue, CConstString *pOppositeNumb
     }
     if (GetFormat() == FaxFormat_Hylafax) {
         if (GetJobFile() == vFalse) {
-            WriteLog (LOG_ERR, "Can't create log file for incomming call!\n");
+            WriteLog (LOG_ERR, "Can't create log file for incoming call!\n");
             // TODO: better disconnect the call?
         }
         WriteLog (LOG_INFO, "SESSION BEGIN %09u %s\n", jobNr, FaxDevice->FaxNumber.GetPointer());
