@@ -136,10 +136,10 @@ void CFaxReceiveMain::vWriteLog (tSInt priority, char *text, va_list params) {
     }
 
     if (hLogFile) {
-        fprintf (hLogFile, timebuf);
+        fprintf (hLogFile, "%s", timebuf);
         fprintf (hLogFile, "%s - ", RecvProgName.GetPointer());
         if (statusText) {
-            fprintf (hLogFile, statusText);
+            fprintf (hLogFile, "%s", statusText);
         }
         va_copy(lparams, params);
         vfprintf (hLogFile, text, lparams);
@@ -152,7 +152,7 @@ void CFaxReceiveMain::vWriteLog (tSInt priority, char *text, va_list params) {
         char errortext[MAX_STRING_SIZE];
         vsnprintf (errortext, MAX_STRING_SIZE, text, params);
         openlog (DEFAULT_RECVPROG_NAME, LOG_PERROR, 0);
-        syslog (priority, errortext);
+        syslog (priority, "%s", errortext);
         closelog();
     }
 }

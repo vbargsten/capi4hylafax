@@ -443,7 +443,7 @@ void CFaxReceive::WriteLog (tSInt priority, char *text, ...) {
     sprintf (timebuf + strlen(timebuf), ".%02lu: [%5d]: ", tv.tv_usec / 10000, getpid());
 
     if (hJobFile) {
-        fprintf (hJobFile, timebuf);
+        fprintf (hJobFile, "%s", timebuf);
         vfprintf (hJobFile, text, params);
         va_end (params);
         va_start (params, text);

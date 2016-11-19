@@ -175,7 +175,7 @@ static void WriteQFile (tChar *QFileName, tUInt commID, tUInt HylafaxExitState, 
     ftruncate (fileno (qf), 0);
     while (textQ.Get (&ne) == vTrue) {
         dassert (ne != 0);
-        fprintf (qf, ne);
+        fprintf (qf, "%s", ne);
         delete [] ne;
     }
     fclose (qf);

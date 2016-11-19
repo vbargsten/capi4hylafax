@@ -703,7 +703,7 @@ void CFaxSend::WriteLog (tSInt priority, char *text, ...) {
     sprintf (timebuf + strlen(timebuf), ".%02lu: [%5d]: ", tv.tv_usec / 10000, getpid());
 
     if (hJobFile) {
-        fprintf (hJobFile, timebuf);
+        fprintf (hJobFile, "%s", timebuf);
         vfprintf (hJobFile, text, params);
         va_end (params);
         va_start (params, text);
@@ -742,10 +742,10 @@ void CFaxSend::WriteLog (tSInt priority, char *text, ...) {
     }
 
     if (hLogFile) {
-        fprintf (hLogFile, timebuf);
+        fprintf (hLogFile, "%s", timebuf);
         fprintf (hLogFile, DEFAULT_SENDPROG_NAME " - ");
         if (statusText) {
-            fprintf (hLogFile, statusText);
+            fprintf (hLogFile, "%s", statusText);
         }
         vfprintf (hLogFile, text, params);
         va_end (params);
@@ -756,7 +756,7 @@ void CFaxSend::WriteLog (tSInt priority, char *text, ...) {
         char errortext[MAX_STRING_SIZE];
         vsnprintf (errortext, MAX_STRING_SIZE, text, params);
         openlog (DEFAULT_SENDPROG_NAME, LOG_PERROR, 0);
-        syslog (priority, errortext);
+        syslog (priority, "%s", errortext);
         closelog();
     }
     va_end (params);
