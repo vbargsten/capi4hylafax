@@ -35,11 +35,11 @@
 #define DEFAULT_FAX_USER            "uucp"
 #define DEFAULT_DEVICE_NAME         "faxCAPI"
 #define DEFAULT_SPOOL_DIRECTORY     "@hylafaxspooldir@"
-#define DEFAULT_CONFIG_FILE         "/var/spool/hylafax/etc/config.faxCAPI"
+#define DEFAULT_CONFIG_FILE         "/etc/config.faxCAPI"
 #define DEFAULT_FILE_MODE           0600
-#define DEFAULT_RECVPROG_NAME       "CapiFaxRecv"
-#define DEFAULT_SENDPROG_NAME       "CapiFaxSend"
-#define DEFAULT_C4H_LOGFILENAME     "/var/log/capifax.log"
+#define DEFAULT_RECVPROG_NAME       "c2faxrecv"
+#define DEFAULT_SENDPROG_NAME       "c2faxsend"
+#define DEFAULT_C4H_LOGFILENAME     "/var/log/capi4hylafax.log"
 
 #define FILE_EXTENSION_TIFF         ".tif"
 #define FILE_EXTENSION_SFF          ".sff"
