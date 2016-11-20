@@ -1,0 +1,11 @@
+[Unit]
+Description=c2faxrecv process with config %I
+Before=multi-user.target
+
+[Service]
+Type=simple
+ExecStartPre=/sbin/capiinit -c /etc/capi.conf start
+ExecStart=/usr/local/bin/c2faxrecv -C %I
+
+[Install]
+WantedBy=multi-user.target

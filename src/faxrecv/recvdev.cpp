@@ -258,10 +258,13 @@ tBool CFaxReceiveDevice::StartReceive (void) {
 
     for (i = CountThreads; i > 0; i--) {
         CFaxReceive *pFR = new CFaxReceive (this, format);
+        // sleep here seems to workaround race condition leading to kernel panic
+        // sleep is interrupted by SIG_ALARM every sec. so call twice to sync in
+        sleep(1); sleep(1); 
         if (pFR) {
             FaxThreads.AddLast (pFR);
-            pFR->StartReceive();
             pFR->SetMSNList (&CIPMSNList);
+            pFR->StartReceive();
         }
     }
     if (FaxThreads.IsEmpty() == vTrue) {
