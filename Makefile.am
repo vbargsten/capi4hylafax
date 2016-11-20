@@ -4,18 +4,14 @@ AUTOMAKE_OPTIONS        = foreign
 CLEANFILES              = *~ comperr config.cache config.log
 MAINTAINERCLEANFILES    = configure aclocal.m4 Makefile.in
 
-EXTRA_DIST  = ChangeLog                     \
-              GenerateFileMail.pl           \
-              LIESMICH.html                 \
-              README.html                   \
-              Readme_src                    \
-              install                       \
-              config.faxCAPI                \
-              fritz_pic.tif                 \
-              sample_AVMC4_config.faxCAPI   \
-              sample_faxrcvd                \
-              setupconffile	    	    \
-              bin/c2faxsend                 \
-              bin/c2faxrecv                 
-
+EXTRA_DIST  = ChangeLog                          \
+              misc/GenerateFileMail.pl           \
+              doc/LIESMICH.html                  \
+              doc/README.html                    \
+              doc/Readme_src                     \
+              misc/config.faxCAPI                \
+              doc/fritz_pic.tif                  \
+              misc/sample_AVMC4_config.faxCAPI   \
+              misc/sample_faxrcvd                
+              
 SUBDIRS     = src
