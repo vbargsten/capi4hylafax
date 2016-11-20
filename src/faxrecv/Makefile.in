@@ -84,7 +84,10 @@ subdir = src/faxrecv
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/src/scripts/depcomp $(noinst_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -92,8 +95,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_c2faxrecv_OBJECTS = faxrecv.$(OBJEXT) recvdev.$(OBJEXT) \
-	recvmain.$(OBJEXT)
+am_c2faxrecv_OBJECTS = c2faxrecv-faxrecv.$(OBJEXT) \
+	c2faxrecv-recvdev.$(OBJEXT) c2faxrecv-recvmain.$(OBJEXT)
 c2faxrecv_OBJECTS = $(am_c2faxrecv_OBJECTS)
 c2faxrecv_LDADD = $(LDADD)
 c2faxrecv_DEPENDENCIES = ../capi/libcapi.a ../convert/libconvert.a \
@@ -290,7 +293,7 @@ top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 CLEANFILES = *~ comperr
 MAINTAINERCLEANFILES = Makefile.in
-INCLUDES = -I.. -I$(srcdir)/.. -I$(srcdir)/../standard \
+c2faxrecv_CPPFLAGS = -I.. -I$(srcdir)/.. -I$(srcdir)/../standard \
                           -I$(srcdir)/../capi -I$(srcdir)/../convert  \
                           -I$(srcdir)/../linuxdep
 
@@ -393,9 +396,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/faxrecv.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/recvdev.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/recvmain.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/c2faxrecv-faxrecv.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/c2faxrecv-recvdev.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/c2faxrecv-recvmain.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -417,6 +420,48 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
+
+c2faxrecv-faxrecv.o: faxrecv.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT c2faxrecv-faxrecv.o -MD -MP -MF $(DEPDIR)/c2faxrecv-faxrecv.Tpo -c -o c2faxrecv-faxrecv.o `test -f 'faxrecv.cpp' || echo '$(srcdir)/'`faxrecv.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/c2faxrecv-faxrecv.Tpo $(DEPDIR)/c2faxrecv-faxrecv.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='faxrecv.cpp' object='c2faxrecv-faxrecv.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o c2faxrecv-faxrecv.o `test -f 'faxrecv.cpp' || echo '$(srcdir)/'`faxrecv.cpp
+
+c2faxrecv-faxrecv.obj: faxrecv.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT c2faxrecv-faxrecv.obj -MD -MP -MF $(DEPDIR)/c2faxrecv-faxrecv.Tpo -c -o c2faxrecv-faxrecv.obj `if test -f 'faxrecv.cpp'; then $(CYGPATH_W) 'faxrecv.cpp'; else $(CYGPATH_W) '$(srcdir)/faxrecv.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/c2faxrecv-faxrecv.Tpo $(DEPDIR)/c2faxrecv-faxrecv.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='faxrecv.cpp' object='c2faxrecv-faxrecv.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o c2faxrecv-faxrecv.obj `if test -f 'faxrecv.cpp'; then $(CYGPATH_W) 'faxrecv.cpp'; else $(CYGPATH_W) '$(srcdir)/faxrecv.cpp'; fi`
+
+c2faxrecv-recvdev.o: recvdev.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT c2faxrecv-recvdev.o -MD -MP -MF $(DEPDIR)/c2faxrecv-recvdev.Tpo -c -o c2faxrecv-recvdev.o `test -f 'recvdev.cpp' || echo '$(srcdir)/'`recvdev.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/c2faxrecv-recvdev.Tpo $(DEPDIR)/c2faxrecv-recvdev.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='recvdev.cpp' object='c2faxrecv-recvdev.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o c2faxrecv-recvdev.o `test -f 'recvdev.cpp' || echo '$(srcdir)/'`recvdev.cpp
+
+c2faxrecv-recvdev.obj: recvdev.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT c2faxrecv-recvdev.obj -MD -MP -MF $(DEPDIR)/c2faxrecv-recvdev.Tpo -c -o c2faxrecv-recvdev.obj `if test -f 'recvdev.cpp'; then $(CYGPATH_W) 'recvdev.cpp'; else $(CYGPATH_W) '$(srcdir)/recvdev.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/c2faxrecv-recvdev.Tpo $(DEPDIR)/c2faxrecv-recvdev.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='recvdev.cpp' object='c2faxrecv-recvdev.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o c2faxrecv-recvdev.obj `if test -f 'recvdev.cpp'; then $(CYGPATH_W) 'recvdev.cpp'; else $(CYGPATH_W) '$(srcdir)/recvdev.cpp'; fi`
+
+c2faxrecv-recvmain.o: recvmain.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT c2faxrecv-recvmain.o -MD -MP -MF $(DEPDIR)/c2faxrecv-recvmain.Tpo -c -o c2faxrecv-recvmain.o `test -f 'recvmain.cpp' || echo '$(srcdir)/'`recvmain.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/c2faxrecv-recvmain.Tpo $(DEPDIR)/c2faxrecv-recvmain.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='recvmain.cpp' object='c2faxrecv-recvmain.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o c2faxrecv-recvmain.o `test -f 'recvmain.cpp' || echo '$(srcdir)/'`recvmain.cpp
+
+c2faxrecv-recvmain.obj: recvmain.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT c2faxrecv-recvmain.obj -MD -MP -MF $(DEPDIR)/c2faxrecv-recvmain.Tpo -c -o c2faxrecv-recvmain.obj `if test -f 'recvmain.cpp'; then $(CYGPATH_W) 'recvmain.cpp'; else $(CYGPATH_W) '$(srcdir)/recvmain.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/c2faxrecv-recvmain.Tpo $(DEPDIR)/c2faxrecv-recvmain.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='recvmain.cpp' object='c2faxrecv-recvmain.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxrecv_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o c2faxrecv-recvmain.obj `if test -f 'recvmain.cpp'; then $(CYGPATH_W) 'recvmain.cpp'; else $(CYGPATH_W) '$(srcdir)/recvmain.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

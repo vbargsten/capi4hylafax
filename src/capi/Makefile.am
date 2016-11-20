@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS        = foreign
 CLEANFILES              = *~ comperr
 MAINTAINERCLEANFILES    = Makefile.in
 
-INCLUDES                = -I$(srcdir)/../standard
+libcapi_a_CPPFLAGS      = -I$(srcdir)/../standard
 
 noinst_HEADERS          = c2msgdef.h    \
                           capi2def.h    \

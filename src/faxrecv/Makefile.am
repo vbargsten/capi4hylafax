@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS        = foreign
 CLEANFILES              = *~ comperr
 MAINTAINERCLEANFILES    = Makefile.in
 
-INCLUDES                = -I.. -I$(srcdir)/.. -I$(srcdir)/../standard \
+c2faxrecv_CPPFLAGS      = -I.. -I$(srcdir)/.. -I$(srcdir)/../standard \
                           -I$(srcdir)/../capi -I$(srcdir)/../convert  \
                           -I$(srcdir)/../linuxdep
 

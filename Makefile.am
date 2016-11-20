@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-
+ACLOCAL_AMFLAGS         = -I m4
 AUTOMAKE_OPTIONS        = foreign
 CLEANFILES              = *~ comperr config.cache config.log
 MAINTAINERCLEANFILES    = configure aclocal.m4 Makefile.in

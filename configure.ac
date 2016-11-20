@@ -1,10 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT
+AC_INIT([capi4hylafax],[01.03.01vb])
 AC_CONFIG_SRCDIR([src/defaults.h.in])
 AC_CONFIG_AUX_DIR(src/scripts)
-AM_INIT_AUTOMAKE(capi4hylafax,01.03.01svn)
 AM_MAINTAINER_MODE
+AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE
 
 CXXFLAGS="-Wall -W $CXXFLAGS -D_GNU_SOURCE -DDONT_USE_PROTECT_FEATURE"
 
@@ -14,7 +15,7 @@ dnl Checks for programs.
 AC_PROG_CXX
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
-AC_PROG_LIBTOOL
+LT_INIT
 
 dnl Check for va_copy in stdarg.h
 AC_CACHE_CHECK([for va_copy],ac_func_cv_va_copy,[
@@ -50,15 +51,14 @@ AC_SUBST(LIBTOOL_DEPS)
 
 dnl Optional hylafax spool directory
 AC_ARG_WITH(hylafax-spooldir,
-    AC_HELP_STRING([--with-hylafax-spooldir=DIR],
-                   [Set dir where hylafax spool is installed. (/var/spool/hylafax)]),
+    AS_HELP_STRING([--with-hylafax-spooldir=DIR],[Set dir where hylafax spool is installed. (/var/spool/hylafax)]),
     hylafaxspooldir="$withval",
     hylafaxspooldir="/var/spool/hylafax"
 )
 
 dnl Optional debug
 AC_ARG_ENABLE(debug,
-    AC_HELP_STRING([--enable-debug],[Turn debugging on (default=no)]),
+    AS_HELP_STRING([--enable-debug],[Turn debugging on (default=no)]),
     [case "$enableval" in
         yes | true) debugflags=-g -O0;;
         no | false) debugflags=-DNDEBUG -g -O2;;

@@ -84,7 +84,10 @@ subdir = src/faxsend
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/src/scripts/depcomp $(noinst_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -92,7 +95,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_c2faxsend_OBJECTS = faxsend.$(OBJEXT) sendmain.$(OBJEXT)
+am_c2faxsend_OBJECTS = c2faxsend-faxsend.$(OBJEXT) \
+	c2faxsend-sendmain.$(OBJEXT)
 c2faxsend_OBJECTS = $(am_c2faxsend_OBJECTS)
 c2faxsend_LDADD = $(LDADD)
 c2faxsend_DEPENDENCIES = ../capi/libcapi.a ../convert/libconvert.a \
@@ -289,7 +293,7 @@ top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 CLEANFILES = *~ comperr
 MAINTAINERCLEANFILES = Makefile.in
-INCLUDES = -I.. -I$(srcdir)/.. -I$(srcdir)/../standard \
+c2faxsend_CPPFLAGS = -I.. -I$(srcdir)/.. -I$(srcdir)/../standard \
                           -I$(srcdir)/../capi -I$(srcdir)/../convert  \
                           -I$(srcdir)/../linuxdep
 
@@ -392,8 +396,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/faxsend.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sendmain.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/c2faxsend-faxsend.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/c2faxsend-sendmain.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -415,6 +419,34 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
+
+c2faxsend-faxsend.o: faxsend.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxsend_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT c2faxsend-faxsend.o -MD -MP -MF $(DEPDIR)/c2faxsend-faxsend.Tpo -c -o c2faxsend-faxsend.o `test -f 'faxsend.cpp' || echo '$(srcdir)/'`faxsend.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/c2faxsend-faxsend.Tpo $(DEPDIR)/c2faxsend-faxsend.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='faxsend.cpp' object='c2faxsend-faxsend.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxsend_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o c2faxsend-faxsend.o `test -f 'faxsend.cpp' || echo '$(srcdir)/'`faxsend.cpp
+
+c2faxsend-faxsend.obj: faxsend.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxsend_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT c2faxsend-faxsend.obj -MD -MP -MF $(DEPDIR)/c2faxsend-faxsend.Tpo -c -o c2faxsend-faxsend.obj `if test -f 'faxsend.cpp'; then $(CYGPATH_W) 'faxsend.cpp'; else $(CYGPATH_W) '$(srcdir)/faxsend.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/c2faxsend-faxsend.Tpo $(DEPDIR)/c2faxsend-faxsend.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='faxsend.cpp' object='c2faxsend-faxsend.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxsend_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o c2faxsend-faxsend.obj `if test -f 'faxsend.cpp'; then $(CYGPATH_W) 'faxsend.cpp'; else $(CYGPATH_W) '$(srcdir)/faxsend.cpp'; fi`
+
+c2faxsend-sendmain.o: sendmain.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxsend_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT c2faxsend-sendmain.o -MD -MP -MF $(DEPDIR)/c2faxsend-sendmain.Tpo -c -o c2faxsend-sendmain.o `test -f 'sendmain.cpp' || echo '$(srcdir)/'`sendmain.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/c2faxsend-sendmain.Tpo $(DEPDIR)/c2faxsend-sendmain.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sendmain.cpp' object='c2faxsend-sendmain.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxsend_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o c2faxsend-sendmain.o `test -f 'sendmain.cpp' || echo '$(srcdir)/'`sendmain.cpp
+
+c2faxsend-sendmain.obj: sendmain.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxsend_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT c2faxsend-sendmain.obj -MD -MP -MF $(DEPDIR)/c2faxsend-sendmain.Tpo -c -o c2faxsend-sendmain.obj `if test -f 'sendmain.cpp'; then $(CYGPATH_W) 'sendmain.cpp'; else $(CYGPATH_W) '$(srcdir)/sendmain.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/c2faxsend-sendmain.Tpo $(DEPDIR)/c2faxsend-sendmain.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sendmain.cpp' object='c2faxsend-sendmain.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(c2faxsend_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o c2faxsend-sendmain.obj `if test -f 'sendmain.cpp'; then $(CYGPATH_W) 'sendmain.cpp'; else $(CYGPATH_W) '$(srcdir)/sendmain.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

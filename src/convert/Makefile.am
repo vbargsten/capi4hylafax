@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS        = foreign
 CLEANFILES              = *~ comperr
 MAINTAINERCLEANFILES    = Makefile.in
 
-INCLUDES                = -I$(srcdir)/../standard -I$(srcdir)/../linuxdep -I$(srcdir)/../capi -I$(srcdir)/..
+libconvert_a_CPPFLAGS   = -I$(srcdir)/../standard -I$(srcdir)/../linuxdep -I$(srcdir)/../capi -I$(srcdir)/..
 
 noinst_HEADERS          = BasicFax.h ftif2huf.h huf2ftif.h huf2sff.h hufman.h osImport.h revbyte.h sff2huf.h
 noinst_LIBRARIES        = libconvert.a

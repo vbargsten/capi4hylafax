@@ -83,7 +83,10 @@ subdir = src/capi
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/src/scripts/depcomp $(noinst_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -97,10 +100,12 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libcapi_a_AR = $(AR) $(ARFLAGS)
 libcapi_a_LIBADD =
-am_libcapi_a_OBJECTS = CapiChan.$(OBJEXT) CapiLay.$(OBJEXT) \
-	CapiMsg.$(OBJEXT) CapiStat.$(OBJEXT) CCStruct.$(OBJEXT) \
-	Channel.$(OBJEXT) DataHand.$(OBJEXT) DCMTrace.$(OBJEXT) \
-	Facility.$(OBJEXT) MSNList.$(OBJEXT) PLCIList.$(OBJEXT)
+am_libcapi_a_OBJECTS = libcapi_a-CapiChan.$(OBJEXT) \
+	libcapi_a-CapiLay.$(OBJEXT) libcapi_a-CapiMsg.$(OBJEXT) \
+	libcapi_a-CapiStat.$(OBJEXT) libcapi_a-CCStruct.$(OBJEXT) \
+	libcapi_a-Channel.$(OBJEXT) libcapi_a-DataHand.$(OBJEXT) \
+	libcapi_a-DCMTrace.$(OBJEXT) libcapi_a-Facility.$(OBJEXT) \
+	libcapi_a-MSNList.$(OBJEXT) libcapi_a-PLCIList.$(OBJEXT)
 libcapi_a_OBJECTS = $(am_libcapi_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -118,12 +123,12 @@ DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/src/scripts/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
-CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
 	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
@@ -294,7 +299,7 @@ top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 CLEANFILES = *~ comperr
 MAINTAINERCLEANFILES = Makefile.in
-INCLUDES = -I$(srcdir)/../standard
+libcapi_a_CPPFLAGS = -I$(srcdir)/../standard
 noinst_HEADERS = c2msgdef.h    \
                           capi2def.h    \
                           CapiBase.h    \
@@ -376,17 +381,17 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CCStruct.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CapiChan.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CapiLay.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CapiMsg.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CapiStat.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Channel.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DCMTrace.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DataHand.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Facility.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MSNList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PLCIList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-CCStruct.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-CapiChan.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-CapiLay.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-CapiMsg.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-CapiStat.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-Channel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-DCMTrace.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-DataHand.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-Facility.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-MSNList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcapi_a-PLCIList.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -408,6 +413,160 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
+
+libcapi_a-CapiChan.o: CapiChan.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-CapiChan.o -MD -MP -MF $(DEPDIR)/libcapi_a-CapiChan.Tpo -c -o libcapi_a-CapiChan.o `test -f 'CapiChan.cpp' || echo '$(srcdir)/'`CapiChan.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-CapiChan.Tpo $(DEPDIR)/libcapi_a-CapiChan.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CapiChan.cpp' object='libcapi_a-CapiChan.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-CapiChan.o `test -f 'CapiChan.cpp' || echo '$(srcdir)/'`CapiChan.cpp
+
+libcapi_a-CapiChan.obj: CapiChan.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-CapiChan.obj -MD -MP -MF $(DEPDIR)/libcapi_a-CapiChan.Tpo -c -o libcapi_a-CapiChan.obj `if test -f 'CapiChan.cpp'; then $(CYGPATH_W) 'CapiChan.cpp'; else $(CYGPATH_W) '$(srcdir)/CapiChan.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-CapiChan.Tpo $(DEPDIR)/libcapi_a-CapiChan.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CapiChan.cpp' object='libcapi_a-CapiChan.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-CapiChan.obj `if test -f 'CapiChan.cpp'; then $(CYGPATH_W) 'CapiChan.cpp'; else $(CYGPATH_W) '$(srcdir)/CapiChan.cpp'; fi`
+
+libcapi_a-CapiLay.o: CapiLay.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-CapiLay.o -MD -MP -MF $(DEPDIR)/libcapi_a-CapiLay.Tpo -c -o libcapi_a-CapiLay.o `test -f 'CapiLay.cpp' || echo '$(srcdir)/'`CapiLay.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-CapiLay.Tpo $(DEPDIR)/libcapi_a-CapiLay.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CapiLay.cpp' object='libcapi_a-CapiLay.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-CapiLay.o `test -f 'CapiLay.cpp' || echo '$(srcdir)/'`CapiLay.cpp
+
+libcapi_a-CapiLay.obj: CapiLay.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-CapiLay.obj -MD -MP -MF $(DEPDIR)/libcapi_a-CapiLay.Tpo -c -o libcapi_a-CapiLay.obj `if test -f 'CapiLay.cpp'; then $(CYGPATH_W) 'CapiLay.cpp'; else $(CYGPATH_W) '$(srcdir)/CapiLay.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-CapiLay.Tpo $(DEPDIR)/libcapi_a-CapiLay.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CapiLay.cpp' object='libcapi_a-CapiLay.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-CapiLay.obj `if test -f 'CapiLay.cpp'; then $(CYGPATH_W) 'CapiLay.cpp'; else $(CYGPATH_W) '$(srcdir)/CapiLay.cpp'; fi`
+
+libcapi_a-CapiMsg.o: CapiMsg.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-CapiMsg.o -MD -MP -MF $(DEPDIR)/libcapi_a-CapiMsg.Tpo -c -o libcapi_a-CapiMsg.o `test -f 'CapiMsg.cpp' || echo '$(srcdir)/'`CapiMsg.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-CapiMsg.Tpo $(DEPDIR)/libcapi_a-CapiMsg.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CapiMsg.cpp' object='libcapi_a-CapiMsg.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-CapiMsg.o `test -f 'CapiMsg.cpp' || echo '$(srcdir)/'`CapiMsg.cpp
+
+libcapi_a-CapiMsg.obj: CapiMsg.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-CapiMsg.obj -MD -MP -MF $(DEPDIR)/libcapi_a-CapiMsg.Tpo -c -o libcapi_a-CapiMsg.obj `if test -f 'CapiMsg.cpp'; then $(CYGPATH_W) 'CapiMsg.cpp'; else $(CYGPATH_W) '$(srcdir)/CapiMsg.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-CapiMsg.Tpo $(DEPDIR)/libcapi_a-CapiMsg.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CapiMsg.cpp' object='libcapi_a-CapiMsg.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-CapiMsg.obj `if test -f 'CapiMsg.cpp'; then $(CYGPATH_W) 'CapiMsg.cpp'; else $(CYGPATH_W) '$(srcdir)/CapiMsg.cpp'; fi`
+
+libcapi_a-CapiStat.o: CapiStat.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-CapiStat.o -MD -MP -MF $(DEPDIR)/libcapi_a-CapiStat.Tpo -c -o libcapi_a-CapiStat.o `test -f 'CapiStat.cpp' || echo '$(srcdir)/'`CapiStat.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-CapiStat.Tpo $(DEPDIR)/libcapi_a-CapiStat.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CapiStat.cpp' object='libcapi_a-CapiStat.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-CapiStat.o `test -f 'CapiStat.cpp' || echo '$(srcdir)/'`CapiStat.cpp
+
+libcapi_a-CapiStat.obj: CapiStat.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-CapiStat.obj -MD -MP -MF $(DEPDIR)/libcapi_a-CapiStat.Tpo -c -o libcapi_a-CapiStat.obj `if test -f 'CapiStat.cpp'; then $(CYGPATH_W) 'CapiStat.cpp'; else $(CYGPATH_W) '$(srcdir)/CapiStat.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-CapiStat.Tpo $(DEPDIR)/libcapi_a-CapiStat.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CapiStat.cpp' object='libcapi_a-CapiStat.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-CapiStat.obj `if test -f 'CapiStat.cpp'; then $(CYGPATH_W) 'CapiStat.cpp'; else $(CYGPATH_W) '$(srcdir)/CapiStat.cpp'; fi`
+
+libcapi_a-CCStruct.o: CCStruct.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-CCStruct.o -MD -MP -MF $(DEPDIR)/libcapi_a-CCStruct.Tpo -c -o libcapi_a-CCStruct.o `test -f 'CCStruct.cpp' || echo '$(srcdir)/'`CCStruct.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-CCStruct.Tpo $(DEPDIR)/libcapi_a-CCStruct.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CCStruct.cpp' object='libcapi_a-CCStruct.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-CCStruct.o `test -f 'CCStruct.cpp' || echo '$(srcdir)/'`CCStruct.cpp
+
+libcapi_a-CCStruct.obj: CCStruct.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-CCStruct.obj -MD -MP -MF $(DEPDIR)/libcapi_a-CCStruct.Tpo -c -o libcapi_a-CCStruct.obj `if test -f 'CCStruct.cpp'; then $(CYGPATH_W) 'CCStruct.cpp'; else $(CYGPATH_W) '$(srcdir)/CCStruct.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-CCStruct.Tpo $(DEPDIR)/libcapi_a-CCStruct.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CCStruct.cpp' object='libcapi_a-CCStruct.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-CCStruct.obj `if test -f 'CCStruct.cpp'; then $(CYGPATH_W) 'CCStruct.cpp'; else $(CYGPATH_W) '$(srcdir)/CCStruct.cpp'; fi`
+
+libcapi_a-Channel.o: Channel.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-Channel.o -MD -MP -MF $(DEPDIR)/libcapi_a-Channel.Tpo -c -o libcapi_a-Channel.o `test -f 'Channel.cpp' || echo '$(srcdir)/'`Channel.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-Channel.Tpo $(DEPDIR)/libcapi_a-Channel.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Channel.cpp' object='libcapi_a-Channel.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-Channel.o `test -f 'Channel.cpp' || echo '$(srcdir)/'`Channel.cpp
+
+libcapi_a-Channel.obj: Channel.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-Channel.obj -MD -MP -MF $(DEPDIR)/libcapi_a-Channel.Tpo -c -o libcapi_a-Channel.obj `if test -f 'Channel.cpp'; then $(CYGPATH_W) 'Channel.cpp'; else $(CYGPATH_W) '$(srcdir)/Channel.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-Channel.Tpo $(DEPDIR)/libcapi_a-Channel.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Channel.cpp' object='libcapi_a-Channel.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-Channel.obj `if test -f 'Channel.cpp'; then $(CYGPATH_W) 'Channel.cpp'; else $(CYGPATH_W) '$(srcdir)/Channel.cpp'; fi`
+
+libcapi_a-DataHand.o: DataHand.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-DataHand.o -MD -MP -MF $(DEPDIR)/libcapi_a-DataHand.Tpo -c -o libcapi_a-DataHand.o `test -f 'DataHand.cpp' || echo '$(srcdir)/'`DataHand.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-DataHand.Tpo $(DEPDIR)/libcapi_a-DataHand.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DataHand.cpp' object='libcapi_a-DataHand.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-DataHand.o `test -f 'DataHand.cpp' || echo '$(srcdir)/'`DataHand.cpp
+
+libcapi_a-DataHand.obj: DataHand.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-DataHand.obj -MD -MP -MF $(DEPDIR)/libcapi_a-DataHand.Tpo -c -o libcapi_a-DataHand.obj `if test -f 'DataHand.cpp'; then $(CYGPATH_W) 'DataHand.cpp'; else $(CYGPATH_W) '$(srcdir)/DataHand.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-DataHand.Tpo $(DEPDIR)/libcapi_a-DataHand.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DataHand.cpp' object='libcapi_a-DataHand.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-DataHand.obj `if test -f 'DataHand.cpp'; then $(CYGPATH_W) 'DataHand.cpp'; else $(CYGPATH_W) '$(srcdir)/DataHand.cpp'; fi`
+
+libcapi_a-DCMTrace.o: DCMTrace.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-DCMTrace.o -MD -MP -MF $(DEPDIR)/libcapi_a-DCMTrace.Tpo -c -o libcapi_a-DCMTrace.o `test -f 'DCMTrace.cpp' || echo '$(srcdir)/'`DCMTrace.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-DCMTrace.Tpo $(DEPDIR)/libcapi_a-DCMTrace.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DCMTrace.cpp' object='libcapi_a-DCMTrace.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-DCMTrace.o `test -f 'DCMTrace.cpp' || echo '$(srcdir)/'`DCMTrace.cpp
+
+libcapi_a-DCMTrace.obj: DCMTrace.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-DCMTrace.obj -MD -MP -MF $(DEPDIR)/libcapi_a-DCMTrace.Tpo -c -o libcapi_a-DCMTrace.obj `if test -f 'DCMTrace.cpp'; then $(CYGPATH_W) 'DCMTrace.cpp'; else $(CYGPATH_W) '$(srcdir)/DCMTrace.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-DCMTrace.Tpo $(DEPDIR)/libcapi_a-DCMTrace.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DCMTrace.cpp' object='libcapi_a-DCMTrace.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-DCMTrace.obj `if test -f 'DCMTrace.cpp'; then $(CYGPATH_W) 'DCMTrace.cpp'; else $(CYGPATH_W) '$(srcdir)/DCMTrace.cpp'; fi`
+
+libcapi_a-Facility.o: Facility.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-Facility.o -MD -MP -MF $(DEPDIR)/libcapi_a-Facility.Tpo -c -o libcapi_a-Facility.o `test -f 'Facility.cpp' || echo '$(srcdir)/'`Facility.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-Facility.Tpo $(DEPDIR)/libcapi_a-Facility.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Facility.cpp' object='libcapi_a-Facility.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-Facility.o `test -f 'Facility.cpp' || echo '$(srcdir)/'`Facility.cpp
+
+libcapi_a-Facility.obj: Facility.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-Facility.obj -MD -MP -MF $(DEPDIR)/libcapi_a-Facility.Tpo -c -o libcapi_a-Facility.obj `if test -f 'Facility.cpp'; then $(CYGPATH_W) 'Facility.cpp'; else $(CYGPATH_W) '$(srcdir)/Facility.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-Facility.Tpo $(DEPDIR)/libcapi_a-Facility.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Facility.cpp' object='libcapi_a-Facility.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-Facility.obj `if test -f 'Facility.cpp'; then $(CYGPATH_W) 'Facility.cpp'; else $(CYGPATH_W) '$(srcdir)/Facility.cpp'; fi`
+
+libcapi_a-MSNList.o: MSNList.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-MSNList.o -MD -MP -MF $(DEPDIR)/libcapi_a-MSNList.Tpo -c -o libcapi_a-MSNList.o `test -f 'MSNList.cpp' || echo '$(srcdir)/'`MSNList.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-MSNList.Tpo $(DEPDIR)/libcapi_a-MSNList.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='MSNList.cpp' object='libcapi_a-MSNList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-MSNList.o `test -f 'MSNList.cpp' || echo '$(srcdir)/'`MSNList.cpp
+
+libcapi_a-MSNList.obj: MSNList.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-MSNList.obj -MD -MP -MF $(DEPDIR)/libcapi_a-MSNList.Tpo -c -o libcapi_a-MSNList.obj `if test -f 'MSNList.cpp'; then $(CYGPATH_W) 'MSNList.cpp'; else $(CYGPATH_W) '$(srcdir)/MSNList.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-MSNList.Tpo $(DEPDIR)/libcapi_a-MSNList.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='MSNList.cpp' object='libcapi_a-MSNList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-MSNList.obj `if test -f 'MSNList.cpp'; then $(CYGPATH_W) 'MSNList.cpp'; else $(CYGPATH_W) '$(srcdir)/MSNList.cpp'; fi`
+
+libcapi_a-PLCIList.o: PLCIList.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-PLCIList.o -MD -MP -MF $(DEPDIR)/libcapi_a-PLCIList.Tpo -c -o libcapi_a-PLCIList.o `test -f 'PLCIList.cpp' || echo '$(srcdir)/'`PLCIList.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-PLCIList.Tpo $(DEPDIR)/libcapi_a-PLCIList.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='PLCIList.cpp' object='libcapi_a-PLCIList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-PLCIList.o `test -f 'PLCIList.cpp' || echo '$(srcdir)/'`PLCIList.cpp
+
+libcapi_a-PLCIList.obj: PLCIList.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcapi_a-PLCIList.obj -MD -MP -MF $(DEPDIR)/libcapi_a-PLCIList.Tpo -c -o libcapi_a-PLCIList.obj `if test -f 'PLCIList.cpp'; then $(CYGPATH_W) 'PLCIList.cpp'; else $(CYGPATH_W) '$(srcdir)/PLCIList.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcapi_a-PLCIList.Tpo $(DEPDIR)/libcapi_a-PLCIList.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='PLCIList.cpp' object='libcapi_a-PLCIList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcapi_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcapi_a-PLCIList.obj `if test -f 'PLCIList.cpp'; then $(CYGPATH_W) 'PLCIList.cpp'; else $(CYGPATH_W) '$(srcdir)/PLCIList.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

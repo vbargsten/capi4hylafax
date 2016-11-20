@@ -83,7 +83,10 @@ subdir = src/linuxdep
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/src/scripts/depcomp $(noinst_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -97,9 +100,12 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 liblinuxdep_a_AR = $(AR) $(ARFLAGS)
 liblinuxdep_a_LIBADD =
-am_liblinuxdep_a_OBJECTS = CapiBase.$(OBJEXT) dbgLEVEL.$(OBJEXT) \
-	misc.$(OBJEXT) PrctlDmp.$(OBJEXT) SecTimer.$(OBJEXT) \
-	SysTick.$(OBJEXT) TimerList.$(OBJEXT)
+am_liblinuxdep_a_OBJECTS = liblinuxdep_a-CapiBase.$(OBJEXT) \
+	liblinuxdep_a-dbgLEVEL.$(OBJEXT) liblinuxdep_a-misc.$(OBJEXT) \
+	liblinuxdep_a-PrctlDmp.$(OBJEXT) \
+	liblinuxdep_a-SecTimer.$(OBJEXT) \
+	liblinuxdep_a-SysTick.$(OBJEXT) \
+	liblinuxdep_a-TimerList.$(OBJEXT)
 liblinuxdep_a_OBJECTS = $(am_liblinuxdep_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -117,12 +123,12 @@ DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/src/scripts/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
-CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
 	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
@@ -293,7 +299,7 @@ top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 CLEANFILES = *~ comperr
 MAINTAINERCLEANFILES = Makefile.in
-INCLUDES = -I$(srcdir)/../standard -I$(srcdir)/../capi
+liblinuxdep_a_CPPFLAGS = -I$(srcdir)/../standard -I$(srcdir)/../capi
 noinst_HEADERS = dbgLINUX.h misc.h PrctlDmp.h SysTick.h TimerList.h
 noinst_LIBRARIES = liblinuxdep.a
 liblinuxdep_a_SOURCES = CapiBase.cpp dbgLEVEL.cpp misc.cpp PrctlDmp.cpp SecTimer.cpp SysTick.cpp TimerList.cpp
@@ -346,13 +352,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CapiBase.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PrctlDmp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SecTimer.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SysTick.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TimerList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dbgLEVEL.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblinuxdep_a-CapiBase.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblinuxdep_a-PrctlDmp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblinuxdep_a-SecTimer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblinuxdep_a-SysTick.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblinuxdep_a-TimerList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblinuxdep_a-dbgLEVEL.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblinuxdep_a-misc.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -374,6 +380,104 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
+
+liblinuxdep_a-CapiBase.o: CapiBase.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-CapiBase.o -MD -MP -MF $(DEPDIR)/liblinuxdep_a-CapiBase.Tpo -c -o liblinuxdep_a-CapiBase.o `test -f 'CapiBase.cpp' || echo '$(srcdir)/'`CapiBase.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-CapiBase.Tpo $(DEPDIR)/liblinuxdep_a-CapiBase.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CapiBase.cpp' object='liblinuxdep_a-CapiBase.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-CapiBase.o `test -f 'CapiBase.cpp' || echo '$(srcdir)/'`CapiBase.cpp
+
+liblinuxdep_a-CapiBase.obj: CapiBase.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-CapiBase.obj -MD -MP -MF $(DEPDIR)/liblinuxdep_a-CapiBase.Tpo -c -o liblinuxdep_a-CapiBase.obj `if test -f 'CapiBase.cpp'; then $(CYGPATH_W) 'CapiBase.cpp'; else $(CYGPATH_W) '$(srcdir)/CapiBase.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-CapiBase.Tpo $(DEPDIR)/liblinuxdep_a-CapiBase.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='CapiBase.cpp' object='liblinuxdep_a-CapiBase.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-CapiBase.obj `if test -f 'CapiBase.cpp'; then $(CYGPATH_W) 'CapiBase.cpp'; else $(CYGPATH_W) '$(srcdir)/CapiBase.cpp'; fi`
+
+liblinuxdep_a-dbgLEVEL.o: dbgLEVEL.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-dbgLEVEL.o -MD -MP -MF $(DEPDIR)/liblinuxdep_a-dbgLEVEL.Tpo -c -o liblinuxdep_a-dbgLEVEL.o `test -f 'dbgLEVEL.cpp' || echo '$(srcdir)/'`dbgLEVEL.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-dbgLEVEL.Tpo $(DEPDIR)/liblinuxdep_a-dbgLEVEL.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='dbgLEVEL.cpp' object='liblinuxdep_a-dbgLEVEL.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-dbgLEVEL.o `test -f 'dbgLEVEL.cpp' || echo '$(srcdir)/'`dbgLEVEL.cpp
+
+liblinuxdep_a-dbgLEVEL.obj: dbgLEVEL.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-dbgLEVEL.obj -MD -MP -MF $(DEPDIR)/liblinuxdep_a-dbgLEVEL.Tpo -c -o liblinuxdep_a-dbgLEVEL.obj `if test -f 'dbgLEVEL.cpp'; then $(CYGPATH_W) 'dbgLEVEL.cpp'; else $(CYGPATH_W) '$(srcdir)/dbgLEVEL.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-dbgLEVEL.Tpo $(DEPDIR)/liblinuxdep_a-dbgLEVEL.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='dbgLEVEL.cpp' object='liblinuxdep_a-dbgLEVEL.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-dbgLEVEL.obj `if test -f 'dbgLEVEL.cpp'; then $(CYGPATH_W) 'dbgLEVEL.cpp'; else $(CYGPATH_W) '$(srcdir)/dbgLEVEL.cpp'; fi`
+
+liblinuxdep_a-misc.o: misc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-misc.o -MD -MP -MF $(DEPDIR)/liblinuxdep_a-misc.Tpo -c -o liblinuxdep_a-misc.o `test -f 'misc.cpp' || echo '$(srcdir)/'`misc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-misc.Tpo $(DEPDIR)/liblinuxdep_a-misc.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='misc.cpp' object='liblinuxdep_a-misc.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-misc.o `test -f 'misc.cpp' || echo '$(srcdir)/'`misc.cpp
+
+liblinuxdep_a-misc.obj: misc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-misc.obj -MD -MP -MF $(DEPDIR)/liblinuxdep_a-misc.Tpo -c -o liblinuxdep_a-misc.obj `if test -f 'misc.cpp'; then $(CYGPATH_W) 'misc.cpp'; else $(CYGPATH_W) '$(srcdir)/misc.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-misc.Tpo $(DEPDIR)/liblinuxdep_a-misc.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='misc.cpp' object='liblinuxdep_a-misc.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-misc.obj `if test -f 'misc.cpp'; then $(CYGPATH_W) 'misc.cpp'; else $(CYGPATH_W) '$(srcdir)/misc.cpp'; fi`
+
+liblinuxdep_a-PrctlDmp.o: PrctlDmp.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-PrctlDmp.o -MD -MP -MF $(DEPDIR)/liblinuxdep_a-PrctlDmp.Tpo -c -o liblinuxdep_a-PrctlDmp.o `test -f 'PrctlDmp.cpp' || echo '$(srcdir)/'`PrctlDmp.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-PrctlDmp.Tpo $(DEPDIR)/liblinuxdep_a-PrctlDmp.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='PrctlDmp.cpp' object='liblinuxdep_a-PrctlDmp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-PrctlDmp.o `test -f 'PrctlDmp.cpp' || echo '$(srcdir)/'`PrctlDmp.cpp
+
+liblinuxdep_a-PrctlDmp.obj: PrctlDmp.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-PrctlDmp.obj -MD -MP -MF $(DEPDIR)/liblinuxdep_a-PrctlDmp.Tpo -c -o liblinuxdep_a-PrctlDmp.obj `if test -f 'PrctlDmp.cpp'; then $(CYGPATH_W) 'PrctlDmp.cpp'; else $(CYGPATH_W) '$(srcdir)/PrctlDmp.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-PrctlDmp.Tpo $(DEPDIR)/liblinuxdep_a-PrctlDmp.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='PrctlDmp.cpp' object='liblinuxdep_a-PrctlDmp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-PrctlDmp.obj `if test -f 'PrctlDmp.cpp'; then $(CYGPATH_W) 'PrctlDmp.cpp'; else $(CYGPATH_W) '$(srcdir)/PrctlDmp.cpp'; fi`
+
+liblinuxdep_a-SecTimer.o: SecTimer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-SecTimer.o -MD -MP -MF $(DEPDIR)/liblinuxdep_a-SecTimer.Tpo -c -o liblinuxdep_a-SecTimer.o `test -f 'SecTimer.cpp' || echo '$(srcdir)/'`SecTimer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-SecTimer.Tpo $(DEPDIR)/liblinuxdep_a-SecTimer.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='SecTimer.cpp' object='liblinuxdep_a-SecTimer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-SecTimer.o `test -f 'SecTimer.cpp' || echo '$(srcdir)/'`SecTimer.cpp
+
+liblinuxdep_a-SecTimer.obj: SecTimer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-SecTimer.obj -MD -MP -MF $(DEPDIR)/liblinuxdep_a-SecTimer.Tpo -c -o liblinuxdep_a-SecTimer.obj `if test -f 'SecTimer.cpp'; then $(CYGPATH_W) 'SecTimer.cpp'; else $(CYGPATH_W) '$(srcdir)/SecTimer.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-SecTimer.Tpo $(DEPDIR)/liblinuxdep_a-SecTimer.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='SecTimer.cpp' object='liblinuxdep_a-SecTimer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-SecTimer.obj `if test -f 'SecTimer.cpp'; then $(CYGPATH_W) 'SecTimer.cpp'; else $(CYGPATH_W) '$(srcdir)/SecTimer.cpp'; fi`
+
+liblinuxdep_a-SysTick.o: SysTick.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-SysTick.o -MD -MP -MF $(DEPDIR)/liblinuxdep_a-SysTick.Tpo -c -o liblinuxdep_a-SysTick.o `test -f 'SysTick.cpp' || echo '$(srcdir)/'`SysTick.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-SysTick.Tpo $(DEPDIR)/liblinuxdep_a-SysTick.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='SysTick.cpp' object='liblinuxdep_a-SysTick.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-SysTick.o `test -f 'SysTick.cpp' || echo '$(srcdir)/'`SysTick.cpp
+
+liblinuxdep_a-SysTick.obj: SysTick.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-SysTick.obj -MD -MP -MF $(DEPDIR)/liblinuxdep_a-SysTick.Tpo -c -o liblinuxdep_a-SysTick.obj `if test -f 'SysTick.cpp'; then $(CYGPATH_W) 'SysTick.cpp'; else $(CYGPATH_W) '$(srcdir)/SysTick.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-SysTick.Tpo $(DEPDIR)/liblinuxdep_a-SysTick.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='SysTick.cpp' object='liblinuxdep_a-SysTick.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-SysTick.obj `if test -f 'SysTick.cpp'; then $(CYGPATH_W) 'SysTick.cpp'; else $(CYGPATH_W) '$(srcdir)/SysTick.cpp'; fi`
+
+liblinuxdep_a-TimerList.o: TimerList.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-TimerList.o -MD -MP -MF $(DEPDIR)/liblinuxdep_a-TimerList.Tpo -c -o liblinuxdep_a-TimerList.o `test -f 'TimerList.cpp' || echo '$(srcdir)/'`TimerList.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-TimerList.Tpo $(DEPDIR)/liblinuxdep_a-TimerList.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='TimerList.cpp' object='liblinuxdep_a-TimerList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-TimerList.o `test -f 'TimerList.cpp' || echo '$(srcdir)/'`TimerList.cpp
+
+liblinuxdep_a-TimerList.obj: TimerList.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT liblinuxdep_a-TimerList.obj -MD -MP -MF $(DEPDIR)/liblinuxdep_a-TimerList.Tpo -c -o liblinuxdep_a-TimerList.obj `if test -f 'TimerList.cpp'; then $(CYGPATH_W) 'TimerList.cpp'; else $(CYGPATH_W) '$(srcdir)/TimerList.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liblinuxdep_a-TimerList.Tpo $(DEPDIR)/liblinuxdep_a-TimerList.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='TimerList.cpp' object='liblinuxdep_a-TimerList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(liblinuxdep_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o liblinuxdep_a-TimerList.obj `if test -f 'TimerList.cpp'; then $(CYGPATH_W) 'TimerList.cpp'; else $(CYGPATH_W) '$(srcdir)/TimerList.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
