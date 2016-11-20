@@ -1,0 +1,12 @@
+*.o
+*.a
+*.orig
+*~
+**/.deps
+**/Makefile
+config.status
+libtool
+src/defaults.h
+src/faxrecv/c2faxrecv
+src/faxsend/c2faxsend
+config.log
