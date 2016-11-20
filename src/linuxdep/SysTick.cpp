@@ -20,6 +20,7 @@
 #include <signal.h>
 #include <assert.h>
 #include "SysTick.h"
+#include <stdio.h>
 
 static CSystemTicker *ticker = 0;
 
@@ -28,6 +29,7 @@ static CSystemTicker *ticker = 0;
 \*---------------------------------------------------------------------------*/
 
 static void tick_handler (int /*sig*/) {
+    printf("tick\n");
     if (ticker) {
         ticker->IncrementTicks ();
         ticker->NotifyTimers ();

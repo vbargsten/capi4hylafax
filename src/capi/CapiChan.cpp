@@ -18,7 +18,7 @@
 
 #include "CapiChan.h"
 #include "dbgCAPI.h"
-
+#include <stdio.h>
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
@@ -30,6 +30,7 @@
 
 static void StateChangeTimer_CallBack (void *pCapiChannel, void *kind) {
     dhead ("StateChangeTimer_CallBack", DCON_CCAPI20_Channel);
+    printf("StateChangeTimer_CallBack\n");
     dparams ("%x", kind);
     dassert (pCapiChannel != 0);
     CCAPI20_Channel *pChan = (CCAPI20_Channel *)pCapiChannel;
