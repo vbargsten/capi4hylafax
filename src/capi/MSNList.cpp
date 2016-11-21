@@ -22,24 +22,6 @@
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-class CControllerInfo : public CSortPListElement {
-public:
-    CControllerInfo (void);
-    virtual ~CControllerInfo (void);
-
-    void DelAllMSNs (void);
-    tCompare Compare (void *RefCompData);
-    void *GetRefCompData (void);
-
-    tUInt          Controller;
-    tUInt          InfoMask;
-    tUInt          CIPMask;
-    tUInt          DDILen;
-    CDynamicString TelNumPrefix;
-    CMultiString   MSNList;
-    tBool          PMSupportable;
-};
-
 
 /*===========================================================================*\
 \*===========================================================================*/
@@ -521,7 +503,7 @@ tBool CCntrlMSNList::GetMask (tUInt Controller, tUInt *pInfoMask, tUInt *pCIPMas
 \*===========================================================================*/
 
 tBool CCntrlMSNList::GetNextMask (tUInt *pController, tUInt *pInfoMask, tUInt *pCIPMask) {
-    printf("controller info target address: %x, this: %x\n", pController, this); 
+    printf("controller info target address: %p, this: %p\n", pController, this); 
     dhead ("CCntrlMSNList::BuildNextMask", DCON_CCntrlMSNList);
     dassert (pController != 0);
     dassert (pCIPMask != 0);
@@ -681,6 +663,22 @@ CControllerInfo::CControllerInfo (void)
     PMSupportable (vTrue) {
 
     dhead ("CControllerInfo-Constructor", DCON_CCntrlMSNList);
+}
+
+CControllerInfo::CControllerInfo(CControllerInfo &info)
+  : Controller (info.Controller),
+    InfoMask (info.InfoMask),
+    CIPMask (info.CIPMask),
+    DDILen (info.DDILen),
+    TelNumPrefix(info.TelNumPrefix),
+    PMSupportable (info.PMSupportable) {
+
+    COneMultiString * curStr = info.MSNList.GetFirst();
+    while (curStr) {
+        MSNList.AddLast(new COneMultiString(curStr));
+        curStr = curStr->GetNext();
+    }
+    dhead ("CControllerInfo-CopyConstructor", DCON_CCntrlMSNList);
 }
 
 CControllerInfo::~CControllerInfo (void) {

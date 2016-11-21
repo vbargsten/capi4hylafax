@@ -39,6 +39,27 @@
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
+class CControllerInfo : public CSortPListElement {
+public:
+    CControllerInfo (void);
+    CControllerInfo (CControllerInfo&);
+    virtual ~CControllerInfo (void);
+
+    void DelAllMSNs (void);
+    tCompare Compare (void *RefCompData);
+    void *GetRefCompData (void);
+
+    tUInt          Controller;
+    tUInt          InfoMask;
+    tUInt          CIPMask;
+    tUInt          DDILen;
+    CDynamicString TelNumPrefix;
+    tBool          PMSupportable;
+    CMultiString   MSNList;
+};
+
+
+
 class CMSNRange : public COneMultiString {
 public:
     CDynamicString m_End;
@@ -52,7 +73,8 @@ public:
 class CCntrlMSNList : public CSortPointerList {
 public:
     CCntrlMSNList (void);
-
+    CCntrlMSNList (CCntrlMSNList &list);
+    
     // Set remove every previous entry for the controller. Add integrate the new values to the previous one.
     // Set and Add doesn't change anything for the entries from SetMSN and AddMSN and vice versa.
     tBool Set (tUInt Controller, tUInt InfoMask, tUInt CIPMask);
@@ -88,6 +110,7 @@ public:
     tBool IsEmpty (void);
     tBool ExistController (tUInt Controller);
     void SetGlobalCallOpt (tBool value);
+    tBool GetGlobalCallOpt (void);
 
 private:
     class CControllerInfo *pCurPos;
@@ -101,6 +124,20 @@ private:
 inline CCntrlMSNList::CCntrlMSNList (void)
   : AllowGlobalCall (vTrue) {
 
+    ResetGetNextMask();
+    
+    
+    
+}
+
+inline CCntrlMSNList::CCntrlMSNList (CCntrlMSNList &list) {
+
+    SetGlobalCallOpt(list.GetGlobalCallOpt());
+    CControllerInfo * curElem = (CControllerInfo*)list.GetLowest();
+    while (curElem) {
+        CSortPointerList::AddFromLow(new CControllerInfo(*curElem));
+        curElem = (CControllerInfo*)list.GetLowest();
+    }
     ResetGetNextMask();
 }
 
@@ -122,6 +159,10 @@ inline tBool CCntrlMSNList::ExistController (tUInt Controller) {
 
 inline void CCntrlMSNList::SetGlobalCallOpt (tBool value) {
     AllowGlobalCall = value;
+}
+
+inline tBool CCntrlMSNList::GetGlobalCallOpt (void) {
+    return AllowGlobalCall;
 }
 
 /*===========================================================================*\
