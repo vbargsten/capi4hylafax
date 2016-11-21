@@ -15454,8 +15454,8 @@ fi
 # Check whether --enable-debug was given.
 if test "${enable_debug+set}" = set; then :
   enableval=$enable_debug; case "$enableval" in
-        yes | true) debugflags=-g -O0;;
-        no | false) debugflags=-DNDEBUG -g -O2;;
+        yes | true) debugflags="-g -O0";;
+        no | false) debugflags="-DNDEBUG -g -O2";;
         *)          as_fn_error $? "bad value $enableval for --enable-debug" "$LINENO" 5 ;;
      esac
 else

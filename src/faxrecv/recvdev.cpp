@@ -163,7 +163,8 @@ void CFaxReceiveDevice::Config (CConfigParserSection *section) {
                     if (MSNlauf->IsEmpty() == vFalse) {
                         FindPos = MSNlauf->FindChar ('-');
                         if (FindPos == MAXVAL_tUInt) {
-                            dprint ("Add MSN-Value=(%s) ", MSNlauf->GetPointer());
+                            WriteLog (LOG_INFO, "Add MSN-Value=(%s) ", MSNlauf->GetPointer());
+                            
                             switch (CIPMSNList.AddMSN (tmpController, MSNlauf)) {
                             case iErr_OutOfMemory:
                                 WriteLog (LOG_ERR, "config-file: No memory to add incoming number (%s).\n",
@@ -255,28 +256,10 @@ tBool CFaxReceiveDevice::StartReceive (void) {
         Starting = vFalse;
         return vFalse;
     }
-
-    for (i = CountThreads; i > 0; i--) {
-        CFaxReceive *pFR = new CFaxReceive (this, format);
-        // sleep here seems to workaround race condition leading to kernel panic
-        // sleep is interrupted by SIG_ALARM every sec. so call twice to sync in
-        sleep(1); sleep(1); 
-        if (pFR) {
-            FaxThreads.AddLast (pFR);
-            pFR->SetMSNList (&CIPMSNList);
-            pFR->StartReceive();
-        }
-    }
-    if (FaxThreads.IsEmpty() == vTrue) {
-        dwarning (0);
-        WriteLog (LOG_WARNING, "\nDevice \"%s\" can't start any threads needed for receiving faxes!\n",
-                  DeviceName.GetPointer());
-        Starting = vFalse;
-        return vFalse;
-    }
-
-    WriteLog (LOG_INFO, "\nDevice \"%s\" uses %d receive thread(s) with the following config:\n", DeviceName.GetPointer(),
-              FaxThreads.CountElements());
+    
+    WriteLog (LOG_INFO, "\nDevice \"%s\" will use %d receive thread(s) with the following config:\n", DeviceName.GetPointer(),
+              CountThreads);
+    
     CIPMSNList.ResetGetNextMask();
     CDynamicString  line;
     CDynamicString *pOffset;
@@ -285,7 +268,11 @@ tBool CFaxReceiveDevice::StartReceive (void) {
     tUInt           cntrl;
     tUInt           info;
     tUInt           cip;
+    tUInt	    roundcnt = 0;
+    printf("CIPMSNList has %i elements.\n", CIPMSNList.CountElements());
     while (CIPMSNList.GetNextMask (&cntrl, &info, &cip) == vTrue) {
+        printf("Round MSN %i\n", roundcnt);
+        roundcnt++;
         pCurMSN = 0;
         pMSNs   = CIPMSNList.GetAllMSNs (cntrl);
         if (pMSNs) {
@@ -324,6 +311,29 @@ tBool CFaxReceiveDevice::StartReceive (void) {
             dwarning (0);
         }
     }
+    
+    WriteLog (LOG_INFO, "Starting Threads for %s.\n", DeviceName.GetPointer());
+              
+    for (i = CountThreads; i > 0; i--) {
+        CFaxReceive *pFR = new CFaxReceive (this, format);
+        // sleep here seems to workaround race condition leading to kernel panic
+        // sleep is interrupted by SIG_ALARM every sec. so call twice to sync in
+        sleep(1); sleep(1); 
+        if (pFR) {
+            FaxThreads.AddLast (pFR);
+            pFR->SetMSNList (&CIPMSNList);
+            pFR->StartReceive();
+        }
+    }
+    if (FaxThreads.IsEmpty() == vTrue) {
+        dwarning (0);
+        WriteLog (LOG_WARNING, "\nDevice \"%s\" can't start any threads needed for receiving faxes!\n",
+                  DeviceName.GetPointer());
+        Starting = vFalse;
+        return vFalse;
+    }
+
+    
     Starting = vFalse;
     return vTrue;
 }

@@ -49,7 +49,7 @@ public:
     CCntrlMSNList
 \*===========================================================================*/
 
-class CCntrlMSNList : private CSortPointerList {
+class CCntrlMSNList : public CSortPointerList {
 public:
     CCntrlMSNList (void);
 

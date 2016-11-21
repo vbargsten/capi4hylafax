@@ -18,7 +18,7 @@
 
 #include "MSNList.h"
 #include "dbgCAPI.h"
-
+#include <stdio.h>
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
@@ -521,6 +521,7 @@ tBool CCntrlMSNList::GetMask (tUInt Controller, tUInt *pInfoMask, tUInt *pCIPMas
 \*===========================================================================*/
 
 tBool CCntrlMSNList::GetNextMask (tUInt *pController, tUInt *pInfoMask, tUInt *pCIPMask) {
+    printf("controller info target address: %x, this: %x\n", pController, this); 
     dhead ("CCntrlMSNList::BuildNextMask", DCON_CCntrlMSNList);
     dassert (pController != 0);
     dassert (pCIPMask != 0);
@@ -529,12 +530,20 @@ tBool CCntrlMSNList::GetNextMask (tUInt *pController, tUInt *pInfoMask, tUInt *p
     CControllerInfo *pE = pCurPos;
     pE = (CControllerInfo *)((pE != 0) ? pE->GetHigher() : GetLowest());
     if (pE) {
+        //printf("pE is not zero.\n");
+    
+        //if (pE != (CControllerInfo *)GetLowest()) {
+        //  printf("pE is not lowest.\n");
+        //} 
+        
         while (  (pE->InfoMask & infomask_CalledPartyNum)
               && (pE->DDILen == 0)
               && (pE->MSNList.IsEmpty() == vTrue)) {
             dwarning (0);
+            //printf("Trying next.\n");
             pE = (CControllerInfo *)pE->GetHigher();
             if (pE == 0) {
+                //printf("nope, next is zero.\n");
                 pCurPos = 0;
                 RETURN ('x', fret);
             }

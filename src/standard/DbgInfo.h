@@ -77,12 +77,12 @@ void dActivateBreakPoint (tBool activate);
 \*---------------------------------------------------------------------------*/
 #if (USE_DEBUG_INFO_CLASS == _USE_DEBUG_INFO_CLASS_NONE)
 
-#define dwriteErr(DL, format)
-#define dwriteWrn(DL, format)
-#define dwriteLog(DL, format)
-#define dwriteS(DL, format)
-#define dwriteE(DL, format)
-#define dwriteI(DL, format)
+#define dwriteErr(DL, format, ...)
+#define dwriteWrn(DL, format, ...)
+#define dwriteLog(DL, format, ...)
+#define dwriteS(DL, format, ...)
+#define dwriteE(DL, format, ...)
+#define dwriteI(DL, format, ...)
 
 #else
 
