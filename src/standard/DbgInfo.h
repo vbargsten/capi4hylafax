@@ -51,8 +51,7 @@
 \*---------------------------------------------------------------------------*/
 
 #define _USE_DEBUG_INFO_CLASS_NONE          0       // Reihenfolge wichtig!!
-#define _USE_DEBUG_INFO_CLASS_EMULATION     1       // noch nicht ganz implementiert
-#define _USE_DEBUG_INFO_CLASS_NORMAL        2
+#define _USE_DEBUG_INFO_CLASS_NORMAL        1
 
 #ifndef USE_DEBUG_INFO_CLASS
 #error USE_DEBUG_INFO_CLASS not defined!
@@ -127,58 +126,6 @@ void dwriteI   (unsigned DL, const char *format, ...);      // Internal
 #define dinfo(expression, format)
 
 #endif
-
-
-#elif (USE_DEBUG_INFO_CLASS == _USE_DEBUG_INFO_CLASS_EMULATION)
-/*---------------------------------------------------------------------------*\
-    Debug-Ausgaben direkt ohne die DebugInfoClass
-    TODO: noch nicht vollständig implementiert!!!!!
-\*---------------------------------------------------------------------------*/
-
-#define dhead(name, DL)             const char *_CDI_Object_Name  = (const char *)(name);               \
-                                    tUInt _CDI_Object_Level = (DL);                 \
-                                    if (_CDI_Object_Level => Dbg_Level_Short) {     \
-                                        DbgIPrintFull (NAMEATFUNCSTART_BEGIN "%s%s" \
-                                                       NAMEATFUNCSTART_END,         \
-                                                       DbgIPrintLinePrefix,         \
-                                                       _CDI_Object_Name);           \
-                                    }
-#define dheadP(name, DL, PL)        const char *_CDI_Object_Name = (const char *)(name);                \
-                                    tUInt _CDI_Object_Level = (DL);                 \
-                                    if (_CDI_Object_Level => Dbg_Level_Short) {     \
-                                        DbgIPrintFull (NAMEATFUNCSTART_BEGIN "%s%s" \
-                                                       NAMEATFUNCSTART_END,         \
-                                                       DbgIPrintLinePrefix,         \
-                                                       _CDI_Object_Name);           \
-                                    }
-
-
-#define dparams                     if (_CDI_Object_Level >= Dbg_Level_Entry) DbgIPrintParams
-
-#define dprint                      if (_CDI_Object_Level >= Dbg_Level_Internal) DbgIPrintFull
-
-#define dprintBuf(data, length)     if (_CDI_Object_Level >= Dbg_Level_Internal) DbgIPrintBuf
-
-#define dprintWrn                   if (_CDI_Object_Level >= Dbg_Level_Infos) DbgIPrintFull
-
-#define dprintErr                   DbgIPrintFull
-
-#define dwarning(expr)              if (_CDI_Object_Level >= Dbg_Level_Infos) DbgIAssert (expr)
-
-#define dassert(expr)               DbgIAssert (expr)
-
-#define dinfo                       if (_CDI_Object_Level >= Dbg_Level_Infos) DbgIPrintInfo
-
-#define dvalue(val)                 ((_CDI_Object_Level >= Dbg_Level_Internal) ?            \
-                                        DbgIPrintValue (val, #val, __FILE__, __LINE__) : (val))
-
-#define RETURN(format, retval)      if (_CDI_Object_Level >= Dbg_Level_Short) {             \
-                                        DbgIPrintFull (RETURNVALUE_BEGIN "%x"               \
-                                                       RETURNVALUE_END NAMEATFUNCEND_BEGIN  \
-                                                       "%s" NAMEATFUNCEND_END, (retval),    \
-                                                       _CDI_Object_Name);                   \
-                                    }                                                       \
-                                    return (retval)
 
 
 #elif (USE_DEBUG_INFO_CLASS >= _USE_DEBUG_INFO_CLASS_NORMAL)
