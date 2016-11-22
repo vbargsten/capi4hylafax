@@ -64,7 +64,7 @@ AC_ARG_ENABLE(debug,
         no | false) debugflags="-DNDEBUG -g -O2";;
         *)          AC_MSG_ERROR(bad value $enableval for --enable-debug) ;;
      esac],
-    [debugflags=-DNDEBUG]
+    [debugflags="-DNDEBUG -g -O2"]
 )
 CXXFLAGS="$CXXFLAGS $debugflags"
 dnl AM_CONDITIONAL(NDEBUG, test x$debug = xfalse)
