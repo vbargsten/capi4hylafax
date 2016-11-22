@@ -29,7 +29,8 @@ class COneMultiString : public CDynamicString, public CPointerListElement {
 public:
     COneMultiString (void) {}
     COneMultiString (tFormatChar *string, tUInt len = 0) : CDynamicString (string, len) {}
-
+    COneMultiString (const CConstString *pcstr) : CDynamicString (pcstr) {};
+    
     COneMultiString *GetNext (void)             { return (COneMultiString *)CPointerListElement::GetNext(); }
     COneMultiString *GetPrev (void)             { return (COneMultiString *)CPointerListElement::GetPrev(); }
 };

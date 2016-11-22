@@ -22,24 +22,6 @@
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 
-class CControllerInfo : public CSortPListElement {
-public:
-    CControllerInfo (void);
-    virtual ~CControllerInfo (void);
-
-    void DelAllMSNs (void);
-    tCompare Compare (void *RefCompData);
-    void *GetRefCompData (void);
-
-    tUInt          Controller;
-    tUInt          InfoMask;
-    tUInt          CIPMask;
-    tUInt          DDILen;
-    CDynamicString TelNumPrefix;
-    CMultiString   MSNList;
-    tBool          PMSupportable;
-};
-
 
 /*===========================================================================*\
 \*===========================================================================*/
@@ -672,6 +654,22 @@ CControllerInfo::CControllerInfo (void)
     PMSupportable (vTrue) {
 
     dhead ("CControllerInfo-Constructor", DCON_CCntrlMSNList);
+}
+
+CControllerInfo::CControllerInfo(CControllerInfo &info)
+  : Controller (info.Controller),
+    InfoMask (info.InfoMask),
+    CIPMask (info.CIPMask),
+    DDILen (info.DDILen),
+    TelNumPrefix(info.TelNumPrefix),
+    PMSupportable (info.PMSupportable) {
+
+    COneMultiString * curStr = info.MSNList.GetFirst();
+    while (curStr) {
+        MSNList.AddLast(new COneMultiString(curStr));
+        curStr = curStr->GetNext();
+    }
+    dhead ("CControllerInfo-CopyConstructor", DCON_CCntrlMSNList);
 }
 
 CControllerInfo::~CControllerInfo (void) {
