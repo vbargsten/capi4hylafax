@@ -298,7 +298,7 @@ inline void CTransferChannel::SetNCPI (cp_ncpi *pNCPI) {
 
 inline tBool CTransferChannel::SetMSNList (CCntrlMSNList *pCntrlMSNList) {
     if (m_deleteMSNList == vTrue) {
-        delete m_pMSNList; // probably wont free all memory of the list elements
+        delete m_pMSNList;
     }
     m_pMSNList      = new CCntrlMSNList(*pCntrlMSNList);
     m_deleteMSNList = vTrue;
