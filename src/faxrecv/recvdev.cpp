@@ -262,6 +262,7 @@ tBool CFaxReceiveDevice::StartReceive (void) {
             FaxThreads.AddLast (pFR);
             pFR->SetMSNList (&CIPMSNList);
             pFR->StartReceive();
+            usleep(100000);
         }
     }
     if (FaxThreads.IsEmpty() == vTrue) {

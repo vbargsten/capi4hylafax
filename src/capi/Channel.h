@@ -300,8 +300,13 @@ inline tBool CTransferChannel::SetMSNList (CCntrlMSNList *pCntrlMSNList) {
     if (m_deleteMSNList == vTrue) {
         delete m_pMSNList;
     }
-    m_pMSNList      = new CCntrlMSNList(*pCntrlMSNList);
-    m_deleteMSNList = vTrue;
+    if (pCntrlMSNList != NULL) {
+        m_pMSNList = new CCntrlMSNList(*pCntrlMSNList);
+        m_deleteMSNList = vTrue;
+    } else {
+        m_pMSNList = NULL;
+        m_deleteMSNList = vFalse;
+    }
     CheckListen();
     return vTrue;
 }

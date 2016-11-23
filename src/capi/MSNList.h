@@ -135,8 +135,8 @@ inline CCntrlMSNList::CCntrlMSNList (CCntrlMSNList &list) {
     SetGlobalCallOpt(list.GetGlobalCallOpt());
     CControllerInfo * curElem = (CControllerInfo*)list.GetLowest();
     while (curElem) {
-        CSortPointerList::AddFromLow(new CControllerInfo(*curElem));
-        curElem = (CControllerInfo*)list.GetLowest();
+        CSortPointerList::AddFromHigh(new CControllerInfo(*curElem));
+        curElem = (CControllerInfo*)((CSortPListElement*)curElem->GetHigher());
     }
     ResetGetNextMask();
 }
