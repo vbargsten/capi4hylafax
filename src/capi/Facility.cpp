@@ -335,6 +335,8 @@ void CCAPI20_Facility::FACILITY_CONF (c_word, c_dword Address, cm_facilityconf *
     dassert (Params != 0);
     dassert (Params->pFacilityParam != 0);
     dassert (sizeof (void *) == sizeof (c_dword)); // see fReq_Activate/_Deactivate
+    // todo: c_dword is uint32 -> wont be sizeof void ptr on 64bit platform
+    // there is no function fReq_Activate/_Deactivate
     switch (Params->FacilitySelector) {
     case facilselect_DTMF: {
         c_info di = Params->Info;

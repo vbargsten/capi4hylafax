@@ -37,22 +37,22 @@
 /*---------------------------------------------------------------------------*/
 
 #define NAMEATFUNCSTART_BEGIN           ""
-#define NAMEATFUNCSTART_END             "<\n"
+#define NAMEATFUNCSTART_END             "<"
 
 #define NAMEATFUNCEND_BEGIN             ">"
-#define NAMEATFUNCEND_END               "\n"
+#define NAMEATFUNCEND_END               ""
 
-#define NAMEINEVERYLINE_BEGIN           "\n"
+#define NAMEINEVERYLINE_BEGIN           ""
 #define NAMEINEVERYLINE_END             ": "
 
 #define NAMEFORSHORT_BEGIN              ""
 #define NAMEFORSHORT_END                " "
 
 #define PARAMETERS_SHORT_BEGIN          "("
-#define PARAMETERS_SHORT_END            ")\n"
+#define PARAMETERS_SHORT_END            ")"
 
 #define PARAMETERS_BEGIN                "("
-#define PARAMETERS_END                  ")<\n"
+#define PARAMETERS_END                  ")<"
 
 #define RETURNVALUE_BEGIN               "("
 #define RETURNVALUE_END                 ")>"

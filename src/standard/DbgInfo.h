@@ -128,7 +128,7 @@ void dwriteI   (unsigned DL, const char *format, ...);      // Internal
 #endif
 
 
-#elif (USE_DEBUG_INFO_CLASS >= _USE_DEBUG_INFO_CLASS_NORMAL)
+#else
 /*---------------------------------------------------------------------------*\
     Includes nur fürs Debuggen
 \*---------------------------------------------------------------------------*/

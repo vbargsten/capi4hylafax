@@ -297,10 +297,10 @@ void CDebugInfo::printBuf (const void *data, unsigned length) {
             RememberOutput ("%s", outstring);
             DbgPrintIntern();
         }
-        RememberOutput ("%s\n", outstring);
+        RememberOutput ("%s", outstring);
         DbgPrintIntern();
     } else if (debuglevel >= Dbg_Level_Internal) {
-        RememberOutput ("DATA: (p=%x, l=%x)\n", data, length);
+        RememberOutput ("DATA: (p=%x, l=%x)", data, length);
         DbgPrintIntern();
     }
 }
@@ -312,7 +312,7 @@ unsigned CDebugInfo::printValue (unsigned val, const char *sval, const unsigned 
     //RememberOutput ("VALUE: '%s' in %s(%d) = %x\n", sval, filename, line, val);
     if (  (debuglevel >= Dbg_Level_Internal)
        || ((val != 0) && (debuglevel >= Dbg_Level_Short))) {
-        RememberOutput ("VALUE: '%s' = %x\n", sval, filename, line, val);
+        RememberOutput ("VALUE: '%s' = %x", sval, filename, line, val);
         DbgPrintIntern();
     }
     return val;
@@ -329,11 +329,11 @@ void CDebugInfo::printWrn (const char *format, ...) {
     if (printlevel & Prt_Level_FileNameAtInfo) {
         RememberOutput ("%s[NOTE(%s in %s(%d+)): ", DbgIPrintLinePrefix, name, filename, linenumber);
         vRememberOutput (format, param);
-        RememberOutput ("]\n");
+        RememberOutput ("]");
     } else {
         RememberOutput ("%s[NOTE(%s): ", DbgIPrintLinePrefix, name);
         vRememberOutput (format, param);
-        RememberOutput ("]\n");
+        RememberOutput ("]");
     }
     DbgPrintIntern();
     va_end (param);
@@ -350,11 +350,11 @@ void CDebugInfo::printErr (const char *format, ...) {
     if (printlevel & Prt_Level_FileNameAtInfo) {
         RememberOutput ("%s[ERROR(%s in %s(%d+)): ", DbgIPrintLinePrefix, name, filename, linenumber);
         vRememberOutput (format, param);
-        RememberOutput ("]\n");
+        RememberOutput ("]");
     } else {
         RememberOutput ("%s[ERROR(%s): ", DbgIPrintLinePrefix, name);
         vRememberOutput (format, param);
-        RememberOutput ("]\n");
+        RememberOutput ("]");
     }
     DbgPrintIntern();
     va_end (param);
@@ -367,9 +367,9 @@ void CDebugInfo::assertion (const char *exp, const unsigned int line) {
     if ((name == 0) || (debuglevel < Dbg_Level_Errors)) return;
 
     if (printlevel & Prt_Level_FuncNameAtError) {
-        RememberOutput ("%s[assertion failed: (%s) %s in %s(%d)]\n", DbgIPrintLinePrefix, exp, name, filename, line);
+        RememberOutput ("%s[assertion failed: (%s) %s in %s(%d)]", DbgIPrintLinePrefix, exp, name, filename, line);
     } else {
-        RememberOutput ("%s[assertion failed: (%s) in %s(%d)]\n", DbgIPrintLinePrefix, exp, filename, line);
+        RememberOutput ("%s[assertion failed: (%s) in %s(%d)]", DbgIPrintLinePrefix, exp, filename, line);
     }
     DbgPrintIntern();
     if (BreakPointsAreActive) {
@@ -391,9 +391,9 @@ void CDebugInfo::assertion (const int expValue, const char *exp, const char *fna
     }
     fname += last;
     if (printlevel & Prt_Level_FuncNameAtError) {
-        RememberOutput ("%s[assertion failed: (%s) %s in %s(%d)]\n", DbgIPrintLinePrefix, exp, name, fname, line);
+        RememberOutput ("%s[assertion failed: (%s) %s in %s(%d)]", DbgIPrintLinePrefix, exp, name, fname, line);
     } else {
-        RememberOutput ("%s[assertion failed: (%s) in %s(%d)]\n", DbgIPrintLinePrefix, exp, fname, line);
+        RememberOutput ("%s[assertion failed: (%s) in %s(%d)]", DbgIPrintLinePrefix, exp, fname, line);
     }
     DbgPrintIntern();
     if (BreakPointsAreActive) {
@@ -408,9 +408,9 @@ void CDebugInfo::warning (const char *exp, const unsigned int line) {
     if (!name || (debuglevel < Dbg_Level_Infos)) return;
 
     if (printlevel & Prt_Level_FuncNameAtError) {
-        RememberOutput ("%s[warning: (%s) %s in %s(%d)]\n", DbgIPrintLinePrefix, exp, name, filename, line);
+        RememberOutput ("%s[warning: (%s) %s in %s(%d)]", DbgIPrintLinePrefix, exp, name, filename, line);
     } else {
-        RememberOutput ("%s[warning: (%s) in %s(%d)]\n", DbgIPrintLinePrefix, exp, filename, line);
+        RememberOutput ("%s[warning: (%s) in %s(%d)]", DbgIPrintLinePrefix, exp, filename, line);
     }
     DbgPrintIntern();
 }
@@ -428,9 +428,9 @@ void CDebugInfo::warning (const int expValue, const char *exp, const char *fname
     }
     fname += last;
     if (printlevel & Prt_Level_FuncNameAtError) {
-        RememberOutput ("%s[warning: (%s) %s in %s(%d)]\n", DbgIPrintLinePrefix, exp, name, fname, line);
+        RememberOutput ("%s[warning: (%s) %s in %s(%d)]", DbgIPrintLinePrefix, exp, name, fname, line);
     } else {
-        RememberOutput ("%s[warning: (%s) in %s(%d)]\n", DbgIPrintLinePrefix, exp, fname, line);
+        RememberOutput ("%s[warning: (%s) in %s(%d)]", DbgIPrintLinePrefix, exp, fname, line);
     }
     DbgPrintIntern();
 }
@@ -445,11 +445,11 @@ void CDebugInfo::info (const int expression, const char *format, ...) {
     if (printlevel & Prt_Level_FileNameAtInfo) {
         RememberOutput ("%s[info(%s in %s(%d+)): ", DbgIPrintLinePrefix, name, filename, linenumber);
         vRememberOutput (format, param);
-        RememberOutput ("]\n");
+        RememberOutput ("]");
     } else {
         RememberOutput ("%s[info(%s): ", DbgIPrintLinePrefix, name);
         vRememberOutput (format, param);
-        RememberOutput ("]\n");
+        RememberOutput ("]");
     }
     DbgPrintIntern();
     va_end (param);
@@ -522,6 +522,7 @@ void CDebugInfo::RememberOutput (const char *format, ...) {
 \*---------------------------------------------------------------------------*/
 
 void CDebugInfo::vRememberOutput (const char *format, va_list param) {
+    Output.AddTo (spaces, "[%s:%i] ", filename, linenumber);
     if (printlevel & Prt_Level_NameInEveryLine) {
         Output.AddTo (spaces, NAMEINEVERYLINE_BEGIN "%s" NAMEINEVERYLINE_END, name);
     }
