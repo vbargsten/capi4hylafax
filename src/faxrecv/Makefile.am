@@ -9,7 +9,7 @@ c2faxrecv_CPPFLAGS      = -I.. -I$(srcdir)/.. -I$(srcdir)/../standard \
                           -I$(srcdir)/../linuxdep
 
 LDADD                   = ../capi/libcapi.a ../convert/libconvert.a ../linuxdep/liblinuxdep.a \
-                          ../standard/libstandard.a
+                          ../standard/libstandard.a -lSegFault
 
 noinst_HEADERS          = faxrecv.h recvdev.h recvmain.h
 
