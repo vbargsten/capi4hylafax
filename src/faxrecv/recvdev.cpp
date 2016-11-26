@@ -331,9 +331,15 @@ tBool CFaxReceiveDevice::StartReceive (void) {
 
 void CFaxReceiveDevice::StopReceive (void) {
     dhead ("CFaxReceiveDevice::StopReceive", DCON_CFaxReceiveDevice);
-    for (CFaxReceive *lauf = (CFaxReceive *)FaxThreads.GetFirst(); lauf != 0; lauf = (CFaxReceive *)lauf->GetNext()) {
+    CFaxReceive *lauf = (CFaxReceive *)FaxThreads.GetFirst();
+    while (lauf != NULL) {
+        FaxThreads.RemoveFirst();
         lauf->StopReceive();
+        lauf = (CFaxReceive *)FaxThreads.GetFirst();
     }
+    //for (CFaxReceive *lauf = (CFaxReceive *)FaxThreads.GetFirst(); lauf != 0; lauf = (CFaxReceive *)lauf->GetNext()) {
+    //    lauf->StopReceive();
+    //}
 }
 
 /*===========================================================================*\
