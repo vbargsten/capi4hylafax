@@ -21,6 +21,7 @@
 
 #include "CapiMsg.h"
 #include "PLCIList.h"
+#include "Protect.h"
 
 /*===========================================================================*\
 \*===========================================================================*/
@@ -38,6 +39,7 @@ public:
 private:
     c_word nr;
     static tUInt CountLayers;
+    static thProtect counterMutex;
 };
 
 /*===========================================================================*\
@@ -46,21 +48,42 @@ private:
 inline CCAPI20_Layer::CCAPI20_Layer (void) {
     nr = 0;
     // assert (CountLayers + 1 != 0);
-
-    // IMPORTANT: Ich gehe davon aus, daß dieser Constructor serialized aufgerufen wird
-    if (CountLayers++ == 0) {
-        if (InitPLCIList() == vFalse) {
-            // assert (0);
-            // TODO: was nun?
-        }
+    if (  (Protect_IsCreated (counterMutex) == vFalse)
+       && (Protect_Create (&counterMutex) == vFalse)) {
+        // throw 
     }
+    Protect_BeginWrite(counterMutex);
+    CountLayers++;
+    Protect_EndWrite(counterMutex);
+    
+    if (InitPLCIList() == vFalse) {
+            // TODO: was nun?
+    }
+    
+    //// IMPORTANT: Ich gehe davon aus, dass dieser Constructor serialized aufgerufen wird
+    //if (CountLayers++ == 0) {
+    //    if (InitPLCIList() == vFalse) {
+    //        // assert (0);
+    //        // TODO: was nun?
+    //    }
+    //}
 }
 
 inline CCAPI20_Layer::~CCAPI20_Layer (void) {
     // assert (CountLayers > 0);
-    if (--CountLayers == 0) {
+    
+    
+    Protect_BeginWrite(counterMutex);
+    CountLayers--;
+    
+    if (CountLayers == 0) {
         DeinitPLCIList();
+        //Protect_EndWrite(counterMutex);
+        // we wont destroy it -- could be critical if new layer is created 
+        // Protect_Destroy(&counterMutex);
     }
+    
+    Protect_EndWrite(counterMutex);
 }
 
 inline c_word CCAPI20_Layer::GetNextMsgNr (void) {

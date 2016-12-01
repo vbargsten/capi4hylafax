@@ -3164,7 +3164,7 @@ am__tar='$${TAR-tar} chof - "$$tardir"' am__untar='$${TAR-tar} xf -'
 
 
 
-CXXFLAGS="-Wall -W $CXXFLAGS -D_GNU_SOURCE -DDONT_USE_PROTECT_FEATURE"
+CXXFLAGS="-Wall -W $CXXFLAGS -D_GNU_SOURCE"
 
 ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'

@@ -20,6 +20,7 @@
 #define _PROTECT_H_
 
 #include "aTypes.h"
+#include <pthread.h>
 
 /*===========================================================================*\
 \*===========================================================================*/
@@ -45,10 +46,10 @@
 \*===========================================================================*/
 #else // DONT_USE_PROTECT_FEATURE
 
-typedef tHandle thProtect;
+typedef pthread_mutex_t * thProtect; // void**
 
 #define Protect_Define(name)        thProtect name
-#define Protect_DefineInit(name)    thProtect name = vIllegalHandle
+#define Protect_DefineInit(name)    thProtect name = NULL
 
 void  Protect_InitHandle (thProtect *pProtect);
 tBool Protect_IsCreated  (thProtect Protect);
@@ -67,11 +68,38 @@ void  Protect_EndWrite   (thProtect protect);
 \*===========================================================================*/
 
 inline void Protect_InitHandle (thProtect *pProtect) {
-    *pProtect = vIllegalHandle;
+    *pProtect = new pthread_mutex_t;
 }
 
 inline tBool Protect_IsCreated (thProtect Protect) {
-    return (Protect != vIllegalHandle);
+    return (Protect != NULL);
+}
+
+inline tBool Protect_Create     (thProtect *pProtect) {
+    if (*pProtect == NULL) {
+        *pProtect = new pthread_mutex_t;
+    }
+    pthread_mutex_init (*pProtect, NULL);
+    return true;
+}
+inline void  Protect_Destroy    (thProtect *pProtect) {
+    pthread_mutex_destroy (*pProtect);
+    delete *pProtect;
+}
+
+inline void  Protect_BeginRead  (thProtect protect) {
+    pthread_mutex_lock (protect);
+}
+inline void  Protect_EndRead    (thProtect protect) {
+    pthread_mutex_unlock (protect);
+}
+
+inline void  Protect_BeginWrite (thProtect protect) {
+    pthread_mutex_lock (protect);   
+}
+
+inline void  Protect_EndWrite   (thProtect protect) {
+    pthread_mutex_unlock (protect);
 }
 
 /*===========================================================================*\

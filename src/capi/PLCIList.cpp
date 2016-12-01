@@ -65,14 +65,23 @@ static CSortPointerList *pPLCIList = 0;
 tBool InitPLCIList (void) {
     dhead ("InitPLCIList", DCON_PLCIList);
     dassert (pPLCIList == vIllegalHandle);
+     // critical to create mutex from ptr
     if (  (Protect_IsCreated (hProtect) == vFalse)
        && (Protect_Create (&hProtect) == vFalse)) {
         RETURN ('x', vFalse);
     }
-    pPLCIList = new CSortPointerList;
+    
+    Protect_BeginWrite (hProtect);
+    if (pPLCIList == NULL) {
+        pPLCIList = new CSortPointerList;   
+    }
+    
     if (pPLCIList) {
+        Protect_EndWrite (hProtect);
         RETURN ('x', vTrue);
     }
+    Protect_EndWrite (hProtect);
+    
     pPLCIList = 0;
     Protect_Destroy (&hProtect);
     RETURN ('x', vFalse);
@@ -84,11 +93,13 @@ tBool InitPLCIList (void) {
 
 void DeinitPLCIList (void) {
     dhead ("DeinitPLCIList", DCON_PLCIList);
+    Protect_BeginWrite (hProtect);
     dassert (pPLCIList != 0);
     dassert (pPLCIList->IsEmpty() == vTrue);
     delete pPLCIList;
     pPLCIList = 0;
-    Protect_Destroy (&hProtect);
+    Protect_EndWrite (hProtect);
+    Protect_Destroy (&hProtect); // critical
 }
 
 
@@ -100,6 +111,8 @@ tBool TestAndSetPLCIEntry (tUInt PLCI) {
     dparams ("%x", PLCI);
     dassert (PLCI > 0);
     dassert (PLCI <= 0xFFFF);
+    
+    Protect_BeginWrite (hProtect);
     dwarning (pPLCIList != 0);
     tBool fret = vFalse;
     if (pPLCIList != 0) {
@@ -108,7 +121,6 @@ tBool TestAndSetPLCIEntry (tUInt PLCI) {
         tUByte fieldBit = (tUByte)(1 << ((PLCI >> 8) & 0x7));
         dassert (cntrl != 0);
         dassert (fieldBit != 0);
-        Protect_BeginWrite (hProtect);
         CPLCIListerElement *pElement = (CPLCIListerElement *)pPLCIList->FindHigher ((void *)(tULong)cntrl);
         if (pElement == 0) {
             pElement = new CPLCIListerElement;
@@ -126,8 +138,8 @@ tBool TestAndSetPLCIEntry (tUInt PLCI) {
                 fret = vTrue;
             }
         }
-        Protect_EndWrite (hProtect);
     }
+    Protect_EndWrite (hProtect);
     RETURN ('x', fret);
 }
 
@@ -144,9 +156,9 @@ void UnsetPLCIEntry (tUInt PLCI) {
     tUByte fieldBit = (tUByte)(1 << ((PLCI >> 8) & 0x7));
     dassert ((PLCI & 0x7F) != 0);
     dassert (fieldBit != 0);
+    Protect_BeginWrite (hProtect);
     dassert (pPLCIList != 0);
     if (pPLCIList != 0) {
-        Protect_BeginWrite (hProtect);
         CPLCIListerElement *pElement = (CPLCIListerElement *)pPLCIList->FindHigher ((void *)(tULong)(PLCI & 0x7F));
         if (pElement && (pElement->PLCIField[fieldPos] & fieldBit)) {
             dassert (pElement->Counter > 0);
@@ -157,8 +169,8 @@ void UnsetPLCIEntry (tUInt PLCI) {
                 pElement->PLCIField[fieldPos] &= ~fieldBit;
             }
         }
-        Protect_EndWrite (hProtect);
     }
+    Protect_EndWrite (hProtect);
 }
 
 
