@@ -47,7 +47,7 @@ tUInt DCON_CCAPI20_Facility         = Dbg_Level_Internal;
 tUInt DCON_CTransferChannel         = Dbg_Level_Internal;
 tUInt DCON_CCntrlMSNList            = Dbg_Level_Internal;
 tUInt DCON_PLCIList                 = Dbg_Level_Internal;
-tUInt DCON_CCStruct                 = Dbg_Level_Internal;
+tUInt DCON_CCStruct                 = Dbg_Level_Infos;
 tUInt DCON_CCAPI20_Statistic        = Dbg_Level_Internal;
 
 
@@ -88,11 +88,24 @@ void DbgIPrintStr (const char *output) {
 #else
 
 #include <stdio.h>
+#include <pthread.h>
+
+static pthread_mutex_t * stdout_mutex = NULL;
 
 void DbgIPrintStr (const char *output) {
+    if (stdout_mutex == NULL) {
+        // note: first prints will be from main thread
+        stdout_mutex = new pthread_mutex_t();
+        pthread_mutex_init(stdout_mutex, NULL);
+    }
+    pthread_mutex_lock (stdout_mutex);
+    
     long tid = (long)syscall(SYS_gettid);
     printf("[%li] ", tid);
     puts (output);
+    fflush(stdout);
+    
+    pthread_mutex_unlock (stdout_mutex);
 }
 
 #endif
