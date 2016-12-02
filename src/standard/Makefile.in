@@ -104,10 +104,9 @@ am_libstandard_a_OBJECTS = aStdLib.$(OBJEXT) aString.$(OBJEXT) \
 	aStrPrt.$(OBJEXT) ByteQueu.$(OBJEXT) CBTimer.$(OBJEXT) \
 	CDbgIDS.$(OBJEXT) ConfAssi.$(OBJEXT) ConfPars.$(OBJEXT) \
 	CString.$(OBJEXT) DbgFile.$(OBJEXT) DbgInfo.$(OBJEXT) \
-	DynArray.$(OBJEXT) DynByteQ.$(OBJEXT) DynQueue.$(OBJEXT) \
-	DynStore.$(OBJEXT) FilePars.$(OBJEXT) LinePars.$(OBJEXT) \
-	PtrList.$(OBJEXT) SortList.$(OBJEXT) StdArray.$(OBJEXT) \
-	StdQueue.$(OBJEXT)
+	DynByteQ.$(OBJEXT) DynQueue.$(OBJEXT) DynStore.$(OBJEXT) \
+	FilePars.$(OBJEXT) LinePars.$(OBJEXT) PtrList.$(OBJEXT) \
+	SortList.$(OBJEXT) StdQueue.$(OBJEXT)
 libstandard_a_OBJECTS = $(am_libstandard_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -309,7 +308,6 @@ noinst_HEADERS = aFlags.h      \
                           ByteQueu.h    \
                           CBTimer.h     \
                           CDbgIDS.h     \
-                          CEvent.h      \
                           ConfAssi.h    \
                           ConfPars.h    \
                           CString.h     \
@@ -320,11 +318,9 @@ noinst_HEADERS = aFlags.h      \
                           DbgFile.h     \
                           DbgInfo.h     \
                           dbgSTD.h      \
-                          DynArray.h    \
                           DynByteQ.h    \
                           DynQueue.h    \
                           DynStore.h    \
-                          Eventing.h    \
                           ExtFuncs.h    \
                           FilePars.h    \
                           InfoType.h    \
@@ -336,9 +332,7 @@ noinst_HEADERS = aFlags.h      \
                           ProtClas.h    \
                           PtrList.h     \
                           SecTimer.h    \
-                          SemaFunc.h    \
                           SortList.h    \
-                          StdArray.h    \
                           StdQueue.h
 
 noinst_LIBRARIES = libstandard.a
@@ -353,7 +347,6 @@ libstandard_a_SOURCES = aStdLib.cpp   \
                           CString.cpp   \
                           DbgFile.cpp   \
                           DbgInfo.cpp   \
-                          DynArray.cpp  \
                           DynByteQ.cpp  \
                           DynQueue.cpp  \
                           DynStore.cpp  \
@@ -361,7 +354,6 @@ libstandard_a_SOURCES = aStdLib.cpp   \
                           LinePars.cpp  \
                           PtrList.cpp   \
                           SortList.cpp  \
-                          StdArray.cpp  \
                           StdQueue.cpp
 
 all: all-am
@@ -421,7 +413,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ConfPars.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DbgFile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DbgInfo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DynArray.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DynByteQ.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DynQueue.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DynStore.Po@am__quote@
@@ -429,7 +420,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LinePars.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PtrList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SortList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdArray.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StdQueue.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aStdLib.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aStrPrt.Po@am__quote@

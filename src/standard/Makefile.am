@@ -12,7 +12,6 @@ noinst_HEADERS          = aFlags.h      \
                           ByteQueu.h    \
                           CBTimer.h     \
                           CDbgIDS.h     \
-                          CEvent.h      \
                           ConfAssi.h    \
                           ConfPars.h    \
                           CString.h     \
@@ -23,11 +22,9 @@ noinst_HEADERS          = aFlags.h      \
                           DbgFile.h     \
                           DbgInfo.h     \
                           dbgSTD.h      \
-                          DynArray.h    \
                           DynByteQ.h    \
                           DynQueue.h    \
                           DynStore.h    \
-                          Eventing.h    \
                           ExtFuncs.h    \
                           FilePars.h    \
                           InfoType.h    \
@@ -39,9 +36,7 @@ noinst_HEADERS          = aFlags.h      \
                           ProtClas.h    \
                           PtrList.h     \
                           SecTimer.h    \
-                          SemaFunc.h    \
                           SortList.h    \
-                          StdArray.h    \
                           StdQueue.h
 
 noinst_LIBRARIES        = libstandard.a
@@ -57,7 +52,6 @@ libstandard_a_SOURCES   = aStdLib.cpp   \
                           CString.cpp   \
                           DbgFile.cpp   \
                           DbgInfo.cpp   \
-                          DynArray.cpp  \
                           DynByteQ.cpp  \
                           DynQueue.cpp  \
                           DynStore.cpp  \
@@ -65,5 +59,4 @@ libstandard_a_SOURCES   = aStdLib.cpp   \
                           LinePars.cpp  \
                           PtrList.cpp   \
                           SortList.cpp  \
-                          StdArray.cpp  \
                           StdQueue.cpp
