@@ -85,6 +85,7 @@ inline tBool Protect_Create     (thProtect *pProtect) {
 inline void  Protect_Destroy    (thProtect *pProtect) {
     pthread_mutex_destroy (*pProtect);
     delete *pProtect;
+    *pProtect = NULL;
 }
 
 inline void  Protect_BeginRead  (thProtect protect) {
