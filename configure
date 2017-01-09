@@ -2798,8 +2798,8 @@ test "$program_suffix" != NONE &&
 ac_script='s/[\\$]/&&/g;s/;s,x,x,$//'
 program_transform_name=`$as_echo "$program_transform_name" | sed "$ac_script"`
 
-# expand $ac_aux_dir to an absolute path
-am_aux_dir=`cd $ac_aux_dir && pwd`
+# Expand $ac_aux_dir to an absolute path.
+am_aux_dir=`cd "$ac_aux_dir" && pwd`
 
 if test x"${MISSING+set}" != xset; then
   case $am_aux_dir in
@@ -15454,7 +15454,7 @@ fi
 # Check whether --enable-debug was given.
 if test "${enable_debug+set}" = set; then :
   enableval=$enable_debug; case "$enableval" in
-        yes | true) debugflags="-g -O0";;
+        yes | true) debugflags="-g -O0 -Wl,--no-as-needed -rdynamic";;
         no | false) debugflags="-DNDEBUG -g -O2";;
         *)          as_fn_error $? "bad value $enableval for --enable-debug" "$LINENO" 5 ;;
      esac

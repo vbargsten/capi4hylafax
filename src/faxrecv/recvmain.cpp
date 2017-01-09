@@ -389,7 +389,7 @@ void CFaxReceiveMain::WaitOnFIFOs (void) {
             FD_ZERO (&exceptfds);
             for (lauf = (CFaxReceiveDevice *)GetFirst(); (lauf != 0); lauf = (CFaxReceiveDevice *)lauf->GetNext()) {
                 hF = lauf->GetFIFOHandle();
-                dprint ("hF=%x ", hF);
+                //dprint ("hF=%x ", hF);
                 if (hF >= 0) {
                     FD_SET (hF, &readfds);
                     FD_SET (hF, &exceptfds);
@@ -400,13 +400,13 @@ void CFaxReceiveMain::WaitOnFIFOs (void) {
             }
             twait.tv_sec  = WAIT_TIME_IN_SEC;
             twait.tv_usec = 0;
-            dprint ("hFmax=%x ", hFmax);
             if (select (hFmax + 1, &readfds, 0, &exceptfds, &twait) == -1) {
                 //dprintErr ("select returns an Error=%s(%x) ", strerror (errno), errno);
                 sleep (30);
                 continue;
                 //break;
             }
+            dprint ("hFmax=%x ", hFmax);
             dprint ("select\n");
             lauf = (CFaxReceiveDevice *)GetFirst();
             while (lauf != 0) {

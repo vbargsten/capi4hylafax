@@ -60,7 +60,7 @@ dnl Optional debug
 AC_ARG_ENABLE(debug,
     AS_HELP_STRING([--enable-debug],[Turn debugging on (default=no)]),
     [case "$enableval" in
-        yes | true) debugflags="-g -O0";;
+        yes | true) debugflags="-g -O0 -Wl,--no-as-needed -rdynamic";;
         no | false) debugflags="-DNDEBUG -g -O2";;
         *)          AC_MSG_ERROR(bad value $enableval for --enable-debug) ;;
      esac],
